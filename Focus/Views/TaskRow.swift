@@ -1,11 +1,3 @@
-//
-//  TaskRow.swift
-//  Focus
-//
-//  Created by Georgii Korshunov on 29/09/2019.
-//  Copyright © 2019 Georgii Korshunov. All rights reserved.
-//
-
 import SwiftUI
 
 class CustomNSTextField: NSTextField {

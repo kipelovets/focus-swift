@@ -1,11 +1,3 @@
-//
-//  FocusTests.swift
-//  FocusTests
-//
-//  Created by Georgii Korshunov on 28/09/2019.
-//  Copyright © 2019 Georgii Korshunov. All rights reserved.
-//
-
 import XCTest
 @testable import Focus
 

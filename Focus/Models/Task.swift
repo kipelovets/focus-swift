@@ -1,11 +1,3 @@
-//
-//  Task.swift
-//  Focus
-//
-//  Created by Georgii Korshunov on 29/09/2019.
-//  Copyright © 2019 Georgii Korshunov. All rights reserved.
-//
-
 import Foundation
 
 struct Task: Hashable, Codable, Identifiable {
@@ -28,10 +20,18 @@ struct Tag: Hashable, Codable, Identifiable {
     var name: String
 }
 
+struct TaskSpace: Codable {
+    var tasks: [Task]
+    var projects: [Project]
+    var tags: [Tag]
+}
+
 final class TaskListState: ObservableObject {
     @Published var tasks: [Task]
     @Published private(set) var currentTaskIndex = 0
-    @Published var editing = false
+    @Published private(set) var editing: Bool = false
+    
+    private let repo: TaskSpaceRepository
     
     public var currentTask: Task? {
         get {
@@ -39,8 +39,9 @@ final class TaskListState: ObservableObject {
         }
     }
     
-    init(tasks: [Task]) {
-        self.tasks = tasks
+    init(repo: TaskSpaceRepository) {
+        self.repo = repo
+        self.tasks = repo.Load().tasks
     }
     
     public func next() {
@@ -67,6 +68,13 @@ final class TaskListState: ObservableObject {
         tasks.remove(at: currentTaskIndex)
         editing = false
         currentTaskIndex = [currentTaskIndex, tasks.count - 1].min()!
+    }
+    
+    public func toggleEditing() {
+        editing.toggle()
+        if (!editing) {
+            repo.Save(space: TaskSpace(tasks: tasks, projects: [], tags: []))
+        }
     }
 }
 

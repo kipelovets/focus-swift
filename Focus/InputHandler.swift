@@ -1,11 +1,3 @@
-//
-//  InputHandlingWindow.swift
-//  Focus
-//
-//  Created by Georgii Korshunov on 08/10/2019.
-//  Copyright © 2019 Georgii Korshunov. All rights reserved.
-//
-
 import Foundation
 import SwiftUI
 
@@ -49,7 +41,7 @@ class InputHandler {
         case .Space:
             taskList.tasks[taskList.currentTaskIndex].done.toggle()
         case .Tab:
-            taskList.editing.toggle()
+            taskList.toggleEditing()
         case .Enter:
             taskList.insertTask()
         case .Delete:

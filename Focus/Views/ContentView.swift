@@ -1,11 +1,3 @@
-//
-//  ContentView.swift
-//  Focus
-//
-//  Created by Georgii Korshunov on 28/09/2019.
-//  Copyright © 2019 Georgii Korshunov. All rights reserved.
-//
-
 import SwiftUI
 
 struct ContentView: View {
@@ -25,7 +17,9 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
+    private static let file = Bundle.main.url(forResource: "taskData.json", withExtension: nil)
+    
     static var previews: some View {
-        ContentView().environmentObject(TaskListState(tasks: taskData))
+        ContentView().environmentObject(TaskListState(repo: TaskSpaceRepository(filename: file!.path)))
     }
 }
