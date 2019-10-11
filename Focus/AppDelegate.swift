@@ -7,13 +7,13 @@ fileprivate var taskListState = TaskListState(repo: repo)
 var inputHandler = InputHandler(taskList: taskListState)
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate {    
     var window: InputHandlingWindow!
-
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Create the SwiftUI view that provides the window contents.
         let contentView = ContentView().environmentObject(taskListState)
-
+        
         // Create the window and set the content view. 
         window = InputHandlingWindow(
             contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
@@ -23,9 +23,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.setFrameAutosaveName("Main Window")
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.onNotification(_:)),
+            name: nil,
+            object: nil)
     }
-
-    func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
+    
+    @objc func onNotification(_ sender: NSNotification) {
+        if sender.name == NSNotification.Name("NSMenuWillSendActionNotification") {
+            if let x = sender.userInfo?["MenuItem"] as? NSMenuItem {
+                if x.title == "Quit Focus" {
+                    save()
+                }
+            }
+        }
+    }
+    
+    private func save() {
+        repo.Save(space: TaskSpace(tasks: taskListState.tasks, projects: [], tags: []))
     }
 }

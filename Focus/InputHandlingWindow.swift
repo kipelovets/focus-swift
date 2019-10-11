@@ -12,8 +12,8 @@ class InputHandlingWindow: NSWindow {
     }
     
     override func keyDown(with event: NSEvent) {
-        if let keyCode = KeyCode(rawValue: event.keyCode) {
-            inputHandler.keyDown(with: keyCode)
+        if let keyCode = Command(withKey: event.keyCode) {
+            inputHandler.send(keyCode)
         } else {
             print("Unknown key \(event.keyCode)")
         }

@@ -28,7 +28,7 @@ struct TaskSpace: Codable {
 
 final class TaskListState: ObservableObject {
     @Published var tasks: [Task]
-    @Published private(set) var currentTaskIndex = 0
+    @Published var currentTaskIndex = 0
     @Published private(set) var editing: Bool = false
     
     private let repo: TaskSpaceRepository

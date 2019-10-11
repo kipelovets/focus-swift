@@ -1,93 +1,5 @@
 import SwiftUI
 
-class CustomNSTextField: NSTextField {
-    override func keyUp(with event: NSEvent) {
-        if let keyCode = KeyCode(rawValue: event.keyCode) {
-            print("CustomNSTextField: \(keyCode)")
-        }
-        super.keyUp(with: event)
-    }
-}
-
-var firstResponder: NSTextField?
-
-struct CustomTextField: NSViewRepresentable {
-    class Coordinator: NSObject, NSTextFieldDelegate {
-        @Binding var text: String
-        weak var textField: CustomNSTextField? = nil
-        
-        var timesBecomeFirstResponder = 1
-        
-        init(text: Binding<String>) {
-            _text = text
-        }
-        
-        func textFieldDidChangeSelection(_ textField: NSTextField) {
-            print("Y: text '\(text)'")
-            text = textField.stringValue
-        }
-        
-        func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-            textField?.resignFirstResponder()
-            firstResponder?.resignFirstResponder()
-            if let keyCode = KeyCode(withCommand: commandSelector) {
-                if let t = textField?.stringValue {
-                    text = t
-                }
-                print("X: \(keyCode) $text '\(text)' _text '\(_text)' string value '\(textField?.stringValue)'")
-                inputHandler.keyDown(with: keyCode)
-                
-                return true
-            }
-            print("\(commandSelector)")
-            return false
-        }
-        
-        func controlTextDidBeginEditing(_ obj: Notification) {
-            print("begin editing")
-        }
-
-        func controlTextDidEndEditing(_ obj: Notification) {
-            if let t = textField?.stringValue {
-                text = t
-            }
-            print("end editing")
-        }
-
-        func controlTextDidChange(_ obj: Notification) {
-            print("change")
-        }
-    }
-    
-    @Binding var text: String
-    var isFirstResponder: Bool = false
-    
-    func makeNSView(context: NSViewRepresentableContext<CustomTextField>) -> NSTextField {
-        let textField = CustomNSTextField(frame: .zero)
-        context.coordinator.textField = textField
-        textField.delegate = context.coordinator
-        textField.becomeFirstResponder()
-        return textField
-    }
-    
-    func makeCoordinator() -> CustomTextField.Coordinator {
-        return Coordinator(text: $text)
-    }
-    
-    func updateNSView(_ uiView: NSTextField, context: NSViewRepresentableContext<CustomTextField>) {
-        if uiView.stringValue != text {
-            uiView.stringValue = text
-        }
-        
-        if isFirstResponder && context.coordinator.timesBecomeFirstResponder > 0  {
-            firstResponder = uiView
-            context.coordinator.timesBecomeFirstResponder -= 1
-            uiView.becomeFirstResponder()
-            print("FOCUS")
-        }
-    }
-}
-
 struct TaskRow: View {
     @EnvironmentObject var taskData: TaskListState
     var taskId: Int
@@ -128,7 +40,17 @@ struct TaskRow: View {
                     if editing {
                         CustomTextField(text: $taskData.tasks[taskIndex ?? 0].title, isFirstResponder: true)
                     } else {
-                        Text(taskData.tasks[taskIndex ?? 0].title)
+                        Button(action: {
+                            if self.taskData.currentTaskIndex != self.taskIndex {
+                                self.taskData.currentTaskIndex = self.taskIndex ?? 0
+                            }
+                            if !self.taskData.editing {
+                                inputHandler.send(.ToggleEditing)
+                            }
+                        }) {
+                            Text(taskData.tasks[taskIndex ?? 0].title)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
                 }
                 

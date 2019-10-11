@@ -1,13 +1,32 @@
 import Foundation
 import SwiftUI
 
-enum KeyCode: UInt16 {
-    case Down = 125
-    case Up = 126
-    case Space = 49
-    case Tab = 48
-    case Enter = 36
-    case Delete = 51
+enum Command {
+    case Down
+    case Up
+    case ToggleDone
+    case ToggleEditing
+    case AddTask
+    case DeleteTask
+    
+    init?(withKey code: UInt16) {
+        switch code {
+        case 125:
+            self = .Down
+        case 126:
+            self = .Up
+        case 49:
+            self = .ToggleDone
+        case 48:
+            self = .ToggleEditing
+        case 36:
+            self = .AddTask
+        case 51:
+            self = .DeleteTask
+        default:
+            return nil
+        }
+    }
     
     init?(withCommand commandSelector: Selector) {
         switch commandSelector {
@@ -16,9 +35,9 @@ enum KeyCode: UInt16 {
         case #selector(NSStandardKeyBindingResponding.moveUp(_:)):
             self = .Up
         case #selector(NSStandardKeyBindingResponding.insertNewline(_:)):
-            self = .Enter
+            self = .AddTask
         case #selector(NSStandardKeyBindingResponding.insertTab(_:)):
-            self = .Tab
+            self = .ToggleEditing
         default:
             return nil
         }
@@ -32,19 +51,19 @@ class InputHandler {
         self.taskList = taskList
     }
     
-    func keyDown(with keyCode: KeyCode) {
-        switch (keyCode) {
+    func send(_ command: Command) {
+        switch (command) {
         case .Down:
             taskList.next()
         case .Up:
             taskList.prev()
-        case .Space:
+        case .ToggleDone:
             taskList.tasks[taskList.currentTaskIndex].done.toggle()
-        case .Tab:
+        case .ToggleEditing:
             taskList.toggleEditing()
-        case .Enter:
+        case .AddTask:
             taskList.insertTask()
-        case .Delete:
+        case .DeleteTask:
             taskList.removeTask()
         }
     }
