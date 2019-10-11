@@ -41,6 +41,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    func applicationWillTerminate(_ notification: Notification) {
+        save()
+    }
+    
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        save()
+        return .terminateNow
+    }
+    
     private func save() {
         repo.Save(space: TaskSpace(tasks: taskListState.tasks, projects: [], tags: []))
     }
