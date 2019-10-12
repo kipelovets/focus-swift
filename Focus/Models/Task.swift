@@ -30,6 +30,7 @@ final class TaskListState: ObservableObject {
     @Published var tasks: [Task]
     @Published var currentTaskIndex = 0
     @Published private(set) var editing: Bool = false
+    @Published var dropTargetIndex: Int? = nil
     
     private let repo: TaskSpaceRepository
     

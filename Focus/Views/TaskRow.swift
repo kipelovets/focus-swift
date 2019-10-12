@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct TaskRow: View {
+    public static let HEIGHT: CGFloat = 30
+    
     @EnvironmentObject var taskData: TaskListState
     var taskId: Int
     var highlighted = false
@@ -12,7 +14,7 @@ struct TaskRow: View {
     
     var body: some View {
         HStack {
-            Color(highlighted ? .gray : .darkGray).frame(width: 8, height: 30)
+            Color(highlighted ? .gray : .darkGray).frame(width: 8, height: TaskRow.HEIGHT)
             Spacer().frame(width: 16, height: 20)
             HStack {
                 

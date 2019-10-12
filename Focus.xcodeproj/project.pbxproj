@@ -21,6 +21,8 @@
 		446CDCD9234FD922005EDEDE /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 446CDCD8234FD922005EDEDE /* checked.png */; };
 		44D7A70F23510C700093CDF2 /* InputHandlingWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A70E23510C700093CDF2 /* InputHandlingWindow.swift */; };
 		44D7A711235121B00093CDF2 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A710235121B00093CDF2 /* CustomTextField.swift */; };
+		44D7A7172351CD620093CDF2 /* DragAndDrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A7162351CD620093CDF2 /* DragAndDrop.swift */; };
+		44D7A719235248D70093CDF2 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A718235248D70093CDF2 /* Palette.swift */; };
 		44E153E6234D27180025C340 /* InputHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E153E5234D27180025C340 /* InputHandler.swift */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +66,8 @@
 		446CDCD8234FD922005EDEDE /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = "<group>"; };
 		44D7A70E23510C700093CDF2 /* InputHandlingWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputHandlingWindow.swift; sourceTree = "<group>"; };
 		44D7A710235121B00093CDF2 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		44D7A7162351CD620093CDF2 /* DragAndDrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragAndDrop.swift; sourceTree = "<group>"; };
+		44D7A718235248D70093CDF2 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		44E153E5234D27180025C340 /* InputHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -162,6 +166,7 @@
 			children = (
 				4436F21123410218007F1B7C /* Task.swift */,
 				4436F213234103AE007F1B7C /* DataProvider.swift */,
+				44D7A7162351CD620093CDF2 /* DragAndDrop.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -181,6 +186,7 @@
 				4400A198233FC708000C8862 /* ContentView.swift */,
 				4436F21823410A15007F1B7C /* TaskRow.swift */,
 				44D7A710235121B00093CDF2 /* CustomTextField.swift */,
+				44D7A718235248D70093CDF2 /* Palette.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -321,10 +327,12 @@
 			files = (
 				4436F21923410A15007F1B7C /* TaskRow.swift in Sources */,
 				44D7A70F23510C700093CDF2 /* InputHandlingWindow.swift in Sources */,
+				44D7A7172351CD620093CDF2 /* DragAndDrop.swift in Sources */,
 				44E153E6234D27180025C340 /* InputHandler.swift in Sources */,
 				4400A199233FC708000C8862 /* ContentView.swift in Sources */,
 				44D7A711235121B00093CDF2 /* CustomTextField.swift in Sources */,
 				4436F21223410218007F1B7C /* Task.swift in Sources */,
+				44D7A719235248D70093CDF2 /* Palette.swift in Sources */,
 				4436F214234103AE007F1B7C /* DataProvider.swift in Sources */,
 				4400A197233FC708000C8862 /* AppDelegate.swift in Sources */,
 			);
