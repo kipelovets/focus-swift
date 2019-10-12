@@ -11,9 +11,9 @@ enum Command {
     
     init?(withKey code: UInt16) {
         switch code {
-        case 125:
+        case 125, 38: // Down, j
             self = .Down
-        case 126:
+        case 126, 40: // Up, k
             self = .Up
         case 49:
             self = .ToggleDone
@@ -45,9 +45,9 @@ enum Command {
 }
 
 class InputHandler {
-    private let taskList: TaskListState
+    private let taskList: TaskList
     
-    init(taskList: TaskListState) {
+    init(taskList: TaskList) {
         self.taskList = taskList
     }
     

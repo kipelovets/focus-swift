@@ -14,8 +14,8 @@
 		4400A1A1233FC70A000C8862 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4400A19F233FC70A000C8862 /* Main.storyboard */; };
 		4400A1AD233FC70B000C8862 /* FocusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400A1AC233FC70B000C8862 /* FocusTests.swift */; };
 		4400A1B8233FC70B000C8862 /* FocusUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400A1B7233FC70B000C8862 /* FocusUITests.swift */; };
-		4436F21223410218007F1B7C /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436F21123410218007F1B7C /* Task.swift */; };
-		4436F214234103AE007F1B7C /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436F213234103AE007F1B7C /* DataProvider.swift */; };
+		4436F21223410218007F1B7C /* TaskDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436F21123410218007F1B7C /* TaskDto.swift */; };
+		4436F214234103AE007F1B7C /* TaskSpaceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436F213234103AE007F1B7C /* TaskSpaceRepository.swift */; };
 		4436F21723410417007F1B7C /* taskData.json in Resources */ = {isa = PBXBuildFile; fileRef = 4436F21623410417007F1B7C /* taskData.json */; };
 		4436F21923410A15007F1B7C /* TaskRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436F21823410A15007F1B7C /* TaskRow.swift */; };
 		446CDCD9234FD922005EDEDE /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 446CDCD8234FD922005EDEDE /* checked.png */; };
@@ -23,7 +23,9 @@
 		44D7A711235121B00093CDF2 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A710235121B00093CDF2 /* CustomTextField.swift */; };
 		44D7A7172351CD620093CDF2 /* DragAndDrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A7162351CD620093CDF2 /* DragAndDrop.swift */; };
 		44D7A719235248D70093CDF2 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A718235248D70093CDF2 /* Palette.swift */; };
+		44D7A71B23525EF70093CDF2 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A71A23525EF70093CDF2 /* Task.swift */; };
 		44E153E6234D27180025C340 /* InputHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E153E5234D27180025C340 /* InputHandler.swift */; };
+		6F50CDB8C592CB0ACF2E3029 /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F50C370B06729EE4DB9C899 /* TaskList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,8 +60,8 @@
 		4400A1B3233FC70B000C8862 /* FocusUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4400A1B7233FC70B000C8862 /* FocusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusUITests.swift; sourceTree = "<group>"; };
 		4400A1B9233FC70B000C8862 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4436F21123410218007F1B7C /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
-		4436F213234103AE007F1B7C /* DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
+		4436F21123410218007F1B7C /* TaskDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDto.swift; sourceTree = "<group>"; };
+		4436F213234103AE007F1B7C /* TaskSpaceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSpaceRepository.swift; sourceTree = "<group>"; };
 		4436F21623410417007F1B7C /* taskData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = taskData.json; sourceTree = "<group>"; };
 		4436F21823410A15007F1B7C /* TaskRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRow.swift; sourceTree = "<group>"; };
 		446CDCD4234FD7CA005EDEDE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -68,7 +70,9 @@
 		44D7A710235121B00093CDF2 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		44D7A7162351CD620093CDF2 /* DragAndDrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragAndDrop.swift; sourceTree = "<group>"; };
 		44D7A718235248D70093CDF2 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
+		44D7A71A23525EF70093CDF2 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		44E153E5234D27180025C340 /* InputHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputHandler.swift; sourceTree = "<group>"; };
+		6F50C370B06729EE4DB9C899 /* TaskList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,9 +168,11 @@
 		4436F210234101FE007F1B7C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				4436F21123410218007F1B7C /* Task.swift */,
-				4436F213234103AE007F1B7C /* DataProvider.swift */,
+				4436F21123410218007F1B7C /* TaskDto.swift */,
+				4436F213234103AE007F1B7C /* TaskSpaceRepository.swift */,
 				44D7A7162351CD620093CDF2 /* DragAndDrop.swift */,
+				44D7A71A23525EF70093CDF2 /* Task.swift */,
+				6F50C370B06729EE4DB9C899 /* TaskList.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -325,16 +331,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44D7A71B23525EF70093CDF2 /* Task.swift in Sources */,
 				4436F21923410A15007F1B7C /* TaskRow.swift in Sources */,
 				44D7A70F23510C700093CDF2 /* InputHandlingWindow.swift in Sources */,
 				44D7A7172351CD620093CDF2 /* DragAndDrop.swift in Sources */,
 				44E153E6234D27180025C340 /* InputHandler.swift in Sources */,
 				4400A199233FC708000C8862 /* ContentView.swift in Sources */,
 				44D7A711235121B00093CDF2 /* CustomTextField.swift in Sources */,
-				4436F21223410218007F1B7C /* Task.swift in Sources */,
+				4436F21223410218007F1B7C /* TaskDto.swift in Sources */,
 				44D7A719235248D70093CDF2 /* Palette.swift in Sources */,
-				4436F214234103AE007F1B7C /* DataProvider.swift in Sources */,
+				4436F214234103AE007F1B7C /* TaskSpaceRepository.swift in Sources */,
 				4400A197233FC708000C8862 /* AppDelegate.swift in Sources */,
+				6F50CDB8C592CB0ACF2E3029 /* TaskList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -3,7 +3,7 @@ import SwiftUI
 
 fileprivate let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
 fileprivate let repo = TaskSpaceRepository(filename: documentsPath + "/Main.focus")
-fileprivate var taskListState = TaskListState(repo: repo)
+fileprivate var taskListState = TaskList(repo: repo)
 var inputHandler = InputHandler(taskList: taskListState)
 
 @NSApplicationMain
@@ -12,7 +12,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView().environmentObject(taskListState)
+        let contentView = ContentView(taskList: taskListState).environmentObject(taskListState)
         
         // Create the window and set the content view. 
         window = InputHandlingWindow(
@@ -51,6 +51,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     private func save() {
-        repo.Save(space: TaskSpace(tasks: taskListState.tasks, projects: [], tags: []))
+        repo.Save(space: taskListState.space.dto)
     }
 }

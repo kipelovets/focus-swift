@@ -1,80 +1,139 @@
 import Foundation
 
-struct Task: Hashable, Codable, Identifiable {
+final class Task: Hashable, Identifiable, ObservableObject {
+    static func == (lhs: Task, rhs: Task) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     var id: Int
-    var title: String
-    var notes: String
+    @Published var title: String
+    @Published var notes: String = ""
     var createdAt: Date
-    var done: Bool
-    var projectId: Int?
-    var tagIds: [Int]
-}
+    @Published var dueAt: Date? = nil
+    @Published var done: Bool = false
+    @Published var project: Project? = nil
+    @Published var tags: [Tag] = []
+    @Published var children: [Task] = []
 
-struct Project: Hashable, Codable, Identifiable {
-    var id: Int
-    var name: String
-}
-
-struct Tag: Hashable, Codable, Identifiable {
-    var id: Int
-    var name: String
-}
-
-struct TaskSpace: Codable {
-    var tasks: [Task]
-    var projects: [Project]
-    var tags: [Tag]
-}
-
-final class TaskListState: ObservableObject {
-    @Published var tasks: [Task]
-    @Published var currentTaskIndex = 0
-    @Published private(set) var editing: Bool = false
-    @Published var dropTargetIndex: Int? = nil
-    
-    private let repo: TaskSpaceRepository
-    
-    public var currentTask: Task? {
+    var dto: TaskDto {
         get {
-            tasks[currentTaskIndex]
+            TaskDto(id: id, title: title, createdAt: createdAt, dueAt: dueAt, done: done, projectId: project?.id, tagIds: tags.map {$0.id})
         }
     }
     
-    init(repo: TaskSpaceRepository) {
-        self.repo = repo
-        self.tasks = repo.Load().tasks
+    init(id: Int, title: String) {
+        self.id = id
+        self.title = title
+        self.createdAt = Date()
     }
     
-    public func next() {
-        currentTaskIndex = (currentTaskIndex + 1) % tasks.count
+    init(from task: TaskDto) {
+        self.id = task.id
+        self.title = task.title
+        self.notes = task.notes
+        self.createdAt = task.createdAt
+        self.dueAt = task.dueAt
+        self.done = task.done
+    }
+}
+
+final class Project: Identifiable {
+    var id: Int
+    var title: String
+
+    var dto: ProjectDto {
+        get {
+            ProjectDto(id: id, title: title)
+        }
+    }
+
+    init(id: Int, title: String) {
+        self.id = id
+        self.title = title
     }
     
-    public func prev() {
-        currentTaskIndex = max(currentTaskIndex - 1, 0)
+    init(from project: ProjectDto) {
+        self.id = project.id
+        self.title = project.title
+    }
+}
+
+final class Tag: Identifiable {
+    var id: Int
+    var title: String
+
+    var dto: TagDto {
+        get {
+            TagDto(id: id, title: title)
+        }
     }
     
-    public func taskIndex(for id: Int) -> Int? {
-        return tasks.firstIndex { $0.id == id }
+    init(id: Int, title: String) {
+        self.id = id
+        self.title = title
     }
     
-    public func insertTask() {
-        let id: Int = 1 + (tasks.map({ $0.id }).max() ?? 0)
-        let newTask = Task(id: id, title: "", notes: "", createdAt: Date(), done: false, projectId: nil, tagIds: [])
-        currentTaskIndex = tasks.count == 0 ? 0 : currentTaskIndex + 1
-        tasks.insert(newTask, at: currentTaskIndex)
-        editing = true
+    init(from tag: TagDto) {
+        self.id = tag.id
+        self.title = tag.title
+    }
+}
+
+final class TaskSpace {
+    var tasks: [Task]
+    var projects: [Project]
+    var tags: [Tag]
+    
+    var dto: TaskSpaceDto {
+        get {
+            var taskDtos: [TaskDto] = tasks.map { $0.dto }
+
+            var parentTasks = tasks
+            while parentTasks.count > 0 {
+                var newParentTasks: [Task] = []
+                parentTasks.forEach { parentTask in
+                    parentTask.children.forEach { task in
+                        taskDtos.append(task.dto)
+                        if task.children.count > 0 {
+                            newParentTasks.append(task)
+                        }
+                    }
+                }
+                parentTasks = newParentTasks
+            }
+
+            return TaskSpaceDto(tasks: taskDtos, projects: projects.map {$0.dto}, tags: tags.map {$0.dto})
+        }
+    }
+
+    init(tasks: [Task], projects: [Project], tags: [Tag]) {
+        self.tasks = tasks
+        self.projects = projects
+        self.tags = tags
     }
     
-    public func removeTask() {
-        tasks.remove(at: currentTaskIndex)
-        editing = false
-        currentTaskIndex = [currentTaskIndex, tasks.count - 1].min()!
-    }
-    
-    public func toggleEditing() {
-        editing.toggle()
-        if (!editing) {
-            repo.Save(space: TaskSpace(tasks: tasks, projects: [], tags: []))
+    init(from space: TaskSpaceDto) {
+        self.tags = space.tags.map { Tag(from: $0) }
+        self.projects = space.projects.map { Project(from: $0) }
+        
+        self.tasks = []
+        let allTasks = space.tasks.map { Task(from: $0) }
+        for task in allTasks {
+            let t = space.tasks.first(where: { $0.id == task.id })!
+            if t.parentTaskId != nil {
+                let p = allTasks.first(where: { $0.id == t.parentTaskId })!
+                p.children.append(task)
+            } else {
+                self.tasks.append(task)
+            }
+            if t.projectId != nil {
+                let p = self.projects.first(where: { $0.id == t.projectId })!
+                task.project = p
+            }
         }
     }
 }

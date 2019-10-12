@@ -2,9 +2,9 @@ import Foundation
 import SwiftUI
 
 final class TaskDragData: NSObject, Codable, NSItemProviderReading, NSItemProviderWriting {
-    var task: Task
-    
-    init(task:Task) {
+    var task: TaskDto
+
+    init(task: TaskDto) {
         self.task = task
     }
     
@@ -51,9 +51,9 @@ typealias FindTaskIndexByHeight = (_ height: CGFloat) -> Int
 
 class TaskDragDelegate: DropDelegate {
     let taskIndexByHeight: FindTaskIndexByHeight
-    let taskList: TaskListState
+    let taskList: TaskList
     
-    init(taskIndexByHeight: @escaping FindTaskIndexByHeight, taskList: TaskListState) {
+    init(taskIndexByHeight: @escaping FindTaskIndexByHeight, taskList: TaskList) {
         self.taskIndexByHeight = taskIndexByHeight
         self.taskList = taskList
     }
@@ -67,7 +67,7 @@ class TaskDragDelegate: DropDelegate {
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
         taskList.dropTargetIndex = self.dropTargetIndex(height: info.location.y)
-        
+
         return DropProposal(operation: .move)
     }
     

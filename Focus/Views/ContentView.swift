@@ -18,19 +18,19 @@ struct DropIndicator: View {
 
 struct ContentView: View {
     
-    @EnvironmentObject var taskList: TaskListState
+    @ObservedObject var taskList: TaskList
     
     var body: some View {
         
         VStack(alignment: .leading, spacing: 0) {
             ForEach(taskList.tasks) { task in
-                TaskRow(taskId: task.id, highlighted: task == self.taskList.currentTask, editing: task == self.taskList.currentTask && self.taskList.editing)
-                .onDrag { () -> NSItemProvider in
-                    self.taskList.currentTaskIndex = self.taskList.taskIndex(for: task.id)!
-                    
-                    return NSItemProvider(object: TaskDragData(task:task))
-                }
-                .overlay(DropIndicator(visible: self.taskList.taskIndex(for: task.id)! + 1 == self.taskList.dropTargetIndex), alignment: .bottomLeading)
+                TaskRow(task: task).environmentObject(self.taskList)
+                            .onDrag { () -> NSItemProvider in
+                                self.taskList.currentTaskIndex = self.taskList.taskIndex(for: task.id)!
+
+                                return NSItemProvider(object: TaskDragData(task: task.dto))
+                            }
+                .overlay(DropIndicator(visible: self.taskList.isDropTarget(task)) , alignment: .bottomLeading)
             }
         }
         .overlay(DropIndicator(visible: self.taskList.dropTargetIndex == 0), alignment: .topLeading)
@@ -46,8 +46,10 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     private static let file = Bundle.main.url(forResource: "taskData.json", withExtension: nil)
+    private static let repo = TaskSpaceRepository(filename: file!.path)
+    private static let taskList = TaskList(repo: repo)
     
     static var previews: some View {
-        ContentView().environmentObject(TaskListState(repo: TaskSpaceRepository(filename: file!.path)))
+        ContentView(taskList: taskList).environmentObject(taskList)
     }
 }

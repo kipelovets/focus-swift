@@ -7,10 +7,10 @@ class TaskSpaceRepository {
         self.filename = filename
     }
     
-    public func Load() -> TaskSpace {
+    public func Load() -> TaskSpaceDto {
         let url = NSURL(fileURLWithPath: filename)
         
-        let emptySpace = TaskSpace(tasks: [], projects: [], tags: [])
+        let emptySpace = TaskSpaceDto(tasks: [], projects: [], tags: [])
         
         guard let filePath = url.path else {
             return emptySpace
@@ -23,7 +23,7 @@ class TaskSpaceRepository {
         return load(filename) ?? emptySpace
     }
     
-    public func Save(space: TaskSpace) {
+    public func Save(space: TaskSpaceDto) {
         save(filename, value: space)
     }
 }
