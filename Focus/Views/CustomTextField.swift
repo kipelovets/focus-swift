@@ -2,7 +2,7 @@ import SwiftUI
 
 class CustomNSTextField: NSTextField {
     override func keyUp(with event: NSEvent) {
-        if let keyCode = Command(withKey: event.keyCode) {
+        if let keyCode = Command(withEvent: event) {
             print("CustomNSTextField: \(keyCode)")
         }
         super.keyUp(with: event)

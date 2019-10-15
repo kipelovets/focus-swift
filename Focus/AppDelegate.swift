@@ -2,7 +2,7 @@ import Cocoa
 import SwiftUI
 
 fileprivate let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-fileprivate let repo = TaskSpaceRepository(filename: documentsPath + "/Main.focus")
+fileprivate let repo = TaskSpaceRepositoryFile(filename: documentsPath + "/Main.focus")
 fileprivate var taskListState = TaskList(repo: repo)
 var inputHandler = InputHandler(taskList: taskListState)
 

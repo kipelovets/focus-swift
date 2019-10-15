@@ -1,36 +1,41 @@
 import Foundation
 
+
 final class Task: Hashable, Identifiable, ObservableObject {
     static func == (lhs: Task, rhs: Task) -> Bool {
-        return lhs.id == rhs.id
+        lhs.id == rhs.id
     }
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-    
+
     var id: Int
-    @Published var title: String
-    @Published var notes: String = ""
+    var title: String
+    var notes: String = ""
     var createdAt: Date
-    @Published var dueAt: Date? = nil
-    @Published var done: Bool = false
-    @Published var project: Project? = nil
-    @Published var tags: [Tag] = []
-    @Published var children: [Task] = []
+    var dueAt: Date? = nil
+    var done: Bool = false
+    var project: Project? = nil
+    var tagPositions: [TaskTagPosition] = []
+    var children: [Task] = [] 
+    var parent: Task? = nil
+    var position = 0
 
     var dto: TaskDto {
         get {
-            TaskDto(id: id, title: title, createdAt: createdAt, dueAt: dueAt, done: done, projectId: project?.id, tagIds: tags.map {$0.id})
+            TaskDto(id: id, title: title, createdAt: createdAt, dueAt: dueAt, done: done, projectId: project?.id, tagPositions: tagPositions.map {$0.dto}, position: position)
         }
     }
-    
-    init(id: Int, title: String) {
+
+    init(id: Int, title: String, children: [Task] = []) {
         self.id = id
         self.title = title
+        self.children = children
         self.createdAt = Date()
+        self.children.forEach {$0.parent = self}
     }
-    
+
     init(from task: TaskDto) {
         self.id = task.id
         self.title = task.title
@@ -39,9 +44,14 @@ final class Task: Hashable, Identifiable, ObservableObject {
         self.dueAt = task.dueAt
         self.done = task.done
     }
+
+    public func add(child task: Task) {
+        children.append(task)
+        task.parent = self
+    }
 }
 
-final class Project: Identifiable {
+final class Project: Equatable, Identifiable {
     var id: Int
     var title: String
 
@@ -55,14 +65,18 @@ final class Project: Identifiable {
         self.id = id
         self.title = title
     }
-    
+
     init(from project: ProjectDto) {
         self.id = project.id
         self.title = project.title
     }
+
+    static func == (lhs: Project, rhs: Project) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
-final class Tag: Identifiable {
+final class Tag: Equatable, Identifiable {
     var id: Int
     var title: String
 
@@ -71,15 +85,35 @@ final class Tag: Identifiable {
             TagDto(id: id, title: title)
         }
     }
-    
+
     init(id: Int, title: String) {
         self.id = id
         self.title = title
     }
-    
+
     init(from tag: TagDto) {
         self.id = tag.id
         self.title = tag.title
+    }
+
+    static func == (lhs: Tag, rhs: Tag) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+final class TaskTagPosition {
+    var tag: Tag
+    var position: Int
+
+    var dto: TaskTagPositionDto {
+        get {
+            TaskTagPositionDto(tagId: tag.id, position: position)
+        }
+    }
+
+    init(with tag: Tag, position: Int) {
+        self.tag = tag
+        self.position = position
     }
 }
 
@@ -87,7 +121,7 @@ final class TaskSpace {
     var tasks: [Task]
     var projects: [Project]
     var tags: [Tag]
-    
+
     var dto: TaskSpaceDto {
         get {
             var taskDtos: [TaskDto] = tasks.map { $0.dto }
@@ -97,7 +131,9 @@ final class TaskSpace {
                 var newParentTasks: [Task] = []
                 parentTasks.forEach { parentTask in
                     parentTask.children.forEach { task in
-                        taskDtos.append(task.dto)
+                        var dto = task.dto
+                        dto.parentTaskId = parentTask.id
+                        taskDtos.append(dto)
                         if task.children.count > 0 {
                             newParentTasks.append(task)
                         }
@@ -115,25 +151,32 @@ final class TaskSpace {
         self.projects = projects
         self.tags = tags
     }
-    
+
     init(from space: TaskSpaceDto) {
         self.tags = space.tags.map { Tag(from: $0) }
         self.projects = space.projects.map { Project(from: $0) }
-        
-        self.tasks = []
-        let allTasks = space.tasks.map { Task(from: $0) }
-        for task in allTasks {
+
+        self.tasks = space.tasks.map { Task(from: $0) }
+        for task in self.tasks {
             let t = space.tasks.first(where: { $0.id == task.id })!
             if t.parentTaskId != nil {
-                let p = allTasks.first(where: { $0.id == t.parentTaskId })!
-                p.children.append(task)
-            } else {
-                self.tasks.append(task)
+                let p = self.tasks.first(where: { $0.id == t.parentTaskId })!
+                p.add(child: task)
             }
             if t.projectId != nil {
                 let p = self.projects.first(where: { $0.id == t.projectId })!
                 task.project = p
             }
+            for tagPos in t.tagPositions {
+                let tag = self.tags.first(where: { $0.id == tagPos.tagId })!
+                task.tagPositions.append(TaskTagPosition(with: tag, position: tagPos.position))
+            }
+        }
+    }
+    
+    var nextId: Int {
+        get {
+            return 1 + (tasks.map { $0.id }.max() ?? 0)
         }
     }
 }

@@ -1,6 +1,11 @@
 import Foundation
 
-class TaskSpaceRepository {
+protocol TaskSpaceRepository {
+    func Load() -> TaskSpaceDto
+    func Save(space: TaskSpaceDto)
+}
+
+class TaskSpaceRepositoryFile: TaskSpaceRepository {
     private let filename: String
     
     init(filename: String) {

@@ -34,5 +34,15 @@
         "done": false,
         "projectId": null,
         "tagIds": []
+    },
+    {
+        "id": 5,
+        "title": "Task hierarchy",
+        "notes": "",
+        "createdAt": "2019-01-01T00:00:00+0000",
+        "done": false,
+        "projectId": null,
+        "tagIds": [],
+        "parentTaskId": 4
     }
 ]

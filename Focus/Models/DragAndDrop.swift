@@ -76,14 +76,14 @@ class TaskDragDelegate: DropDelegate {
     }
     
     func performDrop(info: DropInfo) -> Bool {
-        var index = self.dropTargetIndex(height: info.location.y)
-        if index > taskList.currentTaskIndex {
-            index -= 1
-        }
-        if taskList.currentTaskIndex != index {
-            taskList.tasks.insert(taskList.tasks.remove(at:taskList.currentTaskIndex), at: index)
-        }
-        taskList.dropTargetIndex = nil
+//        var index = self.dropTargetIndex(height: info.location.y)
+//        if index > taskList.currentTaskIndex {
+//            index -= 1
+//        }
+//        if taskList.currentTaskIndex != index {
+//            taskList.tasks.insert(taskList.tasks.remove(at:taskList.currentTaskIndex), at: index)
+//        }
+//        taskList.dropTargetIndex = nil
         
         return true
     }

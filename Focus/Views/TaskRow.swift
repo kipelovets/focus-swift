@@ -51,7 +51,7 @@ struct TaskRow: View {
 
 struct TaskRow_Previews: PreviewProvider {
     private static let file = Bundle.main.url(forResource: "taskData.json", withExtension: nil)
-    private static let repo = TaskSpaceRepository(filename: file!.path)
+    private static let repo = TaskSpaceRepositoryFile(filename: file!.path)
     @State private static var taskList = TaskList(repo: repo)
 
     static var previews: some View {

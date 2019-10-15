@@ -24,9 +24,9 @@ struct ContentView: View {
         
         VStack(alignment: .leading, spacing: 0) {
             ForEach(taskList.tasks) { task in
-                TaskRow(task: task).environmentObject(self.taskList)
+                TaskTreeView(task: task).environmentObject(self.taskList)
                             .onDrag { () -> NSItemProvider in
-                                self.taskList.currentTaskIndex = self.taskList.taskIndex(for: task.id)!
+                                self.taskList.currentTaskId = self.taskList.taskIndex(for: task.id)!
 
                                 return NSItemProvider(object: TaskDragData(task: task.dto))
                             }
@@ -46,7 +46,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     private static let file = Bundle.main.url(forResource: "taskData.json", withExtension: nil)
-    private static let repo = TaskSpaceRepository(filename: file!.path)
+    private static let repo = TaskSpaceRepositoryFile(filename: file!.path)
     private static let taskList = TaskList(repo: repo)
     
     static var previews: some View {

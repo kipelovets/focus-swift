@@ -8,9 +8,11 @@ enum Command {
     case ToggleEditing
     case AddTask
     case DeleteTask
+    case Indent
+    case Unindent
     
-    init?(withKey code: UInt16) {
-        switch code {
+    init?(withEvent event: NSEvent) {
+        switch event.keyCode {
         case 125, 38: // Down, j
             self = .Down
         case 126, 40: // Up, k
@@ -23,6 +25,18 @@ enum Command {
             self = .AddTask
         case 51:
             self = .DeleteTask
+        case 30:
+            if event.modifierFlags.contains(.command) && event.modifierFlags.contains(.shift) {
+                self = .Indent
+            } else {
+                return nil
+            }
+        case 33:
+            if event.modifierFlags.contains(.command) && event.modifierFlags.contains(.shift) {
+                self = .Unindent
+            } else {
+                return nil
+            }
         default:
             return nil
         }
@@ -58,13 +72,18 @@ class InputHandler {
         case .Up:
             taskList.prev()
         case .ToggleDone:
-            taskList.tasks[taskList.currentTaskIndex].done.toggle()
+            taskList.currentTask?.done.toggle()
         case .ToggleEditing:
             taskList.toggleEditing()
         case .AddTask:
             taskList.insertTask()
         case .DeleteTask:
             taskList.removeTask()
+        case .Indent:
+            taskList.indent()
+        case .Unindent:
+            taskList.unindent()
         }
+
     }
 }

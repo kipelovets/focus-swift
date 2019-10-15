@@ -12,10 +12,10 @@ class InputHandlingWindow: NSWindow {
     }
     
     override func keyDown(with event: NSEvent) {
-        if let keyCode = Command(withKey: event.keyCode) {
+        if let keyCode = Command(withEvent: event) {
             inputHandler.send(keyCode)
         } else {
-            print("Unknown key \(event.keyCode)")
+            print("Unknown key \(event)")
         }
     }
     
