@@ -1,6 +1,5 @@
 import Foundation
 
-
 final class Task: Hashable, Identifiable, ObservableObject {
     static func == (lhs: Task, rhs: Task) -> Bool {
         lhs.id == rhs.id

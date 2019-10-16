@@ -15,7 +15,7 @@ enum TaskFilter {
         case .Project(let project):
             return task.project == project && task.parent == nil
         case .Due(let date):
-            guard let taskDueAt = task.dueAt else {
+            guard task.dueAt != nil else {
                 return false
             }
             let dateFormatter = DateFormatter()
@@ -116,10 +116,11 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
         }
     }
 
-    private let model: Task?
+    public let model: Task?
 
     init(from model:Task, filter: TaskFilter, parent: TaskTreeNode) {
         self.id = model.id
+        self.model = model
         self.title = model.title
         self.notes = model.notes
         self.createdAt = model.createdAt
@@ -128,13 +129,13 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
         self.project = model.project
         self.tagPositions = model.tagPositions
         self.position = model.position
+        let children = model.children
         self.children = []
         self.parent = parent
-        self.model = model
         
         switch (filter) {
         case .Inbox, .Project:
-            self.children = model.children.map({ TaskTreeNode(from: $0, filter: filter, parent: self) })
+            self.children = children.map({ TaskTreeNode(from: $0, filter: filter, parent: self) })
         default:
             self.children = []
         }
@@ -144,13 +145,11 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
         self.id = -1
         self.title = "_root"
         self.createdAt = Date()
-        self.children = []
         self.model = nil
+        self.children = []
         
         self.children = tasks.map({ TaskTreeNode(from: $0, filter: filter, parent: self) })
     }
-
-    // TODO: drop support
     
     var preceding: TaskTreeNode? {
         get {
@@ -160,6 +159,23 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
     
     var succeeding: TaskTreeNode? {
         get {
+            if self.children.count > 0 {
+                return self.children.first
+            }
+            
+            if parent == nil {
+                return nil
+            }
+            
+            var t = self
+            while t.parent != nil {
+                let index = t.parent!.children.firstIndex(of: t)!
+                if t.parent!.children.count > index + 1 {
+                    return t.parent!.children[index + 1]
+                }
+                t = t.parent!
+            }
+            
             return nil
         }
     }
@@ -225,5 +241,13 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
         children = []
         node.children.append(contentsOf: myChildren)
         myChildren.forEach { $0.parent = node }
+    }
+    
+    func moveUp() {
+        
+    }
+    
+    func moveDown() {
+        
     }
 }
