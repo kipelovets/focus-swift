@@ -2,7 +2,7 @@ import XCTest
 @testable import Focus
 
 class TaskTreeTests: XCTestCase {
-    func testInit() {
+    func prepareTree() -> ([T], TaskTree) {
         let taskStubs: [T] = [
             T(1, [
                 T(2, [
@@ -20,6 +20,13 @@ class TaskTreeTests: XCTestCase {
         let tasks: [Task] = buildTasks(from: taskStubs)
         let space = TaskSpace(tasks: tasks, projects: [], tags: [])
         let inbox = TaskTree(from: space, with: .Inbox)
+        
+        return (taskStubs, inbox)
+    }
+    
+    func testInit() {
+        let (taskStubs, inbox) = prepareTree()
+        
         let newStubs = buildStubs(from: inbox.root.children.map { $0.model! })
 
         XCTAssertEqual(taskStubs, newStubs)
@@ -33,6 +40,10 @@ class TaskTreeTests: XCTestCase {
         XCTAssertEqual(2, inbox.root.children.first?.children.first?.id)
         XCTAssertEqual(3, inbox.root.children.first?.children.first?.children.first?.id)
         XCTAssertEqual(4, inbox.root.children.first?.children.first?.children.first?.children.first?.id)
+    }
+    
+    func testNth() {
+        let (_, inbox) = prepareTree()
         
         XCTAssertEqual(1, inbox.nth(0)?.id)
         XCTAssertEqual(2, inbox.nth(1)?.id)

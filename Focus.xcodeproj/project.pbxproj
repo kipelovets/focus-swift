@@ -20,6 +20,7 @@
 		4436F21723410417007F1B7C /* taskData.json in Resources */ = {isa = PBXBuildFile; fileRef = 4436F21623410417007F1B7C /* taskData.json */; };
 		4436F21923410A15007F1B7C /* TaskRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436F21823410A15007F1B7C /* TaskRow.swift */; };
 		44456B572353273E00934231 /* TaskTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44456B562353273E00934231 /* TaskTreeView.swift */; };
+		444C027A2358E49400451D8E /* TaskFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444C02792358E49400451D8E /* TaskFilterTests.swift */; };
 		44583D202357A3C100E66EA9 /* TaskTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44583D1F2357A3C100E66EA9 /* TaskTreeTests.swift */; };
 		44583D222357A9B500E66EA9 /* TaskStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44583D212357A9B500E66EA9 /* TaskStub.swift */; };
 		446CDCD9234FD922005EDEDE /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 446CDCD8234FD922005EDEDE /* checked.png */; };
@@ -72,6 +73,7 @@
 		4436F21623410417007F1B7C /* taskData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = taskData.json; sourceTree = "<group>"; };
 		4436F21823410A15007F1B7C /* TaskRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRow.swift; sourceTree = "<group>"; };
 		44456B562353273E00934231 /* TaskTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTreeView.swift; sourceTree = "<group>"; };
+		444C02792358E49400451D8E /* TaskFilterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskFilterTests.swift; sourceTree = "<group>"; };
 		44583D1F2357A3C100E66EA9 /* TaskTreeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTreeTests.swift; sourceTree = "<group>"; };
 		44583D212357A9B500E66EA9 /* TaskStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStub.swift; sourceTree = "<group>"; };
 		446CDCD4234FD7CA005EDEDE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				6F50C93A55786C3A4D4DC466 /* TaskTests.swift */,
 				44583D1F2357A3C100E66EA9 /* TaskTreeTests.swift */,
 				44583D212357A9B500E66EA9 /* TaskStub.swift */,
+				444C02792358E49400451D8E /* TaskFilterTests.swift */,
 			);
 			path = FocusTests;
 			sourceTree = "<group>";
@@ -371,6 +374,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				444C027A2358E49400451D8E /* TaskFilterTests.swift in Sources */,
 				44583D202357A3C100E66EA9 /* TaskTreeTests.swift in Sources */,
 				4400A1AD233FC70B000C8862 /* FocusTests.swift in Sources */,
 				44583D222357A9B500E66EA9 /* TaskStub.swift in Sources */,

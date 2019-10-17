@@ -25,6 +25,17 @@ enum TaskFilter {
             return dateFormatter.string(from: date) == dateFormatter.string(from: task.dueAt!)
         }
     }
+    
+    var allowsHierarchy: Bool {
+        get {
+            switch (self) {
+            case .Inbox, .Project(_):
+                return true
+            default:
+                return false
+            }
+        }
+    }
 }
 
 class TaskTree {
