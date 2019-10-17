@@ -38,9 +38,26 @@ enum TaskFilter {
     }
 }
 
+fileprivate func flattenTree(root: TaskTreeNode) -> [TaskTreeNode] {
+    var nodes = root.children
+    var parents = nodes
+    while parents.count != 0 {
+        var newParents: [TaskTreeNode] = []
+        for parent in parents {
+            newParents += parent.children
+        }
+        nodes += newParents
+        parents = newParents
+    }
+    
+    return nodes
+}
+
 class TaskTree {
     let filter: TaskFilter
     let root: TaskTreeNode
+    
+    private let originalTasks: [Task]
 
     init(from space: TaskSpace, with filter: TaskFilter) {
         let tasks = space.tasks.filter({ filter.accepts(task: $0) })
@@ -48,6 +65,7 @@ class TaskTree {
         
         self.root = root
         self.filter = filter
+        self.originalTasks = flattenTree(root: root).map { $0.model! }
     }
 
     func nth(_ n: Int) -> TaskTreeNode? {
@@ -61,8 +79,42 @@ class TaskTree {
         return node
     }
     
+    var flatten: [TaskTreeNode] {
+        get {
+            return flattenTree(root: self.root)
+        }
+    }
+    
     func commit(to space: TaskSpace) {
-        // TODO: implement
+        let currentTasks = flatten.map { $0.model! }
+        
+        for task in currentTasks {
+            if !originalTasks.contains(task) {
+                space.tasks.append(task)
+            }
+        }
+        
+        for task in originalTasks {
+            if !currentTasks.contains(task) {
+                space.tasks.remove(at: space.tasks.firstIndex(of: task)!)
+            }
+        }
+    }
+    
+    func find(by id: Int) -> TaskTreeNode? {
+        var tasks = root.children
+        while tasks.count > 0 {
+            var newTasks: [TaskTreeNode] = []
+            for task in tasks {
+                if task.id == id {
+                    return task
+                }
+                newTasks += task.children
+            }
+            tasks = newTasks
+        }
+        
+        return nil
     }
 }
 
@@ -154,9 +206,9 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
     
     init(rootFor tasks: [Task], with filter: TaskFilter) {
         self.id = -1
+        self.model = Task(id: -1, title: "_root")
         self.title = "_root"
         self.createdAt = Date()
-        self.model = nil
         self.children = []
         
         self.children = tasks.map({ TaskTreeNode(from: $0, filter: filter, parent: self) })
@@ -164,7 +216,21 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
     
     var preceding: TaskTreeNode? {
         get {
-            return nil
+            guard parent != nil else {
+                return nil
+            }
+            
+            let myIndex = parent!.children.firstIndex(of: self)!
+            if myIndex == 0 {
+                return parent
+            }
+            
+            var node: TaskTreeNode? = parent!.children[myIndex - 1]
+            while node!.children.count > 0 {
+                node = node?.children.last
+            }
+            
+            return node
         }
     }
     
@@ -208,7 +274,15 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
         guard let index = self.children.firstIndex(of: after) else {
             return
         }
-        self.add(child: node, at: index)
+        self.add(child: node, at: index + 1)
+    }
+    
+    func insert(sibling node: TaskTreeNode) {
+        self.parent?.add(child: node, after: self)
+        let myChildren = children
+        children = []
+        node.children.append(contentsOf: myChildren)
+        myChildren.forEach { $0.parent = node }
     }
     
     var precedingSibling: TaskTreeNode? {
@@ -238,20 +312,13 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
             return
         }
         
+        let oldParent = parent!
         let myPosition = parent!.children.firstIndex(of: self)!
         parent!.parent!.add(child: self, after: parent!)
-        let newChildren = parent!.children[myPosition...]
-        parent!.children.removeSubrange(myPosition...)
+        let newChildren = oldParent.children[myPosition...]
+        oldParent.children.removeSubrange(myPosition...)
         self.children.append(contentsOf: newChildren)
         newChildren.forEach { $0.parent = self }
-    }
-    
-    func add(sibling node: TaskTreeNode) {
-        self.parent?.add(child: node, after: self)
-        let myChildren = children
-        children = []
-        node.children.append(contentsOf: myChildren)
-        myChildren.forEach { $0.parent = node }
     }
     
     func moveUp() {

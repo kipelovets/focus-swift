@@ -55,4 +55,12 @@ class TaskTreeTests: XCTestCase {
         XCTAssertEqual(8, inbox.nth(7)?.id)
         XCTAssertEqual(nil, inbox.nth(8))
     }
+    
+    func testFind() {
+        let (_, inbox) = prepareTree()
+        
+        XCTAssertNotNil(inbox.find(by: 1))
+        XCTAssertNotNil(inbox.find(by: 5))
+        XCTAssertNil(inbox.find(by: 10))
+    }
 }

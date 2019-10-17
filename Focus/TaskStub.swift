@@ -1,6 +1,27 @@
 import Foundation
 @testable import Focus
 
+extension TaskTree {
+    var stubs: [T] {
+        get {
+            buildStubs(from: root.children.map { $0.model! })
+        }
+    }
+}
+
+extension TaskTreeNode {
+    var treeStubs: [T] {
+        get {
+            var root = self
+            while root.id != -1 {
+                root = root.parent!
+            }
+            
+            return buildStubs(from: root.children.map { $0.model! })
+        }
+    }
+}
+
 class T: Equatable {
     static func == (lhs: T, rhs: T) -> Bool {
         lhs.id == rhs.id
@@ -39,6 +60,9 @@ func buildStubs(from tasks: [Task]) -> [T] {
 }
 
 func dump(_ stubs: [T], offset: Int = 0) {
+    if offset == 0 {
+        print("------- tree dump")
+    }
     stubs.forEach {
         print(String(repeating: "\t", count: offset) + "task \($0.id)")
         dump($0.children, offset: offset + 1)
