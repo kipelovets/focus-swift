@@ -311,4 +311,111 @@ class TaskTreeNodeTests: XCTestCase {
         inbox.find(by: 7)!.outdent()
         XCTAssertEqual(stubs, inbox.stubs)
     }
+    
+    func testMoveUp() {
+        var (stubs, inbox) = prepareTree()
+        
+        inbox.find(by: 1)!.moveUp()
+        XCTAssertEqual(stubs, inbox.stubs)
+        
+        var expectedStubs: [T] = [
+            T(2, [
+                T(3, [
+                    T(4, []),
+                    T(5, [])
+                ]),
+                T(6, [])
+            ]),
+            T(1, []),
+            T(7, []),
+            T(8, [])
+        ]
+        inbox.find(by: 2)!.moveUp()
+        XCTAssertEqual(expectedStubs, inbox.stubs)
+        
+        (_, inbox) = prepareTree()
+        expectedStubs = [
+            T(1, [
+                T(3, [
+                    T(4, []),
+                    T(5, [])
+                ]),
+                T(2, [
+                    T(6, [])
+                ])
+            ]),
+            T(7, []),
+            T(8, [])
+        ]
+        inbox.find(by: 3)!.moveUp()
+        XCTAssertEqual(expectedStubs, inbox.stubs)
+        
+        (_, inbox) = prepareTree()
+        expectedStubs = [
+            T(1, [
+                T(2, [
+                    T(4, []),
+                    T(3, [
+                        T(5, [])
+                    ]),
+                    T(6, [])
+                ])
+            ]),
+            T(7, []),
+            T(8, [])
+        ]
+        inbox.find(by: 4)!.moveUp()
+        XCTAssertEqual(expectedStubs, inbox.stubs)
+        
+        (_, inbox) = prepareTree()
+        expectedStubs = [
+            T(1, [
+                T(2, [
+                    T(3, [
+                        T(5, []),
+                        T(4, [])
+                    ]),
+                    T(6, [])
+                ])
+            ]),
+            T(7, []),
+            T(8, [])
+        ]
+        inbox.find(by: 5)!.moveUp()
+        XCTAssertEqual(expectedStubs, inbox.stubs)
+        
+        (_, inbox) = prepareTree()
+        expectedStubs = [
+            T(1, [
+                T(2, [
+                    T(6, []),
+                    T(3, [
+                        T(4, []),
+                        T(5, [])
+                    ])
+                ])
+            ]),
+            T(7, []),
+            T(8, [])
+        ]
+        inbox.find(by: 6)!.moveUp()
+        XCTAssertEqual(expectedStubs, inbox.stubs)
+        
+        (_, inbox) = prepareTree()
+        expectedStubs = [
+            T(7, []),
+            T(1, [
+                T(2, [
+                    T(3, [
+                        T(4, []),
+                        T(5, [])
+                    ]),
+                    T(6, [])
+                ])
+            ]),
+            T(8, [])
+        ]
+        inbox.find(by: 7)!.moveUp()
+        XCTAssertEqual(expectedStubs, inbox.stubs)
+    }
 }

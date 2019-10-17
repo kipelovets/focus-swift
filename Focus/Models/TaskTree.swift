@@ -322,7 +322,19 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
     }
     
     func moveUp() {
-        
+        guard parent != nil else {
+            return
+        }
+        let myIndex = parent!.children.firstIndex(of: self)!
+        if myIndex > 0 {
+            parent!.add(child: self, at: myIndex - 1)
+        } else {
+            guard parent!.parent != nil else {
+                return
+            }
+            let parentIndex = parent!.parent!.children.firstIndex(of: parent!)!
+            parent!.parent!.add(child: self, at: parentIndex)
+        }
     }
     
     func moveDown() {

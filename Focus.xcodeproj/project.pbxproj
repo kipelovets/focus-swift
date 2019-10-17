@@ -151,7 +151,6 @@
 				44E153E5234D27180025C340 /* InputHandler.swift */,
 				446CDCD4234FD7CA005EDEDE /* README.md */,
 				44D7A70E23510C700093CDF2 /* InputHandlingWindow.swift */,
-				44583D212357A9B500E66EA9 /* TaskStub.swift */,
 			);
 			path = Focus;
 			sourceTree = "<group>";
@@ -167,6 +166,7 @@
 		4400A1AB233FC70B000C8862 /* FocusTests */ = {
 			isa = PBXGroup;
 			children = (
+				44583D212357A9B500E66EA9 /* TaskStub.swift */,
 				4400A1AC233FC70B000C8862 /* FocusTests.swift */,
 				4400A1AE233FC70B000C8862 /* Info.plist */,
 				6F50C93A55786C3A4D4DC466 /* TaskTests.swift */,
