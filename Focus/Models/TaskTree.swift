@@ -180,6 +180,14 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
     }
 
     public let model: Task?
+    
+    var indexInParent: Int {
+        parent!.children.firstIndex(of: self)!
+    }
+    
+    var isRoot: Bool {
+        parent == nil
+    }
 
     init(from model:Task, filter: TaskFilter, parent: TaskTreeNode) {
         self.id = model.id
@@ -322,22 +330,32 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
     }
     
     func moveUp() {
-        guard parent != nil else {
+        guard !isRoot else {
             return
         }
-        let myIndex = parent!.children.firstIndex(of: self)!
-        if myIndex > 0 {
-            parent!.add(child: self, at: myIndex - 1)
-        } else {
-            guard parent!.parent != nil else {
-                return
-            }
-            let parentIndex = parent!.parent!.children.firstIndex(of: parent!)!
-            parent!.parent!.add(child: self, at: parentIndex)
+        let indexInParent = self.indexInParent
+        if indexInParent != 0 {
+            parent!.add(child: self, at: indexInParent - 1)
+            return
         }
+        if parent!.isRoot {
+            return
+        }
+        parent!.parent!.add(child: self, at: indexInParent)
     }
     
     func moveDown() {
-        
+        guard !isRoot else {
+            return
+        }
+        let indexInParent = self.indexInParent
+        if indexInParent < parent!.children.count - 1 {
+            parent!.add(child: self, at: indexInParent + 1)
+            return
+        }
+        if parent!.isRoot {
+            return
+        }
+        parent!.parent!.add(child: self, after: parent!)
     }
 }

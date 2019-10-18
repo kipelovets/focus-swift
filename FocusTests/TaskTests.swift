@@ -23,18 +23,18 @@ class TaskSpaceTests: XCTestCase {
     }
 
     func testInit() {      
-        let taskStubs: [T] = [
-            T(1, [
-                T(2, [
-                    T(3, [
-                        T(4, []),
-                        T(5, [])
+        let taskStubs: [N] = [
+            N(1, [
+                N(2, [
+                    N(3, [
+                        N(4, []),
+                        N(5, [])
                     ]),
-                    T(6, [])
+                    N(6, [])
                 ])
             ]),
-            T(7, []),
-            T(8, [])
+            N(7, []),
+            N(8, [])
         ]
         
         let tasks: [Task] = buildTasks(from: taskStubs)

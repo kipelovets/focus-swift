@@ -2,7 +2,7 @@ import Foundation
 @testable import Focus
 
 extension TaskTree {
-    var stubs: [T] {
+    var stubs: [N] {
         get {
             buildStubs(from: root.children.map { $0.model! })
         }
@@ -10,7 +10,7 @@ extension TaskTree {
 }
 
 extension TaskTreeNode {
-    var treeStubs: [T] {
+    var treeStubs: [N] {
         get {
             var root = self
             while root.id != -1 {
@@ -22,24 +22,24 @@ extension TaskTreeNode {
     }
 }
 
-class T: Equatable {
-    static func == (lhs: T, rhs: T) -> Bool {
+class N: Equatable {
+    static func == (lhs: N, rhs: N) -> Bool {
         lhs.id == rhs.id
     }
     
     let id: Int
-    let children: [T]
-    init(_ id: Int, _ children: [T]) {
+    let children: [N]
+    init(_ id: Int, _ children: [N]) {
         self.id = id
         self.children = children
     }
 }
 
-fileprivate func buildTasksTree(from stubs: [T]) -> [Task] {
+fileprivate func buildTasksTree(from stubs: [N]) -> [Task] {
     stubs.map { Task(id: $0.id, title: "task \($0.id)", children: buildTasksTree(from: $0.children)) }
 }
 
-func buildTasks(from stubs: [T]) -> [Task] {
+func buildTasks(from stubs: [N]) -> [Task] {
     let tree = buildTasksTree(from: stubs)
     var tasks = tree
     var parents = tree
@@ -55,11 +55,11 @@ func buildTasks(from stubs: [T]) -> [Task] {
     return tasks
 }
 
-func buildStubs(from tasks: [Task]) -> [T] {
-    tasks.map { T($0.id, buildStubs(from: $0.children)) }
+func buildStubs(from tasks: [Task]) -> [N] {
+    tasks.map { N($0.id, buildStubs(from: $0.children)) }
 }
 
-func dump(_ stubs: [T], offset: Int = 0) {
+func dump(_ stubs: [N], offset: Int = 0) {
     if offset == 0 {
         print("------- tree dump")
     }
