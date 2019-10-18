@@ -5,7 +5,7 @@ struct TaskTreeView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            TaskRow(task: task)
+            TaskRowView(task: task)
             if task.children.count > 0 {
                 HStack {
                     Spacer().frame(width: 15, height: 20)

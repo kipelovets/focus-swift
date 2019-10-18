@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct TaskRow: View {
+struct TaskRowView: View {
     public static let HEIGHT: CGFloat = 30
 
     @EnvironmentObject var perspective: Perspective
@@ -8,7 +8,7 @@ struct TaskRow: View {
 
     var body: some View {
         HStack {
-            Color(perspective.current == task ? .gray : .darkGray).frame(width: 8, height: TaskRow.HEIGHT)
+            Color(perspective.current == task ? .gray : .darkGray).frame(width: 8, height: TaskRowView.HEIGHT)
             Spacer().frame(width: 16, height: 20)
             HStack {
 
@@ -56,9 +56,9 @@ struct TaskRow_Previews: PreviewProvider {
 
     static var previews: some View {
         Group {
-            TaskRow(task: perspective.tree.root.children[0])
-            TaskRow(task: perspective.tree.root.children[1])
-            TaskRow(task: perspective.tree.root.children[2])
+            TaskRowView(task: perspective.tree.root.children[0])
+            TaskRowView(task: perspective.tree.root.children[1])
+            TaskRowView(task: perspective.tree.root.children[2])
         }.environmentObject(perspective)
     }
 }

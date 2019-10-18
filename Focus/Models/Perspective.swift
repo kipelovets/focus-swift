@@ -1,12 +1,13 @@
 import Foundation
+import Combine
 
 class Perspective: ObservableObject {
     let tree: TaskTree
-    var current: TaskTreeNode? = nil
-    var dropTarget: TaskTreeNode? = nil
+    @Published var current: TaskTreeNode? = nil
+    @Published var dropTarget: TaskTreeNode? = nil
     let space: TaskSpace
     
-    var editMode: Bool = false {
+    @Published var editMode: Bool = false {
         didSet {
             if editMode {
                 return
@@ -33,7 +34,7 @@ class Perspective: ObservableObject {
             return
         }
         
-        self.current = current.preceding ?? current
+        self.current = current.succeeding ?? current
     }
     
     func prev() {
@@ -42,7 +43,7 @@ class Perspective: ObservableObject {
             return
         }
         
-        self.current = current.succeeding ?? current
+        self.current = current.preceding ?? current
         if self.current == self.tree.root {
             self.current = current
         }
@@ -53,11 +54,15 @@ class Perspective: ObservableObject {
             return
         }
         
+        self.current = current.succeeding ?? current.preceding
         current.parent?.remove(child: current)
         editMode = false
     }
     
     func insert() {
+        if editMode {
+            editMode = false
+        }
         let newTask = Task(id: self.space.nextId, title: "")
         let child = TaskTreeNode(from: newTask, filter: self.filter, parent: current ?? self.tree.root)
         if let current = self.current {
@@ -70,7 +75,7 @@ class Perspective: ObservableObject {
             self.tree.root.add(child: child, at: 0)
         }
         self.current = child
-        editMode = false
+        editMode = true
     }
     
     func edit(node: TaskTreeNode) {
@@ -84,6 +89,7 @@ class Perspective: ObservableObject {
         }
         
         current.indent()
+        objectWillChange.send()
     }
     
     func outdent() {
@@ -96,5 +102,6 @@ class Perspective: ObservableObject {
         }
         
         current.outdent()
+        objectWillChange.send()
     }
 }

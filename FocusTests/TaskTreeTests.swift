@@ -78,7 +78,7 @@ class TaskTreeTests: XCTestCase {
         inbox.find(by: 8)?.add(child: TaskTreeNode(from: Task(9)), at: 0)
         inbox.commit(to: space)
         
-        let expectedStubs: [N] = [
+        var expectedStubs: [N] = [
             N(1, [
                 N(2, [
                     N(6, [])
@@ -89,7 +89,20 @@ class TaskTreeTests: XCTestCase {
                 N(9, [])
             ])
         ]
-        inbox = TaskTree(from: space, with: .Inbox)
-        XCTAssertEqual(expectedStubs, inbox.nodeStubs)
+        XCTAssertEqual(expectedStubs, TaskTree(from: space, with: .Inbox).nodeStubs)
+        
+        inbox.root.remove(child: inbox.find(by: 7)!)
+        inbox.commit(to: space)
+        expectedStubs = [
+            N(1, [
+                N(2, [
+                    N(6, [])
+                ])
+            ]),
+            N(8, [
+                N(9, [])
+            ])
+        ]
+        XCTAssertEqual(expectedStubs, TaskTree(from: space, with: .Inbox).nodeStubs)
     }
 }

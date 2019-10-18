@@ -80,7 +80,7 @@ class InputHandler {
         case .DeleteTask:
             perspective.remove()
         case .Indent:
-            perspective.insert()
+            perspective.indent()
         case .Outdent:
             perspective.outdent()
         }

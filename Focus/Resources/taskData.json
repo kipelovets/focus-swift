@@ -1,48 +1,57 @@
-[
-    {
-        "id": 1,
-        "title": "Focus on editing field",
-        "notes": "",
-        "createdAt": "2019-01-01T00:00:00+0000",
-        "done": true,
-        "projectId": null,
-        "tagIds": []
-    },
-    {
-        "id": 2,
-        "title": "Saving value after losing focus",
-        "notes": "",
-        "createdAt": "2019-01-01T00:00:00+0000",
-        "done": false,
-        "projectId": null,
-        "tagIds": []
-    },
-    {
-        "id": 3,
-        "title": "Click to cancel editing",
-        "notes": "",
-        "createdAt": "2019-01-01T00:00:00+0000",
-        "done": false,
-        "projectId": null,
-        "tagIds": []
-    },
-    {
-        "id": 4,
-        "title": "Task hierarchy",
-        "notes": "",
-        "createdAt": "2019-01-01T00:00:00+0000",
-        "done": false,
-        "projectId": null,
-        "tagIds": []
-    },
-    {
-        "id": 5,
-        "title": "Task hierarchy",
-        "notes": "",
-        "createdAt": "2019-01-01T00:00:00+0000",
-        "done": false,
-        "projectId": null,
-        "tagIds": [],
-        "parentTaskId": 4
-    }
-]
+{
+    "tasks": [
+        {
+            "id": 1,
+            "title": "Focus on editing field",
+            "notes": "",
+            "createdAt": "2019-01-01T00:00:00+0000",
+            "done": true,
+            "projectId": null,
+            "tagPositions": [],
+            "position": 0
+        },
+        {
+            "id": 2,
+            "title": "Saving value after losing focus",
+            "notes": "",
+            "createdAt": "2019-01-01T00:00:00+0000",
+            "done": false,
+            "projectId": null,
+            "tagPositions": [],
+            "position": 0
+        },
+        {
+            "id": 3,
+            "title": "Click to cancel editing",
+            "notes": "",
+            "createdAt": "2019-01-01T00:00:00+0000",
+            "done": false,
+            "projectId": null,
+            "tagPositions": [],
+            "position": 0
+        },
+        {
+            "id": 4,
+            "title": "Task hierarchy",
+            "notes": "",
+            "createdAt": "2019-01-01T00:00:00+0000",
+            "done": false,
+            "projectId": null,
+            "tagPositions": [],
+            "position": 0
+        },
+        {
+            "id": 5,
+            "title": "Task hierarchy",
+            "notes": "",
+            "createdAt": "2019-01-01T00:00:00+0000",
+            "done": false,
+            "projectId": null,
+            "tagPositions": [],
+            "position": 0,
+            "parentTaskId": 4
+        }
+    ],
+    "projects": [],
+    "tags": []
+}

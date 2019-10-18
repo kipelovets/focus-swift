@@ -60,7 +60,7 @@ class TaskTree {
     let filter: TaskFilter
     let root: TaskTreeNode
     
-    private let originalTasks: [Task]
+    private var originalTasks: [Task]
 
     init(from space: TaskSpace, with filter: TaskFilter) {
         let tasks = space.tasks.filter({ filter.accepts(task: $0) })
@@ -102,6 +102,7 @@ class TaskTree {
                 space.tasks.remove(at: space.tasks.firstIndex(of: task)!)
             }
         }
+        originalTasks = flattenTree(root: root).map { $0.model! }
     }
     
     func find(by id: Int) -> TaskTreeNode? {
