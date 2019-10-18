@@ -3,12 +3,12 @@ import SwiftUI
 struct TaskRow: View {
     public static let HEIGHT: CGFloat = 30
 
-    @EnvironmentObject var taskData: TaskList
-    @ObservedObject var task: Task
+    @EnvironmentObject var perspective: Perspective
+    @ObservedObject var task: TaskTreeNode
 
     var body: some View {
         HStack {
-            Color(taskData.currentTask == task ? .gray : .darkGray).frame(width: 8, height: TaskRow.HEIGHT)
+            Color(perspective.current == task ? .gray : .darkGray).frame(width: 8, height: TaskRow.HEIGHT)
             Spacer().frame(width: 16, height: 20)
             HStack {
 
@@ -30,11 +30,11 @@ struct TaskRow: View {
                 }
                 .buttonStyle(PlainButtonStyle())
 
-                if taskData.editing && taskData.currentTask == task {
+                if perspective.editMode && perspective.current == task {
                     CustomTextField(text: $task.title, isFirstResponder: true)
                 } else {
                     Button(action: {
-                        self.taskData.edit(task: self.task)
+                        self.perspective.edit(node: self.task)
                     }) {
                         Text(task.title)
                     }
@@ -43,7 +43,7 @@ struct TaskRow: View {
 
             }.padding(5)
         }
-        .border(Color(.gray), width: taskData.currentTask == task ? 2 : 0)
+        .border(Color(.gray), width: perspective.current == task ? 2 : 0)
         .background(Color(white: 0.2))
     }
 
@@ -52,13 +52,13 @@ struct TaskRow: View {
 struct TaskRow_Previews: PreviewProvider {
     private static let file = Bundle.main.url(forResource: "taskData.json", withExtension: nil)
     private static let repo = TaskSpaceRepositoryFile(filename: file!.path)
-    @State private static var taskList = TaskList(repo: repo)
+    private static var perspective = Perspective(from: repo, with: .Inbox)
 
     static var previews: some View {
         Group {
-            TaskRow(task: taskList.tasks[0])
-            TaskRow(task: taskList.tasks[1])
-            TaskRow(task: taskList.tasks[2])
-        }.environmentObject(taskList)
+            TaskRow(task: perspective.tree.root.children[0])
+            TaskRow(task: perspective.tree.root.children[1])
+            TaskRow(task: perspective.tree.root.children[2])
+        }.environmentObject(perspective)
     }
 }

@@ -9,7 +9,7 @@ enum Command {
     case AddTask
     case DeleteTask
     case Indent
-    case Unindent
+    case Outdent
     
     init?(withEvent event: NSEvent) {
         switch event.keyCode {
@@ -33,7 +33,7 @@ enum Command {
             }
         case 33:
             if event.modifierFlags.contains(.command) && event.modifierFlags.contains(.shift) {
-                self = .Unindent
+                self = .Outdent
             } else {
                 return nil
             }
@@ -59,31 +59,30 @@ enum Command {
 }
 
 class InputHandler {
-    private let taskList: TaskList
+    private let perspective: Perspective
     
-    init(taskList: TaskList) {
-        self.taskList = taskList
+    init(perspective: Perspective) {
+        self.perspective = perspective
     }
     
     func send(_ command: Command) {
         switch (command) {
         case .Down:
-            taskList.next()
+            perspective.next()
         case .Up:
-            taskList.prev()
+            perspective.prev()
         case .ToggleDone:
-            taskList.currentTask?.done.toggle()
+            perspective.current?.done.toggle()
         case .ToggleEditing:
-            taskList.toggleEditing()
+            perspective.editMode.toggle()
         case .AddTask:
-            taskList.insertTask()
+            perspective.insert()
         case .DeleteTask:
-            taskList.removeTask()
+            perspective.remove()
         case .Indent:
-            taskList.indent()
-        case .Unindent:
-            taskList.unindent()
+            perspective.insert()
+        case .Outdent:
+            perspective.outdent()
         }
-
     }
 }

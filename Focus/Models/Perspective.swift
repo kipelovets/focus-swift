@@ -1,9 +1,9 @@
 import Foundation
 
-class Perspective {
+class Perspective: ObservableObject {
     let tree: TaskTree
     var current: TaskTreeNode? = nil
-    let dropTarget: TaskTreeNode? = nil
+    var dropTarget: TaskTreeNode? = nil
     let space: TaskSpace
     
     var editMode: Bool = false {

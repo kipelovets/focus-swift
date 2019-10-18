@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TaskTreeView: View {
-    @ObservedObject var task: Task
+    @ObservedObject var task: TaskTreeNode
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -20,9 +20,9 @@ struct TaskTreeView: View {
 struct TaskTree_Previews: PreviewProvider {
     private static let file = Bundle.main.url(forResource: "taskData.json", withExtension: nil)
     private static let repo = TaskSpaceRepositoryFile(filename: file!.path)
-    private static var taskList = TaskList(repo: repo)
+    private static var taskList = Perspective(from: repo, with: .Inbox)
     
     static var previews: some View {
-        TaskTreeView(task: taskList.tasks.first!).environmentObject(taskList)
+        TaskTreeView(task: taskList.tree.root.children.first!).environmentObject(taskList)
     }
 }

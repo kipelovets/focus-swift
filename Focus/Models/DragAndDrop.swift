@@ -51,9 +51,9 @@ typealias FindTaskIndexByHeight = (_ height: CGFloat) -> Int
 
 class TaskDragDelegate: DropDelegate {
     let taskIndexByHeight: FindTaskIndexByHeight
-    let taskList: TaskList
+    let taskList: Perspective
     
-    init(taskIndexByHeight: @escaping FindTaskIndexByHeight, taskList: TaskList) {
+    init(taskIndexByHeight: @escaping FindTaskIndexByHeight, taskList: Perspective) {
         self.taskIndexByHeight = taskIndexByHeight
         self.taskList = taskList
     }
@@ -66,13 +66,13 @@ class TaskDragDelegate: DropDelegate {
     }
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
-        taskList.dropTargetIndex = self.dropTargetIndex(height: info.location.y)
+        taskList.dropTarget = taskList.tree.nth(self.dropTargetIndex(height: info.location.y))
 
         return DropProposal(operation: .move)
     }
     
     func dropExited(info: DropInfo) {
-        taskList.dropTargetIndex = nil
+        taskList.dropTarget = nil
     }
     
     func performDrop(info: DropInfo) -> Bool {
@@ -89,6 +89,6 @@ class TaskDragDelegate: DropDelegate {
     }
     
     private func dropTargetIndex(height: CGFloat) -> Int {
-        return min(taskIndexByHeight(height), taskList.tasks.count)
+        return taskIndexByHeight(height)
     }
 }

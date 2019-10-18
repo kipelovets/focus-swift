@@ -16,30 +16,30 @@ struct DropIndicator: View {
     }
 }
 
-struct ContentView: View {
+struct PerspectiveView: View {
     
-    @ObservedObject var taskList: TaskList
+    @ObservedObject var perspective: Perspective
     
     var body: some View {
         
         VStack(alignment: .leading, spacing: 0) {
-            ForEach(taskList.tasks) { task in
-                TaskTreeView(task: task).environmentObject(self.taskList)
+            ForEach(perspective.tree.root.children) { task in
+                TaskTreeView(task: task).environmentObject(self.perspective)
                             .onDrag { () -> NSItemProvider in
-                                self.taskList.currentTaskId = self.taskList.taskIndex(for: task.id)!
+                                self.perspective.current = task
 
-                                return NSItemProvider(object: TaskDragData(task: task.dto))
+                                return NSItemProvider(object: TaskDragData(task: task.model!.dto))
                             }
-                .overlay(DropIndicator(visible: self.taskList.isDropTarget(task)) , alignment: .bottomLeading)
+                .overlay(DropIndicator(visible: self.perspective.dropTarget == task) , alignment: .bottomLeading)
             }
         }
-        .overlay(DropIndicator(visible: self.taskList.dropTargetIndex == 0), alignment: .topLeading)
+        .overlay(DropIndicator(visible: self.perspective.dropTarget == nil), alignment: .topLeading)
         .frame(minWidth: 400, maxWidth: .infinity, minHeight: 300, maxHeight: .infinity, alignment: .topLeading)
         .padding(LIST_PADDING)
         .onDrop(of: TaskDragData.idTypes, delegate: TaskDragDelegate(taskIndexByHeight: { height in
             let dropIndex = Int(((height - LIST_PADDING) / TaskRow.HEIGHT).rounded(.down))
             return dropIndex
-        }, taskList: self.taskList))
+        }, taskList: self.perspective))
         
     }
 }
@@ -47,9 +47,9 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     private static let file = Bundle.main.url(forResource: "taskData.json", withExtension: nil)
     private static let repo = TaskSpaceRepositoryFile(filename: file!.path)
-    private static let taskList = TaskList(repo: repo)
+    private static let taskList = Perspective(from: repo, with: .Inbox)
     
     static var previews: some View {
-        ContentView(taskList: taskList).environmentObject(taskList)
+        PerspectiveView(perspective: taskList).environmentObject(taskList)
     }
 }
