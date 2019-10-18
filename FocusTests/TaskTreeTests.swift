@@ -27,7 +27,7 @@ class TaskTreeTests: XCTestCase {
     func testInit() {
         let (taskStubs, inbox) = prepareTree()
         
-        let newStubs = buildStubs(from: inbox.root.children.map { $0.model! })
+        let newStubs = buildNodeStubs(from: inbox.root.children.map { $0.model! })
 
         XCTAssertEqual(taskStubs, newStubs)
         
