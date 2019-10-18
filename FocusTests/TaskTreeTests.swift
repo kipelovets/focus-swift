@@ -2,7 +2,7 @@ import XCTest
 @testable import Focus
 
 class TaskTreeTests: XCTestCase {
-    func prepareTree() -> ([N], TaskTree) {
+    func prepareSpace() -> ([N], TaskSpace) {
         let taskStubs: [N] = [
             N(1, [
                 N(2, [
@@ -19,6 +19,12 @@ class TaskTreeTests: XCTestCase {
         
         let tasks: [Task] = buildTasks(from: taskStubs)
         let space = TaskSpace(tasks: tasks, projects: [], tags: [])
+        
+        return (taskStubs, space)
+    }
+    
+    func prepareTree() -> ([N], TaskTree) {
+        let (taskStubs, space) = prepareSpace()
         let inbox = TaskTree(from: space, with: .Inbox)
         
         return (taskStubs, inbox)
@@ -62,5 +68,28 @@ class TaskTreeTests: XCTestCase {
         XCTAssertNotNil(inbox.find(by: 1))
         XCTAssertNotNil(inbox.find(by: 5))
         XCTAssertNil(inbox.find(by: 10))
+    }
+    
+    func testCommit() {
+        let (_, space) = prepareSpace()
+        var inbox = TaskTree(from: space, with: .Inbox)
+        
+        inbox.find(by: 2)?.remove(child: inbox.find(by: 3)!)
+        inbox.find(by: 8)?.add(child: TaskTreeNode(from: Task(9)), at: 0)
+        inbox.commit(to: space)
+        
+        let expectedStubs: [N] = [
+            N(1, [
+                N(2, [
+                    N(6, [])
+                ])
+            ]),
+            N(7, []),
+            N(8, [
+                N(9, [])
+            ])
+        ]
+        inbox = TaskTree(from: space, with: .Inbox)
+        XCTAssertEqual(expectedStubs, inbox.nodeStubs)
     }
 }

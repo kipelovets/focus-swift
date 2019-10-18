@@ -22,9 +22,17 @@ extension TaskTreeNode {
     }
 }
 
-class N: Equatable {
+class N: Equatable, CustomDebugStringConvertible {
     static func == (lhs: N, rhs: N) -> Bool {
-        lhs.id == rhs.id
+        lhs.id == rhs.id && lhs.children == rhs.children
+    }
+    
+    var debugDescription: String {
+        var desc = "\(id)"
+        if children.count > 0 {
+            desc += " <\(children)>"
+        }
+        return desc
     }
     
     let id: Int
@@ -68,4 +76,3 @@ func dumpNodes(_ stubs: [N], offset: Int = 0) {
         dumpNodes($0.children, offset: offset + 1)
     }
 }
-

@@ -1,6 +1,7 @@
 import Foundation
 
 enum TaskFilter {
+    case All
     case Inbox
     case Tag(Tag)
     case Project(Project)
@@ -8,6 +9,8 @@ enum TaskFilter {
 
     func accepts(task: Task) -> Bool {
         switch (self) {
+        case .All:
+            return true
         case .Inbox:
             return task.parent == nil && task.project == nil
         case .Tag(let tag):
@@ -189,7 +192,7 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
         parent == nil
     }
 
-    init(from model:Task, filter: TaskFilter, parent: TaskTreeNode) {
+    init(from model:Task, filter: TaskFilter, parent: TaskTreeNode?) {
         self.id = model.id
         self.model = model
         self.title = model.title
@@ -210,6 +213,10 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
         default:
             self.children = []
         }
+    }
+    
+    convenience init(from model: Task) {
+        self.init(from: model, filter: .All, parent: nil)
     }
     
     init(rootFor tasks: [Task], with filter: TaskFilter) {

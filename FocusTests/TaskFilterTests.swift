@@ -17,9 +17,11 @@ class TaskFilterTests: XCTestCase {
         let tags = [Tag(id: 1, title: ""), Tag(id: 2, title: "")]
         let parentTask = Task(1)
         
+        let now = Calendar.current.date(bySettingHour: 1, minute: 00, second: 0, of: Date())!
+        
         let tasks: [Task] = [
             parentTask,
-            Task(2, project, [], nil, Calendar.current.date(byAdding: .hour, value: 25, to: Date())!),
+            Task(2, project, [], nil, now),
             Task(3, project, [TaskTagPosition(with: tags[0], position: 0)]),
             Task(4, nil, [TaskTagPosition(with: tags[0], position: 0), TaskTagPosition(with: tags[1], position: 0)]),
             Task(5, project, [TaskTagPosition(with: tags[1], position: 0)], parentTask)
@@ -30,7 +32,7 @@ class TaskFilterTests: XCTestCase {
             (TaskFilter.Project(project), [2, 3]),
             (TaskFilter.Tag(tags[0]), [3, 4]),
             (TaskFilter.Tag(tags[1]), [4, 5]),
-            (TaskFilter.Due(Calendar.current.date(byAdding: .day, value: 1, to: Date())!), [2]),
+            (TaskFilter.Due(Date()), [2]),
         ]
         
         for (filter, expectedIds) in filters {

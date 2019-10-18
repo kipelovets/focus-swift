@@ -108,9 +108,9 @@ class TaskTreeNodeTests: XCTestCase {
         
         let expectedStubs: [N] = [
             N(1, [
-                N(2, [
-                    N(3, []),
-                    N(7, [
+                N(2, []),
+                N(7, [
+                    N(3, [
                         N(4, []),
                         N(5, [])
                     ]),
@@ -214,7 +214,6 @@ class TaskTreeNodeTests: XCTestCase {
             ])
         ]
         inbox.find(by: 8)!.indent()
-        dumpNodes(inbox.nodeStubs)
         XCTAssertEqual(newStubs, inbox.nodeStubs)
     }
     
@@ -237,7 +236,6 @@ class TaskTreeNodeTests: XCTestCase {
             N(8, [])
         ]
         inbox.find(by: 2)!.outdent()
-        dumpNodes(inbox.nodeStubs)
         XCTAssertEqual(expectedStubs, inbox.nodeStubs)
         
         (_, inbox) = prepareTree()
@@ -246,9 +244,9 @@ class TaskTreeNodeTests: XCTestCase {
                 N(2, []),
                 N(3, [
                     N(4, []),
-                    N(5, [])
+                    N(5, []),
+                    N(6, [])
                 ]),
-                N(6, [])
             ]),
             N(7, []),
             N(8, [])
@@ -456,7 +454,6 @@ class TaskTreeNodeTests: XCTestCase {
             N(8, [])
         ]
         inbox.find(by: 6)!.moveDown()
-        dumpNodes(inbox.nodeStubs)
         XCTAssertEqual(expectedStubs, inbox.nodeStubs)
         
         (_, inbox) = prepareTree()

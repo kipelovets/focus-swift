@@ -1,10 +1,6 @@
 import XCTest
 @testable import Focus
 
-class TaskTests: XCTestCase {
-    
-}
-
 class TaskSpaceTests: XCTestCase {
     class TaskSpaceRepositoryMemory: TaskSpaceRepository {
         let space: TaskSpace
