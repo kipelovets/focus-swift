@@ -5,7 +5,32 @@ class Perspective: ObservableObject {
     let tree: TaskTree
     @Published var current: TaskTreeNode? = nil
     @Published var dropTarget: TaskTreeNode? = nil
-    var dropDepth = 0
+    var dropDepth: Int = 0 {
+        didSet {
+            guard let target = dropTarget else {
+                return
+            }
+            let targetDepth = target.depth
+            
+            let maxDepth = targetDepth + 1
+            var minDepth = maxDepth
+            
+            if target.children.count == 0 {
+                minDepth = targetDepth
+            }
+            
+            var node: TaskTreeNode? = target
+            while node != nil && node?.isRoot != true {
+                if node?.isLastChild != true {
+                    break
+                }
+                minDepth -= 1
+                node = node?.parent
+            }
+            
+            dropDepth = min(maxDepth, max(minDepth, dropDepth))
+        }
+    }
     let space: TaskSpace
     
     @Published var editMode: Bool = false {
@@ -122,21 +147,40 @@ class Perspective: ObservableObject {
             save()
             return
         }
-
-        if dropDepth == target.depth + 1 {
-            target.parent?.add(child: current, after: target)
-        } else if dropDepth == target.depth {
-            target.insert(sibling: current)
+        
+        if target == current && dropDepth >= target.depth {
+            return
         }
+        var p: TaskTreeNode? = target.parent
+        while p?.isRoot != true {
+            if p == current {
+                return
+            }
+            p = p?.parent
+        }
+
+        if dropDepth > target.depth {
+            target.add(child: current, at: 0)
+            save()
+            return
+        }
+        var sibling: TaskTreeNode? = target
+        let steps = target.depth - dropDepth
+        if steps > 0 {
+            for _ in 0..<steps {
+                sibling = sibling?.parent
+            }
+        }
+        guard sibling != nil else {
+            return
+        }
+        sibling!.insert(sibling: current)
+        
         save()
     }
 
     private func save() {
-        print("Before commit")
-        dumpTree(node: tree.root)
         tree.commit(to: space)
-        print("After commit")
-        dumpTree(node: tree.root)
         repo.Save(space: space.dto)
     }
 }

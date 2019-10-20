@@ -70,8 +70,12 @@ class TaskDragDelegate: DropDelegate {
         guard let target = perspective.dropTarget else {
             return DropProposal(operation: .move)
         }
-        perspective.dropDepth = Int(((info.location.x - CGFloat(target.depth) * 30) / 30).rounded(.down))
-        print("\(target.depth) -- \(perspective.dropDepth)")
+        let targetDepth = target.depth
+        var dropDepth = max(0, Int(((info.location.x - CGFloat(targetDepth) * 30) / 30).rounded(.down)))
+        if dropDepth > targetDepth + 1 {
+            dropDepth = targetDepth + 1
+        }
+        perspective.dropDepth = dropDepth
 
         return DropProposal(operation: .move)
     }

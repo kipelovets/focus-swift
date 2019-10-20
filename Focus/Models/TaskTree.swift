@@ -210,7 +210,10 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
     public let model: Task?
     
     var indexInParent: Int {
-        parent!.children.firstIndex(of: self)!
+        if parent == nil {
+            return 0
+        }
+        return parent!.children.firstIndex(of: self)!
     }
     
     var isRoot: Bool {
@@ -222,6 +225,13 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
             return -1
         }
         return 1 + parent!.depth
+    }
+    
+    var isLastChild: Bool {
+        if parent == nil {
+            return true
+        }
+        return indexInParent == parent!.children.count - 1
     }
 
     init(from model:Task, filter: TaskFilter, parent: TaskTreeNode?) {
@@ -312,8 +322,10 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
     
     func add(child node: TaskTreeNode, at position: Int) {
         var fixedPosition = position
-        if node.parent == self && position >= children.firstIndex(of: node)!{
-            fixedPosition -= 1
+        if node.parent == self {
+            if let i = children.firstIndex(of: node), position >= i {
+                fixedPosition -= 1
+            }
         }
         if fixedPosition < 0 {
             fixedPosition = 0
@@ -332,10 +344,6 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
     
     func insert(sibling node: TaskTreeNode) {
         self.parent?.add(child: node, after: self)
-        let myChildren = children
-        children = []
-        node.children.append(contentsOf: myChildren)
-        myChildren.forEach { $0.parent = node }
     }
     
     var precedingSibling: TaskTreeNode? {

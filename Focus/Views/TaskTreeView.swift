@@ -7,14 +7,11 @@ struct TaskTreeView: View {
         VStack(alignment: .leading, spacing: 0) {
             TaskRowView(task: task)
             if task.children.count > 0 {
-                HStack {
-                    Spacer().frame(width: 30, height: 30)
-                    VStack(alignment: .leading,spacing: 0) {
-                        ForEach(task.children) { child in
-                            TaskTreeView(task: child)
-                        }
+                VStack(alignment: .leading, spacing: 0) {
+                    ForEach(task.children) { child in
+                        TaskTreeView(task: child)
                     }
-                }
+                }.offset(x: 30)
             }
         }
     }

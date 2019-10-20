@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TaskRowView: View {
     public static let HEIGHT: CGFloat = 30
+    public static let CHILD_OFFSET: CGFloat = 20
 
     @EnvironmentObject var perspective: Perspective
     @ObservedObject var task: TaskTreeNode
@@ -9,7 +10,7 @@ struct TaskRowView: View {
     var body: some View {
         HStack {
             Color(perspective.current == task ? .gray : .darkGray).frame(width: 8, height: TaskRowView.HEIGHT)
-            Spacer().frame(width: 16, height: 20)
+            Spacer().frame(width: 16, height: TaskRowView.CHILD_OFFSET)
             HStack {
 
                 Button(action: {
@@ -50,8 +51,9 @@ struct TaskRowView: View {
 
             return NSItemProvider(object: TaskDragData(task: self.task.model!.dto))
         }
-        .overlay(DropIndicator(visible: self.perspective.dropTarget == task,
-                               inside: self.perspective.dropDepth == self.perspective.dropTarget?.depth)
+        .overlay(
+            DropIndicator(visible: self.perspective.dropTarget == task)
+                .offset(x: TaskRowView.CHILD_OFFSET * CGFloat(self.perspective.dropDepth - self.task.depth))
             , alignment: .bottomLeading)
     }
 

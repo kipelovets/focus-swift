@@ -51,7 +51,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     private func save() {
-        dumpTree(node: perspective.tree.root)
         repo.Save(space: perspective.space.dto)
     }
 }
