@@ -51,7 +51,7 @@ class TaskTreeNodeTests: XCTestCase {
             N(8, [])
         ]
         
-        let newStubs = buildNodeStubs(from: inbox.root.children.map { $0.model! })
+        let newStubs: [N] = buildNodeStubs(from: inbox.root.children.map { $0.model! })
         XCTAssertEqual(expectedStubs, newStubs)
     }
     
@@ -74,7 +74,7 @@ class TaskTreeNodeTests: XCTestCase {
             N(8, [])
         ]
         
-        let newStubs = buildNodeStubs(from: inbox.root.children.map { $0.model! })
+        let newStubs: [N] = buildNodeStubs(from: inbox.root.children.map { $0.model! })
         XCTAssertEqual(expectedStubs, newStubs)
     }
     
@@ -97,7 +97,7 @@ class TaskTreeNodeTests: XCTestCase {
             N(8, [])
         ]
         
-        let newStubs = buildNodeStubs(from: inbox.root.children.map { $0.model! })
+        let newStubs: [N] = buildNodeStubs(from: inbox.root.children.map { $0.model! })
         XCTAssertEqual(expectedStubs, newStubs)
     }
     
@@ -120,7 +120,7 @@ class TaskTreeNodeTests: XCTestCase {
             N(8, [])
         ]
         
-        let newStubs = buildNodeStubs(from: inbox.root.children.map { $0.model! })
+        let newStubs: [N] = buildNodeStubs(from: inbox.root.children.map { $0.model! })
         XCTAssertEqual(expectedStubs, newStubs)
     }
     

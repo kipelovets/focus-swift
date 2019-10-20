@@ -8,9 +8,11 @@ struct TaskTreeView: View {
             TaskRowView(task: task)
             if task.children.count > 0 {
                 HStack {
-                    Spacer().frame(width: 15, height: 20)
-                    ForEach(task.children) { child in
-                        TaskTreeView(task: child)
+                    Spacer().frame(width: 15, height: 30)
+                    VStack(alignment: .leading,spacing: 0) {
+                        ForEach(task.children) { child in
+                            TaskTreeView(task: child)
+                        }
                     }
                 }
             }
@@ -23,6 +25,6 @@ struct TaskTree_Previews: PreviewProvider {
     private static var taskList = Perspective(from: repo, with: .Inbox)
     
     static var previews: some View {
-        TaskTreeView(task: taskList.tree.root.children.first!).environmentObject(taskList)
+        TaskTreeView(task: taskList.tree.find(by: 4)!).environmentObject(taskList)
     }
 }

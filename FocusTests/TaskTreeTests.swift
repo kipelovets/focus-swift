@@ -33,7 +33,7 @@ class TaskTreeTests: XCTestCase {
     func testInit() {
         let (taskStubs, inbox) = prepareTree()
         
-        let newStubs = buildNodeStubs(from: inbox.root.children.map { $0.model! })
+        let newStubs: [N] = buildNodeStubs(from: inbox.root.children.map { $0.model! })
 
         XCTAssertEqual(taskStubs, newStubs)
         
@@ -72,7 +72,7 @@ class TaskTreeTests: XCTestCase {
     
     func testCommit() {
         let (_, space) = prepareSpace()
-        var inbox = TaskTree(from: space, with: .Inbox)
+        let inbox = TaskTree(from: space, with: .Inbox)
         
         inbox.find(by: 2)?.remove(child: inbox.find(by: 3)!)
         inbox.find(by: 8)?.add(child: TaskTreeNode(from: Task(9)), at: 0)

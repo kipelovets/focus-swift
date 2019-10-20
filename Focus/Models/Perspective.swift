@@ -12,8 +12,7 @@ class Perspective: ObservableObject {
             if editMode {
                 return
             }
-            tree.commit(to: space)
-            repo.Save(space: space.dto)
+            save()
         }
     }
     
@@ -57,6 +56,7 @@ class Perspective: ObservableObject {
         self.current = current.succeeding ?? current.preceding
         current.parent?.remove(child: current)
         editMode = false
+        save()
     }
     
     func insert() {
@@ -76,6 +76,7 @@ class Perspective: ObservableObject {
         }
         self.current = child
         editMode = true
+        save()
     }
     
     func edit(node: TaskTreeNode) {
@@ -89,6 +90,7 @@ class Perspective: ObservableObject {
         }
         
         current.indent()
+        save()
         objectWillChange.send()
     }
     
@@ -102,6 +104,16 @@ class Perspective: ObservableObject {
         }
         
         current.outdent()
+        save()
         objectWillChange.send()
+    }
+    
+    private func save() {
+        print("Before commit")
+        dumpTree(node: tree.root)
+        tree.commit(to: space)
+        print("After commit")
+        dumpTree(node: tree.root)
+        repo.Save(space: space.dto)
     }
 }

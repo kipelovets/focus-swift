@@ -176,7 +176,8 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
     
     private(set) var parent: TaskTreeNode? {
         didSet {
-            guard parent?.parent != nil else {
+            if parent?.isRoot == true {
+                model?.parent = nil
                 return
             }
             model?.parent = parent?.model

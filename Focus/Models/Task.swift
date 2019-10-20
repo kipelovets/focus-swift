@@ -23,7 +23,7 @@ final class Task: Hashable, Identifiable, ObservableObject {
 
     var dto: TaskDto {
         get {
-            TaskDto(id: id, title: title, createdAt: createdAt, dueAt: dueAt, done: done, projectId: project?.id, tagPositions: tagPositions.map {$0.dto}, position: position)
+            TaskDto(id: id, title: title, notes: notes, createdAt: createdAt, dueAt: dueAt, done: done, projectId: project?.id, tagPositions: tagPositions.map {$0.dto}, parentTaskId: parent?.id, position: position)
         }
     }
 
@@ -123,25 +123,11 @@ final class TaskSpace {
 
     var dto: TaskSpaceDto {
         get {
-            var taskDtos: [TaskDto] = tasks.map { $0.dto }
-
-            var parentTasks = tasks
-            while parentTasks.count > 0 {
-                var newParentTasks: [Task] = []
-                parentTasks.forEach { parentTask in
-                    parentTask.children.forEach { task in
-                        var dto = task.dto
-                        dto.parentTaskId = parentTask.id
-                        taskDtos.append(dto)
-                        if task.children.count > 0 {
-                            newParentTasks.append(task)
-                        }
-                    }
-                }
-                parentTasks = newParentTasks
-            }
-
-            return TaskSpaceDto(tasks: taskDtos, projects: projects.map {$0.dto}, tags: tags.map {$0.dto})
+            return TaskSpaceDto(
+                tasks: tasks.map { $0.dto },
+                projects: projects.map {$0.dto},
+                tags: tags.map {$0.dto}
+            )
         }
     }
 

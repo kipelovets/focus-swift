@@ -42,7 +42,18 @@
         },
         {
             "id": 5,
-            "title": "Task hierarchy",
+            "title": "Task hierarchy child 1",
+            "notes": "",
+            "createdAt": "2019-01-01T00:00:00+0000",
+            "done": false,
+            "projectId": null,
+            "tagPositions": [],
+            "position": 0,
+            "parentTaskId": 4
+        },
+        {
+            "id": 6,
+            "title": "Task hierarchy child 2",
             "notes": "",
             "createdAt": "2019-01-01T00:00:00+0000",
             "done": false,

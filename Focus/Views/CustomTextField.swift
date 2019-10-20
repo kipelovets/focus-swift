@@ -34,7 +34,7 @@ struct CustomTextField: NSViewRepresentable {
                 if let t = textField?.stringValue {
                     text = t
                 }
-                print("CustomTextField.control: \(keyCode) $text '\(text)' _text '\(_text)' string value '\(textField?.stringValue)'")
+                print("CustomTextField.control: \(keyCode) $text '\(text)' _text '\(_text)' string value '\(textField?.stringValue ?? "nil")'")
                 inputHandler.send(keyCode)
                 
                 return true
