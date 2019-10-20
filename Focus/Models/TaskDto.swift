@@ -11,6 +11,7 @@ struct TaskDto: Hashable, Codable, Identifiable {
     var tagPositions: [TaskTagPositionDto] = []
     var parentTaskId: Int? = nil
     var position: Int = 0
+    var duePosition: Int = 0
 }
 
 struct ProjectDto: Hashable, Codable, Identifiable {

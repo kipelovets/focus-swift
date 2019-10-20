@@ -20,10 +20,23 @@ final class Task: Hashable, Identifiable, ObservableObject {
     var children: [Task] = [] 
     var parent: Task? = nil
     var position = 0
+    var duePosition = 0
 
     var dto: TaskDto {
         get {
-            TaskDto(id: id, title: title, notes: notes, createdAt: createdAt, dueAt: dueAt, done: done, projectId: project?.id, tagPositions: tagPositions.map {$0.dto}, parentTaskId: parent?.id, position: position)
+            TaskDto(
+                    id: id,
+                    title: title,
+                    notes: notes,
+                    createdAt: createdAt,
+                    dueAt: dueAt,
+                    done: done,
+                    projectId: project?.id,
+                    tagPositions: tagPositions.map {$0.dto},
+                    parentTaskId: parent?.id,
+                    position: position,
+                    duePosition: duePosition
+            )
         }
     }
 
@@ -42,11 +55,23 @@ final class Task: Hashable, Identifiable, ObservableObject {
         self.createdAt = task.createdAt
         self.dueAt = task.dueAt
         self.done = task.done
+        self.duePosition = task.duePosition
+        self.position = task.position
     }
 
     public func add(child task: Task) {
         children.append(task)
         task.parent = self
+    }
+
+    func position(at: Int, in tag: Tag) {
+        for tagPos in self.tagPositions {
+            if tagPos.tag == tag {
+                tagPos.position = at
+                return
+            }
+        }
+        tagPositions.append(TaskTagPosition(with: tag, position: at))
     }
 }
 

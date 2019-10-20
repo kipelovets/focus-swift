@@ -76,19 +76,8 @@ class TaskDragDelegate: DropDelegate {
     }
     
     func performDrop(info: DropInfo) -> Bool {
-        guard let target = perspective.dropTarget, let current = perspective.current else {
-            return true
-        }
-        
-        perspective.dropTarget = nil
-        
-        if target.isRoot {
-            target.add(child: current, at: 0)
-            return true
-        }
-        
-        target.insert(sibling: current)
-        
+        perspective.drop()
+
         return true
     }
     

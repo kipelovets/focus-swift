@@ -108,7 +108,24 @@ class Perspective: ObservableObject {
         save()
         objectWillChange.send()
     }
-    
+
+    func drop() {
+        guard let target = self.dropTarget, let current = self.current else {
+            return
+        }
+
+        self.dropTarget = nil
+
+        if target.isRoot {
+            target.add(child: current, at: 0)
+            save()
+            return
+        }
+
+        target.insert(sibling: current)
+        save()
+    }
+
     private func save() {
         print("Before commit")
         dumpTree(node: tree.root)

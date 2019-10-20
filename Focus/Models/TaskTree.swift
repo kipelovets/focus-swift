@@ -39,6 +39,17 @@ enum TaskFilter {
             }
         }
     }
+
+    var allowsOrder: Bool {
+        get {
+            switch self {
+            case .All:
+                return false
+            default:
+                return true
+            }
+        }
+    }
 }
 
 fileprivate func flattenTree(root: TaskTreeNode) -> [TaskTreeNode] {
@@ -63,7 +74,7 @@ class TaskTree {
     private var originalTasks: [Task]
 
     init(from space: TaskSpace, with filter: TaskFilter) {
-        let tasks = space.tasks.filter({ filter.accepts(task: $0) })
+        let tasks = space.tasks.filter({ filter.accepts(task: $0) }).sorted(by: { $0.position < $1.position })
         let root = TaskTreeNode(rootFor: tasks, with: filter)
         
         self.root = root
@@ -95,6 +106,23 @@ class TaskTree {
             if !originalTasks.contains(task) {
                 space.tasks.append(task)
             }
+        }
+
+        var pos = 0
+        var node = root.succeeding
+        while node != nil {
+            switch filter {
+            case .Inbox, .Project(_):
+                node?.model?.position = pos
+            case .Due(_):
+                node?.model?.duePosition = pos
+            case .Tag(let tag):
+                node?.model?.position(at: pos, in: tag)
+            default:
+                break
+            }
+            pos += 1
+            node = node?.succeeding
         }
         
         for task in originalTasks {
@@ -168,12 +196,7 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
             model?.children = children.map { $0.model! }
         }
     }
-    @Published var position: Int = 0 {
-        didSet {
-            model?.position = position
-        }
-    }
-    
+
     private(set) var parent: TaskTreeNode? {
         didSet {
             if parent?.isRoot == true {
@@ -204,7 +227,6 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
         self.done = model.done
         self.project = model.project
         self.tagPositions = model.tagPositions
-        self.position = model.position
         let children = model.children
         self.children = []
         self.parent = parent
