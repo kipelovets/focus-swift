@@ -67,6 +67,11 @@ class TaskDragDelegate: DropDelegate {
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
         perspective.dropTarget = perspective.tree.nth(self.dropTargetIndex(height: info.location.y))
+        guard let target = perspective.dropTarget else {
+            return DropProposal(operation: .move)
+        }
+        perspective.dropDepth = Int(((info.location.x - CGFloat(target.depth) * 30) / 30).rounded(.down))
+        print("\(target.depth) -- \(perspective.dropDepth)")
 
         return DropProposal(operation: .move)
     }

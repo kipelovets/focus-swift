@@ -8,7 +8,7 @@ struct TaskTreeView: View {
             TaskRowView(task: task)
             if task.children.count > 0 {
                 HStack {
-                    Spacer().frame(width: 15, height: 30)
+                    Spacer().frame(width: 30, height: 30)
                     VStack(alignment: .leading,spacing: 0) {
                         ForEach(task.children) { child in
                             TaskTreeView(task: child)

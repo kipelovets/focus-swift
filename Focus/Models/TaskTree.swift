@@ -216,6 +216,13 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
     var isRoot: Bool {
         parent == nil
     }
+    
+    var depth: Int {
+        if isRoot {
+            return -1
+        }
+        return 1 + parent!.depth
+    }
 
     init(from model:Task, filter: TaskFilter, parent: TaskTreeNode?) {
         self.id = model.id
@@ -307,6 +314,9 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
         var fixedPosition = position
         if node.parent == self && position >= children.firstIndex(of: node)!{
             fixedPosition -= 1
+        }
+        if fixedPosition < 0 {
+            fixedPosition = 0
         }
         node.parent?.remove(child: node)
         self.children.insert(node, at: fixedPosition)

@@ -193,12 +193,12 @@
 		4436F210234101FE007F1B7C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				44D7A7162351CD620093CDF2 /* DragAndDrop.swift */,
+				442BCA8023563FE300763D8B /* Perspective.swift */,
 				4436F21123410218007F1B7C /* TaskDto.swift */,
 				4436F213234103AE007F1B7C /* TaskSpaceRepositoryFile.swift */,
-				44D7A7162351CD620093CDF2 /* DragAndDrop.swift */,
 				44D7A71A23525EF70093CDF2 /* Task.swift */,
 				6F50CD9CB82B8A3C46716329 /* TaskTree.swift */,
-				442BCA8023563FE300763D8B /* Perspective.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -215,10 +215,10 @@
 		443EA7EE2349F5A300903F6C /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				4400A198233FC708000C8862 /* PerspectiveView.swift */,
-				4436F21823410A15007F1B7C /* TaskRowView.swift */,
 				44D7A710235121B00093CDF2 /* CustomTextField.swift */,
 				44D7A718235248D70093CDF2 /* Palette.swift */,
+				4400A198233FC708000C8862 /* PerspectiveView.swift */,
+				4436F21823410A15007F1B7C /* TaskRowView.swift */,
 				44456B562353273E00934231 /* TaskTreeView.swift */,
 			);
 			path = Views;

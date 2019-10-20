@@ -4,13 +4,19 @@ fileprivate let LIST_PADDING: CGFloat = 20
 
 struct DropIndicator: View {
     let visible: Bool
+    let inside: Bool
     
     var body: some View {
         Group {
             if visible {
+                HStack {
+                if inside {
+                    Spacer().frame(width: 50, height: 5, alignment: .leading)
+                }
                 Color(.systemBlue)
-                    .frame(width: 200, height: 2)
-                    .shadow(color: .blue, radius: 2, x: 0, y: 0)
+                    .frame(width: 200, height: 10)
+                    .shadow(color: .blue, radius: 5, x: 0, y: 0)
+                }
             }
         }
     }
@@ -25,15 +31,9 @@ struct PerspectiveView: View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(perspective.tree.root.children) { task in
                 TaskTreeView(task: task).environmentObject(self.perspective)
-                            .onDrag { () -> NSItemProvider in
-                                self.perspective.current = task
-
-                                return NSItemProvider(object: TaskDragData(task: task.model!.dto))
-                            }
-                .overlay(DropIndicator(visible: self.perspective.dropTarget == task) , alignment: .bottomLeading)
             }
         }
-        .overlay(DropIndicator(visible: self.perspective.dropTarget == self.perspective.tree.root), alignment: .topLeading)
+        .overlay(DropIndicator(visible: self.perspective.dropTarget == self.perspective.tree.root, inside: false), alignment: .topLeading)
         .frame(minWidth: 400, maxWidth: .infinity, minHeight: 300, maxHeight: .infinity, alignment: .topLeading)
         .padding(LIST_PADDING)
         .onDrop(of: TaskDragData.idTypes, delegate: TaskDragDelegate(taskIndexByHeight: { height in

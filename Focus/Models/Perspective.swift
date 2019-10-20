@@ -5,6 +5,7 @@ class Perspective: ObservableObject {
     let tree: TaskTree
     @Published var current: TaskTreeNode? = nil
     @Published var dropTarget: TaskTreeNode? = nil
+    var dropDepth = 0
     let space: TaskSpace
     
     @Published var editMode: Bool = false {
@@ -122,7 +123,11 @@ class Perspective: ObservableObject {
             return
         }
 
-        target.insert(sibling: current)
+        if dropDepth == target.depth + 1 {
+            target.parent?.add(child: current, after: target)
+        } else if dropDepth == target.depth {
+            target.insert(sibling: current)
+        }
         save()
     }
 
