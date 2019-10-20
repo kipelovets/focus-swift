@@ -57,6 +57,7 @@ class Perspective: ObservableObject {
         current.parent?.remove(child: current)
         editMode = false
         save()
+        self.current = nil
     }
     
     func insert() {

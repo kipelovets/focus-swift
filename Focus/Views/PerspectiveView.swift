@@ -37,7 +37,7 @@ struct PerspectiveView: View {
         .frame(minWidth: 400, maxWidth: .infinity, minHeight: 300, maxHeight: .infinity, alignment: .topLeading)
         .padding(LIST_PADDING)
         .onDrop(of: TaskDragData.idTypes, delegate: TaskDragDelegate(taskIndexByHeight: { height in
-            let dropIndex = Int(((height - LIST_PADDING) / TaskRowView.HEIGHT).rounded(.down))
+            let dropIndex = Int(((height - LIST_PADDING - TaskRowView.HEIGHT/2.0) / TaskRowView.HEIGHT).rounded(.down))
             return dropIndex
         }, taskList: self.perspective))
         

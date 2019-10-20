@@ -437,6 +437,8 @@ class TaskTreeNodeTests: XCTestCase {
             N(7, [])
         ]
         inbox.find(by: 7)!.moveDown()
+        dumpNodes(expectedStubs)
+        dumpNodes(inbox.nodeStubs)
         XCTAssertEqual(expectedStubs, inbox.nodeStubs)
         
         (_, inbox) = prepareTree()

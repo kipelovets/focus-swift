@@ -51,11 +51,11 @@ typealias FindTaskIndexByHeight = (_ height: CGFloat) -> Int
 
 class TaskDragDelegate: DropDelegate {
     let taskIndexByHeight: FindTaskIndexByHeight
-    let taskList: Perspective
+    let perspective: Perspective
     
     init(taskIndexByHeight: @escaping FindTaskIndexByHeight, taskList: Perspective) {
         self.taskIndexByHeight = taskIndexByHeight
-        self.taskList = taskList
+        self.perspective = taskList
     }
     
     func validateDrop(info: DropInfo) -> Bool {
@@ -66,24 +66,28 @@ class TaskDragDelegate: DropDelegate {
     }
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
-        taskList.dropTarget = taskList.tree.nth(self.dropTargetIndex(height: info.location.y))
+        perspective.dropTarget = perspective.tree.nth(self.dropTargetIndex(height: info.location.y))
 
         return DropProposal(operation: .move)
     }
     
     func dropExited(info: DropInfo) {
-        taskList.dropTarget = nil
+        perspective.dropTarget = nil
     }
     
     func performDrop(info: DropInfo) -> Bool {
-//        var index = self.dropTargetIndex(height: info.location.y)
-//        if index > taskList.currentTaskIndex {
-//            index -= 1
-//        }
-//        if taskList.currentTaskIndex != index {
-//            taskList.tasks.insert(taskList.tasks.remove(at:taskList.currentTaskIndex), at: index)
-//        }
-//        taskList.dropTargetIndex = nil
+        guard let target = perspective.dropTarget, let current = perspective.current else {
+            return true
+        }
+        
+        perspective.dropTarget = nil
+        
+        if target.isRoot {
+            target.add(child: current, at: 0)
+            return true
+        }
+        
+        target.insert(sibling: current)
         
         return true
     }

@@ -72,8 +72,8 @@ class TaskTree {
     }
 
     func nth(_ n: Int) -> TaskTreeNode? {
-        var counter = 0
-        var node = root.children.first
+        var counter = -1
+        var node: TaskTreeNode? = root
         while counter < n, node != nil {
             node = node?.succeeding
             counter += 1
@@ -282,8 +282,12 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
     }
     
     func add(child node: TaskTreeNode, at position: Int) {
+        var fixedPosition = position
+        if node.parent == self && position >= children.firstIndex(of: node)!{
+            fixedPosition -= 1
+        }
         node.parent?.remove(child: node)
-        self.children.insert(node, at: position)
+        self.children.insert(node, at: fixedPosition)
         node.parent = self
     }
     
