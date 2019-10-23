@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-enum Command {
+enum InputGesture {
     case Down
     case Up
     case ToggleDone
@@ -10,6 +10,9 @@ enum Command {
     case DeleteTask
     case Indent
     case Outdent
+    case Edit(Int)
+    case Undo
+    case Redo
     
     init?(withEvent event: NSEvent) {
         switch event.keyCode {
@@ -37,6 +40,14 @@ enum Command {
             } else {
                 return nil
             }
+        case 6:
+            if event.modifierFlags.contains(.command) && event.modifierFlags.contains(.shift) {
+                self = .Redo
+            } else if event.modifierFlags.contains(.command) {
+                self = .Undo
+            } else {
+                return nil
+            }
         default:
             return nil
         }
@@ -60,29 +71,205 @@ enum Command {
 
 class InputHandler {
     private let perspective: Perspective
+    private let recorder: CommandRecorder
     
-    init(perspective: Perspective) {
+    private var currentTask: TaskDto? = nil
+    
+    init(perspective: Perspective, recorder: CommandRecorder) {
         self.perspective = perspective
+        self.recorder = recorder
     }
     
-    func send(_ command: Command) {
-        switch (command) {
+    func send(_ gesture: InputGesture) {
+        let before = perspective.current?.model?.dto
+        
+        let currentDidChange = { () in
+            guard self.currentTask != nil else {
+                self.currentTask = before
+                return
+            }
+            let newTitle = self.perspective.tree.find(by: self.currentTask!.id)?.title
+            if newTitle != self.currentTask?.title {
+                self.recorder.record(Command(type: .UpdateTitle, before: self.currentTask, after: self.perspective.current?.model?.dto))
+            }
+            self.currentTask = before
+        }
+        
+        switch (gesture) {
         case .Down:
             perspective.next()
+            currentDidChange()
         case .Up:
             perspective.prev()
+            currentDidChange()
         case .ToggleDone:
             perspective.current?.done.toggle()
         case .ToggleEditing:
             perspective.editMode.toggle()
+            if perspective.editMode {
+                currentTask = before
+            } else {
+                currentDidChange()
+                return
+            }
         case .AddTask:
+            let wasEditing = perspective.editMode
             perspective.insert()
+            if wasEditing {
+                currentDidChange()
+            }
         case .DeleteTask:
+            if perspective.editMode {
+                currentDidChange()
+            }
             perspective.remove()
         case .Indent:
             perspective.indent()
         case .Outdent:
             perspective.outdent()
+        case .Edit(let id):
+            perspective.edit(node: perspective.tree.find(by: id)!)
+            currentDidChange()
+        case .Undo:
+            recorder.undo()
+        case .Redo:
+            recorder.redo()
+        }
+        
+        if let commandType = CommandType(with: gesture) {
+            recorder.record(Command(type: commandType, before: before, after: perspective.current?.model?.dto))
+        }
+    }
+}
+
+enum CommandType: String, Codable {
+    case ToggleDone
+    case UpdateTitle
+    case AddTask
+    case DeleteTask
+    case Indent
+    case Outdent
+    
+    init?(with gesture:InputGesture) {
+        switch gesture {
+        case .Down, .Up, .ToggleEditing, .Edit, .Undo, .Redo:
+            return nil
+        case .ToggleDone:
+            self = .ToggleDone
+        case .AddTask:
+            self = .AddTask
+        case .DeleteTask:
+            self = .DeleteTask
+        case .Indent:
+            self = .Indent
+        case .Outdent:
+            self = .Outdent
+        }
+    }
+    
+    var inverted: CommandType {
+        switch self {
+        case .ToggleDone:
+            return self
+        case .UpdateTitle:
+            return self
+        case .AddTask:
+            return .DeleteTask
+        case .DeleteTask:
+            return .AddTask
+        case .Indent:
+            return .Outdent
+        case .Outdent:
+            return .Indent
+        }
+    }
+}
+
+struct Command: Codable {
+    let type: CommandType
+    let before: TaskDto?
+    let after: TaskDto?
+    
+    var inverted: Command {
+        Command(type: type.inverted, before: after, after: before)
+    }
+}
+
+class CommandRecorder {
+    var executed: [Command]
+    var undone: [Command]
+    let perspective: Perspective
+    
+    init(perspective: Perspective) {
+        executed = []
+        undone = []
+        self.perspective = perspective
+    }
+    
+    func record(_ command: Command) {
+        undone = []
+        executed.append(command)
+    }
+    
+    func undo() {
+        guard let lastCommand = executed.popLast() else {
+            return
+        }
+        
+        execute(command: lastCommand.inverted)
+        undone.append(lastCommand)
+    }
+    
+    func redo() {
+        guard let lastCommand = undone.popLast() else {
+            return
+        }
+        
+        execute(command: lastCommand)
+        executed.append(lastCommand)
+    }
+    
+    private func execute(command: Command) {
+        switch (command.type) {
+        case .ToggleDone:
+            perspective.tree.find(by: command.before!.id)?.done.toggle()
+        case .UpdateTitle:
+            perspective.tree.find(by: command.before!.id)?.title = command.after!.title
+        case .AddTask:
+            let addedTask = command.after!
+            let parent = addedTask.parentTaskId == nil ?
+                perspective.tree.root :
+                perspective.tree.find(by: addedTask.parentTaskId!)
+            
+            let node = TaskTreeNode(from: Task(from: addedTask))
+            
+            let position: Int
+            switch perspective.filter {
+            case .Inbox, .Project(_):
+                position = addedTask.position - parent!.model!.position
+            case .Due(_):
+                position = addedTask.duePosition - parent!.model!.duePosition
+            case .Tag(let tag):
+                position = (addedTask.position(in: tag.id) ?? 0) - (parent!.model!.dto.position(in: tag.id) ?? 0)
+            default:
+                position = 0
+            }
+            parent?.add(child: node, at: position)
+            
+        case .DeleteTask:
+            let deletedTask = command.before!
+            let task = perspective.tree.find(by: deletedTask.id)!
+            task.parent?.remove(child: task)
+        case .Indent:
+            let dto = command.before!
+            perspective.current = perspective.tree.find(by: dto.id)
+            perspective.indent()
+        case .Outdent:
+            let dto = command.before!
+            perspective.current = perspective.tree.find(by: dto.id)
+            perspective.outdent()
+        default:
+            fatalError("Don't know how to handle \(command.type)")
         }
     }
 }

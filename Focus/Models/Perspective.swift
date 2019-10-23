@@ -43,7 +43,7 @@ class Perspective: ObservableObject {
     }
     
     private let repo: TaskSpaceRepository
-    private let filter: TaskFilter
+    let filter: TaskFilter
     
     init(from repo: TaskSpaceRepository, with filter: TaskFilter) {
         self.repo = repo

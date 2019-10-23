@@ -12,6 +12,16 @@ struct TaskDto: Hashable, Codable, Identifiable {
     var parentTaskId: Int? = nil
     var position: Int = 0
     var duePosition: Int = 0
+    
+    func position(in tagId: Int) -> Int? {
+        for p in tagPositions {
+            if p.tagId == tagId {
+                return p.position
+            }
+        }
+        
+        return nil
+    }
 }
 
 struct ProjectDto: Hashable, Codable, Identifiable {

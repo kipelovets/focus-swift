@@ -35,7 +35,7 @@ struct TaskRowView: View {
                     CustomTextField(text: $task.title, isFirstResponder: true)
                 } else {
                     Button(action: {
-                        self.perspective.edit(node: self.task)
+                        inputHandler.send(.Edit(self.task.id))
                     }) {
                         Text(task.title)
                     }

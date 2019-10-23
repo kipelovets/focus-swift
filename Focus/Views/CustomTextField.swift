@@ -2,7 +2,7 @@ import SwiftUI
 
 class CustomNSTextField: NSTextField {
     override func keyUp(with event: NSEvent) {
-        if let keyCode = Command(withEvent: event) {
+        if let keyCode = InputGesture(withEvent: event) {
             print("CustomNSTextField: \(keyCode)")
         }
         super.keyUp(with: event)
@@ -30,7 +30,7 @@ struct CustomTextField: NSViewRepresentable {
         func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
             textField?.resignFirstResponder()
             firstResponder?.resignFirstResponder()
-            if let keyCode = Command(withCommand: commandSelector) {
+            if let keyCode = InputGesture(withCommand: commandSelector) {
                 if let t = textField?.stringValue {
                     text = t
                 }

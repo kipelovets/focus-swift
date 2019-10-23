@@ -4,7 +4,8 @@ import SwiftUI
 fileprivate let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
 fileprivate let repo = TaskSpaceRepositoryFile(filename: documentsPath + "/Main.focus")
 fileprivate var perspective = Perspective(from: repo, with: .Inbox)
-var inputHandler = InputHandler(perspective: perspective)
+fileprivate let commandRecorder = CommandRecorder(perspective: perspective)
+var inputHandler = InputHandler(perspective: perspective, recorder: commandRecorder)
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {    
