@@ -85,7 +85,7 @@ class TaskDragDelegate: DropDelegate {
     }
     
     func performDrop(info: DropInfo) -> Bool {
-        perspective.drop()
+        inputHandler.send(.Drop)
 
         return true
     }

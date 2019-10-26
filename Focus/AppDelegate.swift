@@ -36,22 +36,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if sender.name == NSNotification.Name("NSMenuWillSendActionNotification") {
             if let x = sender.userInfo?["MenuItem"] as? NSMenuItem {
                 if x.title == "Quit Focus" {
-                    save()
+                    perspective.save()
                 }
             }
         }
     }
     
     func applicationWillTerminate(_ notification: Notification) {
-        save()
+        perspective.save()
     }
     
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        save()
+        perspective.save()
         return .terminateNow
-    }
-    
-    private func save() {
-        repo.Save(space: perspective.space.dto)
     }
 }

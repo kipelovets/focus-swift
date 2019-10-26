@@ -41,9 +41,9 @@ struct PerspectiveView: View {
 struct ContentView_Previews: PreviewProvider {
     private static let file = Bundle.main.url(forResource: "taskData.json", withExtension: nil)
     private static let repo = TaskSpaceRepositoryFile(filename: file!.path)
-    private static let taskList = Perspective(from: repo, with: .Inbox)
+    private static let perspective = Perspective(from: repo, with: .Inbox)
     
     static var previews: some View {
-        PerspectiveView(perspective: taskList).environmentObject(taskList)
+        PerspectiveView(perspective: perspective).environmentObject(perspective)
     }
 }

@@ -11,6 +11,8 @@ enum InputGesture {
     case Indent
     case Outdent
     case Edit(Int)
+    case Select(Int)
+    case Drop
     case Undo
     case Redo
     
@@ -88,9 +90,10 @@ class InputHandler {
                 self.currentTask = before
                 return
             }
-            let newTitle = self.perspective.tree.find(by: self.currentTask!.id)?.title
+            let previousCurrent = self.perspective.tree.find(by: self.currentTask!.id)
+            let newTitle = previousCurrent?.title
             if newTitle != self.currentTask?.title {
-                self.recorder.record(Command(type: .UpdateTitle, before: self.currentTask, after: self.perspective.current?.model?.dto))
+                self.recorder.record(Command(type: .UpdateTitle, before: self.currentTask, after: previousCurrent?.model?.dto))
             }
             self.currentTask = before
         }
@@ -130,6 +133,11 @@ class InputHandler {
         case .Edit(let id):
             perspective.edit(node: perspective.tree.find(by: id)!)
             currentDidChange()
+        case .Select(let id):
+            perspective.current = perspective.tree.find(by: id)
+            currentDidChange()
+        case .Drop:
+            perspective.drop()
         case .Undo:
             recorder.undo()
         case .Redo:
@@ -149,10 +157,11 @@ enum CommandType: String, Codable {
     case DeleteTask
     case Indent
     case Outdent
+    case Drop
     
     init?(with gesture:InputGesture) {
         switch gesture {
-        case .Down, .Up, .ToggleEditing, .Edit, .Undo, .Redo:
+        case .Down, .Up, .ToggleEditing, .Edit, .Undo, .Redo, .Select:
             return nil
         case .ToggleDone:
             self = .ToggleDone
@@ -164,6 +173,8 @@ enum CommandType: String, Codable {
             self = .Indent
         case .Outdent:
             self = .Outdent
+        case .Drop:
+            self = .Drop
         }
     }
     
@@ -181,6 +192,8 @@ enum CommandType: String, Codable {
             return .Outdent
         case .Outdent:
             return .Indent
+        case .Drop:
+            return .Drop
         }
     }
 }
@@ -209,6 +222,7 @@ class CommandRecorder {
     func record(_ command: Command) {
         undone = []
         executed.append(command)
+        print("Command: \(command)")
     }
     
     func undo() {
@@ -268,8 +282,14 @@ class CommandRecorder {
             let dto = command.before!
             perspective.current = perspective.tree.find(by: dto.id)
             perspective.outdent()
-        default:
-            fatalError("Don't know how to handle \(command.type)")
+        case .Drop:
+            let dto = command.after!
+            let parent = dto.parentTaskId == nil ? perspective.tree.root : perspective.tree.find(by: dto.parentTaskId!)!
+            let before = perspective.tree.find(by: dto.id)!
+            parent.add(child: before, at: dto.position)
+            // TODO: use tag/project/due position for non-inbox perspective
         }
+        
+        perspective.updateView()
     }
 }

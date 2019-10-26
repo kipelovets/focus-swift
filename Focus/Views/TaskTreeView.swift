@@ -19,9 +19,9 @@ struct TaskTreeView: View {
 struct TaskTree_Previews: PreviewProvider {
     private static let file = Bundle.main.url(forResource: "taskData.json", withExtension: nil)
     private static let repo = TaskSpaceRepositoryFile(filename: file!.path)
-    private static var taskList = Perspective(from: repo, with: .Inbox)
+    private static var perspective = Perspective(from: repo, with: .Inbox)
     
     static var previews: some View {
-        TaskTreeView(task: taskList.tree.find(by: 4)!).environmentObject(taskList)
+        TaskTreeView(task: perspective.tree.find(by: 4)!).environmentObject(perspective)
     }
 }

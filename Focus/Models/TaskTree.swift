@@ -107,22 +107,25 @@ class TaskTree {
                 space.tasks.append(task)
             }
         }
-
-        var pos = 0
-        var node = root.succeeding
-        while node != nil {
-            switch filter {
-            case .Inbox, .Project(_):
-                node?.model?.position = pos
-            case .Due(_):
-                node?.model?.duePosition = pos
-            case .Tag(let tag):
-                node?.model?.position(at: pos, in: tag)
-            default:
-                break
+        
+        switch filter {
+        case .Inbox, .Project(_):
+            root.reindexChildren()
+        default:
+            var pos = 0
+            var node = root.succeeding
+            while node != nil {
+                switch filter {
+                case .Due(_):
+                    node?.model?.duePosition = pos
+                case .Tag(let tag):
+                    node?.model?.position(at: pos, in: tag)
+                default:
+                    break
+                }
+                pos += 1
+                node = node?.succeeding
             }
-            pos += 1
-            node = node?.succeeding
         }
         
         for task in originalTasks {
@@ -410,5 +413,14 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
             return
         }
         parent!.parent!.add(child: self, after: parent!)
+    }
+    
+    func reindexChildren() {
+        for (index, child) in children.enumerated() {
+            child.model?.position = index
+            if child.children.count > 0 {
+                child.reindexChildren()
+            }
+        }
     }
 }

@@ -3,8 +3,10 @@ import Combine
 
 class Perspective: ObservableObject {
     let tree: TaskTree
+    let filter: TaskFilter
     @Published var current: TaskTreeNode? = nil
     @Published var dropTarget: TaskTreeNode? = nil
+    
     var dropDepth: Int = 0 {
         didSet {
             guard let target = dropTarget else {
@@ -31,7 +33,6 @@ class Perspective: ObservableObject {
             dropDepth = min(maxDepth, max(minDepth, dropDepth))
         }
     }
-    let space: TaskSpace
     
     @Published var editMode: Bool = false {
         didSet {
@@ -43,7 +44,7 @@ class Perspective: ObservableObject {
     }
     
     private let repo: TaskSpaceRepository
-    let filter: TaskFilter
+    private let space: TaskSpace
     
     init(from repo: TaskSpaceRepository, with filter: TaskFilter) {
         self.repo = repo
@@ -118,7 +119,7 @@ class Perspective: ObservableObject {
         
         current.indent()
         save()
-        objectWillChange.send()
+        updateView()
     }
     
     func outdent() {
@@ -132,7 +133,7 @@ class Perspective: ObservableObject {
         
         current.outdent()
         save()
-        objectWillChange.send()
+        updateView()
     }
 
     func drop() {
@@ -179,8 +180,12 @@ class Perspective: ObservableObject {
         save()
     }
 
-    private func save() {
+    func save() {
         tree.commit(to: space)
         repo.Save(space: space.dto)
+    }
+    
+    func updateView() {
+        objectWillChange.send()
     }
 }

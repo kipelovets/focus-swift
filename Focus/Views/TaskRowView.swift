@@ -47,7 +47,7 @@ struct TaskRowView: View {
         .border(Color(.gray), width: perspective.current == task ? 2 : 0)
         .background(Color(white: 0.2))
         .onDrag { () -> NSItemProvider in
-            self.perspective.current = self.task
+            inputHandler.send(.Select(self.task.id))
 
             return NSItemProvider(object: TaskDragData(task: self.task.model!.dto))
         }
