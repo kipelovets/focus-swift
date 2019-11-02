@@ -3,9 +3,9 @@ import SwiftUI
 
 fileprivate let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
 fileprivate let repo = TaskSpaceRepositoryFile(filename: documentsPath + "/Main.focus")
-fileprivate var perspective = Perspective(from: repo, with: .Inbox)
-fileprivate let commandRecorder = CommandRecorder(perspective: perspective)
-var inputHandler = InputHandler(perspective: perspective, recorder: commandRecorder)
+fileprivate let space = Space(repo)
+fileprivate let commandRecorder = CommandRecorder(perspective: space.perspective!)
+var inputHandler = InputHandler(perspective: space.perspective!, recorder: commandRecorder)
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {    
@@ -13,7 +13,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Create the SwiftUI view that provides the window contents.
-        let contentView = PerspectiveView(perspective: perspective).environmentObject(perspective)
+        let contentView = SpaceView(space: space).environmentObject(space.perspective!)
         
         // Create the window and set the content view. 
         window = InputHandlingWindow(
@@ -36,18 +36,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if sender.name == NSNotification.Name("NSMenuWillSendActionNotification") {
             if let x = sender.userInfo?["MenuItem"] as? NSMenuItem {
                 if x.title == "Quit Focus" {
-                    perspective.save()
+                    space.save()
                 }
             }
         }
     }
     
     func applicationWillTerminate(_ notification: Notification) {
-        perspective.save()
+        space.save()
     }
     
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        perspective.save()
+        space.save()
         return .terminateNow
     }
 }

@@ -43,14 +43,12 @@ class Perspective: ObservableObject {
         }
     }
     
-    private let repo: TaskSpaceRepository
-    private let space: TaskSpace
+    private let space: Space
     
-    init(from repo: TaskSpaceRepository, with filter: TaskFilter) {
-        self.repo = repo
-        self.space = TaskSpace(from: repo.Load())
+    init(from space: Space, with filter: TaskFilter) {
+        self.space = space
         self.filter = filter
-        self.tree = TaskTree(from: self.space, with: filter)
+        self.tree = TaskTree(from: self.space.space, with: filter)
         self.current = self.tree.root.children.first
     }
     
@@ -91,7 +89,7 @@ class Perspective: ObservableObject {
         if editMode {
             editMode = false
         }
-        let newTask = Task(id: self.space.nextId, title: "")
+        let newTask = Task(id: self.space.space.nextId, title: "")
         let child = TaskTreeNode(from: newTask, filter: self.filter, parent: current ?? self.tree.root)
         if let current = self.current {
             if current.children.count > 0 {
@@ -181,8 +179,7 @@ class Perspective: ObservableObject {
     }
 
     func save() {
-        tree.commit(to: space)
-        repo.Save(space: space.dto)
+        space.save()
     }
     
     func updateView() {
