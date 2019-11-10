@@ -9,7 +9,7 @@ struct TaskRowView: View {
 
     var body: some View {
         HStack {
-            Color(perspective.current == task ? .gray : .darkGray).frame(width: 8, height: TaskRowView.HEIGHT)
+            Defaults.colors.selectable(perspective.current == task).frame(width: 8, height: TaskRowView.HEIGHT)
             Spacer().frame(width: 16, height: TaskRowView.CHILD_OFFSET)
             HStack {
 
@@ -19,13 +19,13 @@ struct TaskRowView: View {
                     ZStack {
                         Circle()
                                 .frame(width: 20, height: 20)
-                                .foregroundColor(.yellow)
+                                .foregroundColor(Defaults.colors.checkbox(task.done))
                                 .overlay(
-                                        Circle().foregroundColor(Color(white: 0.2))
+                                        Circle().foregroundColor(Defaults.colors.background)
                                                 .frame(width: 16, height: 16)
                                 )
                         if task.done {
-                            Text("✔").foregroundColor(.yellow)
+                            Text("✔").foregroundColor(Defaults.colors.checkbox(task.done))
                         }
                     }
                 }
@@ -48,12 +48,12 @@ struct TaskRowView: View {
                 }
                 
                 Text(format(date:self.task.dueAt))
-                    .foregroundColor(.gray)
+                    .foregroundColor(Defaults.colors.text)
 
             }.padding(5)
         }
-        .border(Color(.gray), width: perspective.current == task ? 2 : 0)
-        .background(Color(white: 0.2))
+        .border(Defaults.colors.selected, width: perspective.current == task ? 2 : 0)
+        .background(Defaults.colors.background)
         .onDrag { () -> NSItemProvider in
             inputHandler.send(.Select(self.task.id))
 

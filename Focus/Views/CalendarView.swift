@@ -52,14 +52,14 @@ struct CalendarDayView: View {
         }
         .buttonStyle(PlainButtonStyle())
         .frame(width: 30, height: 30)
-        .border(Color(.gray))
+        .border(Defaults.colors.selectable)
         .overlay(
             Text(day(dayOfMonth(dayNumber)) ?? "")
                 .font(.system(size: 7))
             .offset(x: -1, y: 1)
             , alignment: .topTrailing)
         .onDrop(of: TaskDragData.idTypes, delegate: CalendarDropDelegate(dayNumber))
-            .background(self.dropState.dayNumber == self.dayNumber ? Color(.systemBlue) : Color(white: 0.2))
+            .background(self.dropState.dayNumber == self.dayNumber ? Defaults.colors.dropIndicator : Defaults.colors.background)
     }
 }
 

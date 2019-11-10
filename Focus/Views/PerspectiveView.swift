@@ -8,9 +8,8 @@ struct DropIndicator: View {
     var body: some View {
         Group {
             if visible {
-                Color(.systemBlue)
+                Defaults.colors.dropIndicator
                     .frame(width: 200, height: 10)
-                    .shadow(color: .blue, radius: 5, x: 0, y: 0)
             }
         }
     }
