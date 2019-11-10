@@ -14,6 +14,7 @@
 		4400A1A1233FC70A000C8862 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4400A19F233FC70A000C8862 /* Main.storyboard */; };
 		4400A1AD233FC70B000C8862 /* FocusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400A1AC233FC70B000C8862 /* FocusTests.swift */; };
 		4400A1B8233FC70B000C8862 /* FocusUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400A1B7233FC70B000C8862 /* FocusUITests.swift */; };
+		4417168223776D1000FFA7F2 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4417168123776D1000FFA7F2 /* Tools.swift */; };
 		442BCA8123563FE300763D8B /* Perspective.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442BCA8023563FE300763D8B /* Perspective.swift */; };
 		4436F21223410218007F1B7C /* TaskDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436F21123410218007F1B7C /* TaskDto.swift */; };
 		4436F214234103AE007F1B7C /* TaskSpaceRepositoryFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436F213234103AE007F1B7C /* TaskSpaceRepositoryFile.swift */; };
@@ -72,6 +73,7 @@
 		4400A1B3233FC70B000C8862 /* FocusUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4400A1B7233FC70B000C8862 /* FocusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusUITests.swift; sourceTree = "<group>"; };
 		4400A1B9233FC70B000C8862 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4417168123776D1000FFA7F2 /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		442BCA8023563FE300763D8B /* Perspective.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Perspective.swift; sourceTree = "<group>"; };
 		4436F21123410218007F1B7C /* TaskDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDto.swift; sourceTree = "<group>"; };
 		4436F213234103AE007F1B7C /* TaskSpaceRepositoryFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSpaceRepositoryFile.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				4400A1A2233FC70A000C8862 /* Info.plist */,
 				4400A1A3233FC70A000C8862 /* Focus.entitlements */,
 				4400A19C233FC70A000C8862 /* Preview Content */,
+				4417168123776D1000FFA7F2 /* Tools.swift */,
 			);
 			path = Focus;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4417168223776D1000FFA7F2 /* Tools.swift in Sources */,
 				44D7A71B23525EF70093CDF2 /* Task.swift in Sources */,
 				44B553DB2364E5BD003355B7 /* SpaceView.swift in Sources */,
 				4436F21923410A15007F1B7C /* TaskRowView.swift in Sources */,

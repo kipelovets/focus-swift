@@ -33,14 +33,22 @@ struct TaskRowView: View {
 
                 if perspective.editMode && perspective.current == task {
                     CustomTextField(text: $task.title, isFirstResponder: true)
+                        .frame(width: 200, height: 20)
                 } else {
                     Button(action: {
                         inputHandler.send(.Edit(self.task.id))
                     }) {
-                        Text(task.title)
+                        HStack {
+                            Text(task.title)
+                            Spacer()
+                        }
+                        .frame(width: 300, height: 20)
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
+                
+                Text(format(date:self.task.dueAt))
+                    .foregroundColor(.gray)
 
             }.padding(5)
         }

@@ -189,5 +189,13 @@ final class TaskSpace {
             return 1 + (tasks.map { $0.id }.max() ?? 0)
         }
     }
+    
+    func findDue(date: Date?) -> [Task] {
+        guard date != nil else {
+            return []
+        }
+        
+        return self.tasks.filter({ TaskFilter.Due(date!).accepts(task: $0) })
+    }
 }
 

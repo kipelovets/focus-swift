@@ -15,6 +15,7 @@ enum InputGesture {
     case Drop
     case Undo
     case Redo
+    case SetDue(Date?)
     
     init?(withEvent event: NSEvent) {
         switch event.keyCode {
@@ -142,6 +143,8 @@ class InputHandler {
             recorder.undo()
         case .Redo:
             recorder.redo()
+        case .SetDue(let date):
+            perspective.current?.dueAt = date
         }
         
         if let commandType = CommandType(with: gesture) {
@@ -153,6 +156,7 @@ class InputHandler {
 enum CommandType: String, Codable {
     case ToggleDone
     case UpdateTitle
+    case UpdateDue
     case AddTask
     case DeleteTask
     case Indent
@@ -175,6 +179,8 @@ enum CommandType: String, Codable {
             self = .Outdent
         case .Drop:
             self = .Drop
+        case .SetDue:
+            self = .UpdateDue
         }
     }
     
@@ -194,6 +200,8 @@ enum CommandType: String, Codable {
             return .Indent
         case .Drop:
             return .Drop
+        case .UpdateDue:
+            return .UpdateDue
         }
     }
 }
@@ -288,6 +296,8 @@ class CommandRecorder {
             let before = perspective.tree.find(by: dto.id)!
             parent.add(child: before, at: dto.position)
             // TODO: use tag/project/due position for non-inbox perspective
+        case .UpdateDue:
+            perspective.tree.find(by: command.before!.id)?.dueAt = command.after!.dueAt
         }
         
         perspective.updateView()

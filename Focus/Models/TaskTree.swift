@@ -21,11 +21,8 @@ enum TaskFilter {
             guard task.dueAt != nil else {
                 return false
             }
-            let dateFormatter = DateFormatter()
-            dateFormatter.timeStyle = DateFormatter.Style.none
-            dateFormatter.dateStyle = DateFormatter.Style.short
-
-            return dateFormatter.string(from: date) == dateFormatter.string(from: task.dueAt!)
+            
+            return format(date: date) == format(date: task.dueAt!)
         }
     }
     
@@ -47,6 +44,23 @@ enum TaskFilter {
                 return false
             default:
                 return true
+            }
+        }
+    }
+    
+    var description: String {
+        get {
+            switch self {
+            case .All:
+                return "All"
+            case .Inbox:
+                return "Inbox"
+            case .Due(let date):
+                return "Due " + format(date: date)
+            case .Project(let project):
+                return "Project " + project.title
+            case .Tag(let tag):
+                return "Tag " + tag.title
             }
         }
     }

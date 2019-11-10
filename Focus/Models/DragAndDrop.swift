@@ -53,9 +53,9 @@ class TaskDragDelegate: DropDelegate {
     let taskIndexByHeight: FindTaskIndexByHeight
     let perspective: Perspective
     
-    init(taskIndexByHeight: @escaping FindTaskIndexByHeight, taskList: Perspective) {
+    init(taskIndexByHeight: @escaping FindTaskIndexByHeight, perspective: Perspective) {
         self.taskIndexByHeight = taskIndexByHeight
-        self.perspective = taskList
+        self.perspective = perspective
     }
     
     func validateDrop(info: DropInfo) -> Bool {

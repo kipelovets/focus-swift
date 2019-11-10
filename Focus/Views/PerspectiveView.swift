@@ -21,20 +21,22 @@ struct PerspectiveView: View {
     @ObservedObject var perspective: Perspective
     
     var body: some View {
-        
         VStack(alignment: .leading, spacing: 0) {
-            ForEach(perspective.tree.root.children) { task in
-                TaskTreeView(task: task).environmentObject(self.perspective)
+            Text(self.perspective.filter.description).font(.headline)
+            
+            VStack(alignment: .leading, spacing: 0) {
+                ForEach(perspective.tree.root.children) { task in
+                    TaskTreeView(task: task).environmentObject(self.perspective)
+                }
             }
+            .overlay(DropIndicator(visible: self.perspective.dropTarget == self.perspective.tree.root), alignment: .topLeading)
+            .frame(minWidth: 600, maxWidth: .infinity, minHeight: 300, maxHeight: .infinity, alignment: .topLeading)
+            .onDrop(of: TaskDragData.idTypes, delegate: TaskDragDelegate(taskIndexByHeight: { height in
+                let dropIndex = Int(((height - LIST_PADDING - TaskRowView.HEIGHT/2.0) / TaskRowView.HEIGHT).rounded(.down))
+                return dropIndex
+            }, perspective: self.perspective))
         }
-        .overlay(DropIndicator(visible: self.perspective.dropTarget == self.perspective.tree.root), alignment: .topLeading)
-        .frame(minWidth: 400, maxWidth: .infinity, minHeight: 300, maxHeight: .infinity, alignment: .topLeading)
         .padding(LIST_PADDING)
-        .onDrop(of: TaskDragData.idTypes, delegate: TaskDragDelegate(taskIndexByHeight: { height in
-            let dropIndex = Int(((height - LIST_PADDING - TaskRowView.HEIGHT/2.0) / TaskRowView.HEIGHT).rounded(.down))
-            return dropIndex
-        }, taskList: self.perspective))
-        
     }
 }
 

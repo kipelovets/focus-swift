@@ -17,11 +17,7 @@ class Space: ObservableObject {
         self.repo.Save(space: self.space.dto)
     }
     
-    func due(date: Date?) -> [Task] {
-        guard date != nil else {
-            return []
-        }
-        
-        return self.space.tasks.filter({ TaskFilter.Due(date!).accepts(task: $0) })
+    func focus(on filter: TaskFilter) {
+        self.perspective = Perspective(from: self, with: filter)
     }
 }
