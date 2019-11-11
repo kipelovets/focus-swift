@@ -3,10 +3,19 @@ import Combine
 
 class Perspective: ObservableObject {
     let tree: TaskTree
-    let filter: TaskFilter
+    let filter: PerspectiveType
     @Published var current: TaskTreeNode? = nil
     @Published var dropTarget: TaskTreeNode? = nil
-    
+
+    private let space: Space
+
+    init(from space: Space, with filter: PerspectiveType) {
+        self.space = space
+        self.filter = filter
+        self.tree = TaskTree(from: self.space.space, with: filter)
+        self.current = self.tree.root.children.first
+    }
+
     var dropDepth: Int = 0 {
         didSet {
             guard let target = dropTarget else {
@@ -42,16 +51,7 @@ class Perspective: ObservableObject {
             save()
         }
     }
-    
-    private let space: Space
-    
-    init(from space: Space, with filter: TaskFilter) {
-        self.space = space
-        self.filter = filter
-        self.tree = TaskTree(from: self.space.space, with: filter)
-        self.current = self.tree.root.children.first
-    }
-    
+
     func next() {
         guard let current = self.current else {
             self.current = self.tree.root.children.first

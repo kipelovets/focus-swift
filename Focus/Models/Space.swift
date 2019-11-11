@@ -3,18 +3,18 @@ import Foundation
 
 class Space: ObservableObject {
     private let repo: TaskSpaceRepository
-    let space: TaskSpace
+    let space: SpaceModel
     @Published private(set) var perspective: Perspective?
     
-    init(_ repo: TaskSpaceRepository, with filter: TaskFilter) {
+    init(_ repo: TaskSpaceRepository, with filter: PerspectiveType) {
         self.repo = repo
-        self.space = TaskSpace(from: repo.Load())
+        self.space = SpaceModel(from: repo.Load())
         self.perspective = Perspective(from: self, with: filter)
     }
     
     init(_ repo: TaskSpaceRepository) {
         self.repo = repo
-        self.space = TaskSpace(from: repo.Load())
+        self.space = SpaceModel(from: repo.Load())
         self.perspective = Perspective(from: self, with: .All)
     }
     
@@ -23,7 +23,7 @@ class Space: ObservableObject {
         self.repo.Save(space: self.space.dto)
     }
     
-    func focus(on filter: TaskFilter) {
+    func focus(on filter: PerspectiveType) {
         self.perspective = Perspective(from: self, with: filter)
         objectWillChange.send()
         print("CHANGE")

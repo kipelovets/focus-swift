@@ -3,9 +3,9 @@ import XCTest
 
 class TaskSpaceTests: XCTestCase {
     class TaskSpaceRepositoryMemory: TaskSpaceRepository {
-        let space: TaskSpace
+        let space: SpaceModel
 
-        init(_ space: TaskSpace) {
+        init(_ space: SpaceModel) {
             self.space = space
         }
 
@@ -35,7 +35,7 @@ class TaskSpaceTests: XCTestCase {
         
         let tasks: [Task] = buildTasks(from: taskStubs)
         XCTAssertEqual(8, tasks.count)
-        let space = TaskSpace(tasks: tasks, projects: [], tags: [])
+        let space = SpaceModel(tasks: tasks, projects: [], tags: [])
         let inbox = TaskTree(from: space, with: .Inbox)
         
         XCTAssertEqual(3, inbox.root.children.count)

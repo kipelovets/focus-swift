@@ -2,7 +2,7 @@ import XCTest
 @testable import Focus
 
 class TaskTreeTests: XCTestCase {
-    func prepareSpace() -> ([N], TaskSpace) {
+    func prepareSpace() -> ([N], SpaceModel) {
         let taskStubs: [N] = [
             N(1, [
                 N(2, [
@@ -18,7 +18,7 @@ class TaskTreeTests: XCTestCase {
         ]
         
         let tasks: [Task] = buildTasks(from: taskStubs)
-        let space = TaskSpace(tasks: tasks, projects: [], tags: [])
+        let space = SpaceModel(tasks: tasks, projects: [], tags: [])
         
         return (taskStubs, space)
     }

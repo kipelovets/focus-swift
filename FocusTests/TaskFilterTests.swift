@@ -27,12 +27,12 @@ class TaskFilterTests: XCTestCase {
             Task(5, project, [TaskTagPosition(with: tags[1], position: 0)], parentTask)
         ]
         
-        let filters: [(TaskFilter, [Int])] = [
-            (TaskFilter.Inbox, [1, 4]),
-            (TaskFilter.Project(project), [2, 3]),
-            (TaskFilter.Tag(tags[0]), [3, 4]),
-            (TaskFilter.Tag(tags[1]), [4, 5]),
-            (TaskFilter.Due(Date()), [2]),
+        let filters: [(PerspectiveType, [Int])] = [
+            (PerspectiveType.Inbox, [1, 4]),
+            (PerspectiveType.Project(project), [2, 3]),
+            (PerspectiveType.Tag(tags[0]), [3, 4]),
+            (PerspectiveType.Tag(tags[1]), [4, 5]),
+            (PerspectiveType.Due(Date()), [2]),
         ]
         
         for (filter, expectedIds) in filters {
@@ -42,7 +42,7 @@ class TaskFilterTests: XCTestCase {
     }
     
     func testAllowsHierarchy() {
-        let filters: [(TaskFilter, Bool)] = [
+        let filters: [(PerspectiveType, Bool)] = [
             (.Inbox, true),
             (.Project(Project(id: 1, title: "")), true),
             (.Tag(Tag(id: 1, title: "")), false),

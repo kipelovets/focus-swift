@@ -28,7 +28,7 @@ struct FocusSelection: ViewModifier {
 struct FilterSelector: View {
     @EnvironmentObject var space: Space
     
-    let filter: TaskFilter
+    let filter: PerspectiveType
     
     var body: some View {
         HStack {

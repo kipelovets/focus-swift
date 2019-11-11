@@ -18,7 +18,7 @@ class TaskTreeNodeTests: XCTestCase {
         ]
         
         let tasks: [Task] = buildTasks(from: taskStubs)
-        let space = TaskSpace(tasks: tasks, projects: [], tags: [])
+        let space = SpaceModel(tasks: tasks, projects: [], tags: [])
         let inbox = TaskTree(from: space, with: .Inbox)
         
         return (taskStubs, inbox)
