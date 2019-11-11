@@ -2,7 +2,8 @@ import SwiftUI
 
 struct DefaultsColors {
     let text = Color(NSColor.gray)
-    let background = Color(white: 0.2)
+    let background = Color(white: 0.11)
+    let lightBackground = Color(white: 0.2)
     let selected = Color(NSColor.gray)
     let selectable = Color(NSColor.darkGray)
     let checkboxActive = Color(NSColor.yellow)
@@ -16,6 +17,10 @@ struct DefaultsColors {
 
     func checkbox(_ checked: Bool) -> Color {
         checked ? self.selectable : self.checkboxActive
+    }
+
+    func focusSelected(_ selected: Bool) -> Color {
+        selected ? self.background : self.lightBackground
     }
 }
 

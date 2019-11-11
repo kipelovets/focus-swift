@@ -1,6 +1,6 @@
 import Foundation
 
-enum TaskFilter {
+enum TaskFilter: Equatable {
     case All
     case Inbox
     case Tag(Tag)
@@ -62,6 +62,23 @@ enum TaskFilter {
             case .Tag(let tag):
                 return "Tag " + tag.title
             }
+        }
+    }
+
+    func same(as other: TaskFilter) -> Bool {
+        if self == other {
+            return true
+        }
+
+        switch (self, other) {
+        case (.Due(_), .Due(_)):
+            return true
+        case (.Tag(_), .Tag(_)):
+            return true
+        case (.Project(_), .Project(_)):
+            return true
+        default:
+            return false
         }
     }
 }

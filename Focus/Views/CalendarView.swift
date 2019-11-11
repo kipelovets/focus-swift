@@ -19,7 +19,7 @@ fileprivate func dayOfMonth(_ number: Int) -> Date? {
 }
 
 fileprivate func day(_ date: Date?) -> String? {
-    return date == nil ? nil : String(Calendar.current.component(.day, from: date!))
+    date == nil ? nil : String(Calendar.current.component(.day, from: date!))
 }
 
 class CalendarDropState: ObservableObject {
@@ -49,17 +49,22 @@ struct CalendarDayView: View {
             self.space.focus(on: .Due(date))
         }) {
             Text(taskCount)
+                .frame(width: 30, height: 30)
+                .background(self.dropState.dayNumber == self.dayNumber ?
+                Defaults.colors.dropIndicator :
+                dayOfMonth(self.dayNumber) != nil && space.perspective!.filter == .Due(dayOfMonth(self.dayNumber)!) ? Defaults.colors.background : Defaults.colors.lightBackground)
         }
         .buttonStyle(PlainButtonStyle())
-        .frame(width: 30, height: 30)
+        
         .border(Defaults.colors.selectable)
         .overlay(
             Text(day(dayOfMonth(dayNumber)) ?? "")
                 .font(.system(size: 7))
-            .offset(x: -1, y: 1)
+                .offset(x: -1, y: 1)
+                .foregroundColor(format(date: dayOfMonth(dayNumber) ?? Date()) == format(date:Date()) ? Color.blue : Color.white)
             , alignment: .topTrailing)
         .onDrop(of: TaskDragData.idTypes, delegate: CalendarDropDelegate(dayNumber))
-            .background(self.dropState.dayNumber == self.dayNumber ? Defaults.colors.dropIndicator : Defaults.colors.background)
+        
     }
 }
 
@@ -103,13 +108,22 @@ struct CalendarView: View {
     }
 }
 
-struct CalendarView_Previews: PreviewProvider {
+struct CalendarDayView_Previews: PreviewProvider {
     private static let file = Bundle.main.url(forResource: "taskData.json", withExtension: nil)
     private static let repo = TaskSpaceRepositoryFile(filename: file!.path)
     private static let space = Space(repo)
-    private static var perspective = space.perspective!
     
     static var previews: some View {
-        CalendarView(space: space)
+        CalendarDayView(dayNumber: 5, space: space, dropState: dropState).environmentObject(space)
+    }
+}
+
+struct CalendarView_Previews: PreviewProvider {
+    private static let file = Bundle.main.url(forResource: "taskData.json", withExtension: nil)
+    private static let repo = TaskSpaceRepositoryFile(filename: file!.path)
+    private static let space = Space(repo, with: .Due(Date()))
+    
+    static var previews: some View {
+        CalendarView(space: space).environmentObject(space)
     }
 }

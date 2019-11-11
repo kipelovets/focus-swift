@@ -22,6 +22,7 @@ struct PerspectiveView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(self.perspective.filter.description).font(.headline)
+                .padding(.bottom, 20)
             
             VStack(alignment: .leading, spacing: 0) {
                 ForEach(perspective.tree.root.children) { task in
