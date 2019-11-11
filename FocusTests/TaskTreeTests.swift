@@ -25,7 +25,7 @@ class TaskTreeTests: XCTestCase {
     
     func prepareTree() -> ([N], TaskTree) {
         let (taskStubs, space) = prepareSpace()
-        let inbox = TaskTree(from: space, with: .Inbox)
+        let inbox = TaskTree(from: space, with: .All)
         
         return (taskStubs, inbox)
     }
@@ -75,7 +75,7 @@ class TaskTreeTests: XCTestCase {
         let inbox = TaskTree(from: space, with: .Inbox)
         
         inbox.find(by: 2)?.remove(child: inbox.find(by: 3)!)
-        inbox.find(by: 8)?.add(child: TaskTreeNode(from: Task(9)), at: 0)
+        inbox.find(by: 8)?.add(child: TaskTreeNode(from: Task(9), childOf: nil), at: 0)
         inbox.commit(to: space)
         
         var expectedStubs: [N] = [

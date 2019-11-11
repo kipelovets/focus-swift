@@ -36,5 +36,69 @@
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "079D7BA8-F3DC-42B3-B132-F52AACFFA4C3"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FocusTests/TaskTreeTests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "testInit()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D895CC5F-069E-4606-9097-0D2722EA74D0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Focus/Models/TaskTree.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "init(from:with:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D895CC5F-069E-4606-9097-0D2722EA74D0 - b05b33553414d90"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Focus.TaskTree.init(from: Focus.SpaceModel, with: Focus.PerspectiveType) -&gt; Focus.TaskTree"
+                  moduleName = "Focus"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/georgii.korshunov/Dev/!personal/Focus/Focus/Models/TaskTree.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "24"
+                  endingLineNumber = "24"
+                  offsetFromSymbolStart = "2396">
+               </Location>
+               <Location
+                  uuid = "D895CC5F-069E-4606-9097-0D2722EA74D0 - c4aefb097277835"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #5 (Focus.Task) -&gt; Focus.TaskTreeNode in Focus.TaskTree.init(from: Focus.SpaceModel, with: Focus.PerspectiveType) -&gt; Focus.TaskTree"
+                  moduleName = "Focus"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/georgii.korshunov/Dev/!personal/Focus/Focus/Models/TaskTree.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "24"
+                  endingLineNumber = "24"
+                  offsetFromSymbolStart = "42">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

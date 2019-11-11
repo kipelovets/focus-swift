@@ -90,7 +90,7 @@ class Perspective: ObservableObject {
             editMode = false
         }
         let newTask = Task(id: self.space.space.nextId, title: "")
-        let child = TaskTreeNode(from: newTask, filter: self.filter, parent: current ?? self.tree.root)
+        let child = TaskTreeNode(from: newTask, childOf: current ?? self.tree.root)
         if let current = self.current {
             if current.children.count > 0 {
                 current.add(child: child, at: 0)

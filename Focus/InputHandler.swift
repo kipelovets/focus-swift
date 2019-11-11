@@ -263,7 +263,7 @@ class CommandRecorder {
                 perspective.tree.root :
                 perspective.tree.find(by: addedTask.parentTaskId!)
             
-            let node = TaskTreeNode(from: Task(from: addedTask))
+            let node = TaskTreeNode(from: Task(from: addedTask), childOf: parent)
             
             let position: Int
             switch perspective.filter {

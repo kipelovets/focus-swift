@@ -19,7 +19,7 @@ class TaskTreeNodeTests: XCTestCase {
         
         let tasks: [Task] = buildTasks(from: taskStubs)
         let space = SpaceModel(tasks: tasks, projects: [], tags: [])
-        let inbox = TaskTree(from: space, with: .Inbox)
+        let inbox = TaskTree(from: space, with: .All)
         
         return (taskStubs, inbox)
     }
@@ -27,7 +27,7 @@ class TaskTreeNodeTests: XCTestCase {
     func testPreceding() {
         let (_, inbox) = prepareTree()
         
-        var node: TaskTreeNode? = inbox.root.children.last
+        var node  = inbox.root.children.last
         let expected = [8, 7, 6, 5, 4, 3, 2, 1]
         for expectedId in expected {
             XCTAssertEqual(expectedId, node?.id)
@@ -81,7 +81,10 @@ class TaskTreeNodeTests: XCTestCase {
     func testAddAfter() {
         let (_, inbox) = prepareTree()
         
-        inbox.find(by: 2)!.add(child: inbox.find(by: 7)!, after: inbox.find(by: 3)!)
+        let task7 = inbox.find(by: 7)!
+        let task3 = inbox.find(by: 3)!
+        let task2 = inbox.find(by: 2)!
+        task2.add(child: task7, after: task3)
         
         let expectedStubs: [N] = [
             N(1, [

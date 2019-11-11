@@ -6,12 +6,43 @@ class TaskTree {
     
     private var originalTasks: [Task]
 
-    init(from space: SpaceModel, with filter: PerspectiveType) {
-        let tasks = space.tasks.filter({ filter.accepts(task: $0) }).sorted(by: { $0.position < $1.position })
-        let root = TaskTreeNode(rootFor: tasks, with: filter)
-        
-        self.root = root
-        self.filter = filter
+    init(from space: SpaceModel, with perspectiveType: PerspectiveType) {
+        var tasks = space.tasks.filter({ perspectiveType.accepts(task: $0) }).sorted(by: { $0.position < $1.position })
+        if perspectiveType.allowsHierarchy {
+            tasks = tasks.filter({ $0.parent == nil })
+        }
+
+        let nodes = tasks.map({ TaskTreeNode(from: $0, childOf: nil) })
+        if perspectiveType.allowsHierarchy {
+            var parents: [TaskTreeNode] = nodes
+            while parents.count > 0 {
+                var newParents: [TaskTreeNode] = []
+                for parent in parents {
+                    guard parent.model!.children.count != 0 else {
+                        continue
+                    }
+                    parent.children = parent.model!.children.map({ TaskTreeNode(from: $0, childOf: parent) })
+                    newParents = newParents + parent.children
+                }
+                parents = newParents
+            }
+        } else {
+            for node in nodes {
+                if node.model?.parent != nil {
+                    TaskTreeNode(from: node.model!.parent!, childOf: nil).add(child: node, at: 0)
+                }
+                if node.model!.children.count > 0 {
+                    for child in node.model!.children {
+                        node.add(lastChild: TaskTreeNode(from: child, childOf: node))
+                    }
+                }
+            }
+        }
+
+        // TODO: forbid drag&drop & indentation if perspective type doesn't allow hierarchy
+
+        self.root = TaskTreeNode(rootFor: nodes)
+        self.filter = perspectiveType
         self.originalTasks = root.flattenChildren.map { $0.model! }
     }
 

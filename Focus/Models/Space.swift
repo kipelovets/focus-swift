@@ -26,6 +26,5 @@ class Space: ObservableObject {
     func focus(on filter: PerspectiveType) {
         self.perspective = Perspective(from: self, with: filter)
         objectWillChange.send()
-        print("CHANGE")
     }
 }
