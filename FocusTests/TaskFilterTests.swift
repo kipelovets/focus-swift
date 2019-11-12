@@ -29,7 +29,7 @@ class TaskFilterTests: XCTestCase {
         
         let filters: [(PerspectiveType, [Int])] = [
             (PerspectiveType.Inbox, [1, 4]),
-            (PerspectiveType.Project(project), [2, 3]),
+            (PerspectiveType.Project(project), [2, 3, 5]),
             (PerspectiveType.Tag(tags[0]), [3, 4]),
             (PerspectiveType.Tag(tags[1]), [4, 5]),
             (PerspectiveType.Due(Date()), [2]),
@@ -37,7 +37,7 @@ class TaskFilterTests: XCTestCase {
         
         for (filter, expectedIds) in filters {
             let ids = tasks.filter { filter.accepts(task: $0) }.map { $0.id }
-            XCTAssertEqual(expectedIds, ids)
+            XCTAssertEqual(expectedIds, ids, filter.description)
         }
     }
     

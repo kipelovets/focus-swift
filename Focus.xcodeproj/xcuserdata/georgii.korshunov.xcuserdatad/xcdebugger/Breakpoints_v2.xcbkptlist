@@ -18,6 +18,38 @@
             endingLineNumber = "42"
             landmarkName = "load(_:as:)"
             landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "4C0EE06D-357D-49AA-A909-4C9E05A1B1D9 - 13fc51a520e4642"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Focus.(load in _62A7E1F545F44E1BB9501DDCF0769F19)&lt;A where A: Swift.Decodable&gt;(_: Swift.String, as: A.Type) -&gt; Swift.Optional&lt;A&gt;"
+                  moduleName = "Focus"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/georgii.korshunov/Dev/!personal/Focus/Focus/Models/TaskSpaceRepositoryFile.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "42"
+                  endingLineNumber = "42"
+                  offsetFromSymbolStart = "1858">
+               </Location>
+               <Location
+                  uuid = "4C0EE06D-357D-49AA-A909-4C9E05A1B1D9 - 5216c2edb9539717"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FocusTests.(load in _3F1D565736A8971327E3FA1C366C9051)&lt;A where A: Swift.Decodable&gt;(_: Swift.String, as: A.Type) -&gt; Swift.Optional&lt;A&gt;"
+                  moduleName = "FocusTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/georgii.korshunov/Dev/!personal/Focus/Focus/Models/TaskSpaceRepositoryFile.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "42"
+                  endingLineNumber = "42"
+                  offsetFromSymbolStart = "1858">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -34,68 +66,84 @@
             endingLineNumber = "51"
             landmarkName = "load(_:as:)"
             landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "D2D94C35-7459-4302-906F-C7B7DE2FF5A9 - 13fc51a520e4642"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Focus.(load in _62A7E1F545F44E1BB9501DDCF0769F19)&lt;A where A: Swift.Decodable&gt;(_: Swift.String, as: A.Type) -&gt; Swift.Optional&lt;A&gt;"
+                  moduleName = "Focus"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/georgii.korshunov/Dev/!personal/Focus/Focus/Models/TaskSpaceRepositoryFile.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "51"
+                  endingLineNumber = "51"
+                  offsetFromSymbolStart = "930">
+               </Location>
+               <Location
+                  uuid = "D2D94C35-7459-4302-906F-C7B7DE2FF5A9 - 5216c2edb9539717"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FocusTests.(load in _3F1D565736A8971327E3FA1C366C9051)&lt;A where A: Swift.Decodable&gt;(_: Swift.String, as: A.Type) -&gt; Swift.Optional&lt;A&gt;"
+                  moduleName = "FocusTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/georgii.korshunov/Dev/!personal/Focus/Focus/Models/TaskSpaceRepositoryFile.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "51"
+                  endingLineNumber = "51"
+                  offsetFromSymbolStart = "930">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "079D7BA8-F3DC-42B3-B132-F52AACFFA4C3"
-            shouldBeEnabled = "Yes"
+            uuid = "6C7EF24B-2A38-427C-9901-86CD5779FDF8"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FocusTests/TaskTreeTests.swift"
+            filePath = "Focus/Models/TaskTreeNode.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
-            landmarkName = "testInit()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "D895CC5F-069E-4606-9097-0D2722EA74D0"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Focus/Models/TaskTree.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "24"
-            endingLineNumber = "24"
-            landmarkName = "init(from:with:)"
+            startingLineNumber = "268"
+            endingLineNumber = "268"
+            landmarkName = "moveDown()"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "D895CC5F-069E-4606-9097-0D2722EA74D0 - b05b33553414d90"
-                  shouldBeEnabled = "Yes"
+                  uuid = "6C7EF24B-2A38-427C-9901-86CD5779FDF8 - 34a23800d1ec0665"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Focus.TaskTree.init(from: Focus.SpaceModel, with: Focus.PerspectiveType) -&gt; Focus.TaskTree"
+                  symbolName = "Focus.TaskTreeNode.moveDown() -&gt; ()"
                   moduleName = "Focus"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/georgii.korshunov/Dev/!personal/Focus/Focus/Models/TaskTree.swift"
+                  urlString = "file:///Users/georgii.korshunov/Dev/!personal/Focus/Focus/Models/TaskTreeNode.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "24"
-                  endingLineNumber = "24"
-                  offsetFromSymbolStart = "2396">
+                  startingLineNumber = "268"
+                  endingLineNumber = "268"
+                  offsetFromSymbolStart = "44">
                </Location>
                <Location
-                  uuid = "D895CC5F-069E-4606-9097-0D2722EA74D0 - c4aefb097277835"
-                  shouldBeEnabled = "Yes"
+                  uuid = "6C7EF24B-2A38-427C-9901-86CD5779FDF8 - 20c819d1e9282ee5"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #5 (Focus.Task) -&gt; Focus.TaskTreeNode in Focus.TaskTree.init(from: Focus.SpaceModel, with: Focus.PerspectiveType) -&gt; Focus.TaskTree"
-                  moduleName = "Focus"
+                  symbolName = "FocusTests.TaskTreeNode.moveDown() -&gt; ()"
+                  moduleName = "FocusTests"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/georgii.korshunov/Dev/!personal/Focus/Focus/Models/TaskTree.swift"
+                  urlString = "file:///Users/georgii.korshunov/Dev/!personal/Focus/Focus/Models/TaskTreeNode.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "24"
-                  endingLineNumber = "24"
-                  offsetFromSymbolStart = "42">
+                  startingLineNumber = "268"
+                  endingLineNumber = "268"
+                  offsetFromSymbolStart = "44">
                </Location>
             </Locations>
          </BreakpointContent>

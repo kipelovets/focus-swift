@@ -30,7 +30,7 @@ class N: Equatable, CustomDebugStringConvertible {
     var debugDescription: String {
         var desc = "\(id)"
         if children.count > 0 {
-            desc += " <\(children)>"
+            desc += " \(children)"
         }
         return desc
     }

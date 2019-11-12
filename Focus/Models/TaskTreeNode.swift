@@ -186,7 +186,7 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
     func add(child node: TaskTreeNode, at position: Int) {
         var fixedPosition = position
         if node.parent == self {
-            if let i = children.firstIndex(of: node), position >= i {
+            if let i = children.firstIndex(of: node), position > i + 1 {
                 fixedPosition -= 1
             }
         }

@@ -111,14 +111,14 @@ class TaskTreeNodeTests: XCTestCase {
         
         let expectedStubs: [N] = [
             N(1, [
-                N(2, []),
-                N(7, [
+                N(2, [
                     N(3, [
                         N(4, []),
                         N(5, [])
                     ]),
                     N(6, [])
-                ])
+                ]),
+                N(7, [])
             ]),
             N(8, [])
         ]
@@ -439,8 +439,8 @@ class TaskTreeNodeTests: XCTestCase {
             N(8, []),
             N(7, [])
         ]
-        inbox.find(by: 7)!.moveDown()
         dumpNodes(expectedStubs)
+        inbox.find(by: 7)!.moveDown()
         dumpNodes(inbox.nodeStubs)
         XCTAssertEqual(expectedStubs, inbox.nodeStubs)
         
