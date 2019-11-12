@@ -194,6 +194,9 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
             fixedPosition = 0
         }
         node.parent?.remove(child: node)
+        if fixedPosition > self.children.endIndex {
+            fixedPosition = self.children.endIndex
+        }
         self.children.insert(node, at: fixedPosition)
         node.parent = self
     }

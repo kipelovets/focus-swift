@@ -56,7 +56,7 @@ class TaskTreeNodeTests: XCTestCase {
     }
     
     func testAddAtPosition() {
-        let (_, inbox) = prepareTree()
+        var (stubs, inbox) = prepareTree()
         
         inbox.find(by: 2)!.add(child: inbox.find(by: 7)!, at: 1)
         
@@ -76,6 +76,10 @@ class TaskTreeNodeTests: XCTestCase {
         
         let newStubs: [N] = buildNodeStubs(from: inbox.root.children.map { $0.model! })
         XCTAssertEqual(expectedStubs, newStubs)
+
+        (stubs, inbox) = prepareTree()
+        inbox.root.add(child: inbox.find(by: 8)!, at: 100)
+        XCTAssertEqual(stubs, inbox.nodeStubs)
     }
     
     func testAddAfter() {
