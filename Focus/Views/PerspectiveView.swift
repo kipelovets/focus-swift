@@ -16,7 +16,6 @@ struct DropIndicator: View {
 }
 
 struct PerspectiveView: View {
-    
     @ObservedObject var perspective: Perspective
     
     var body: some View {
@@ -41,11 +40,16 @@ struct PerspectiveView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-    private static let file = Bundle.main.url(forResource: "taskData.json", withExtension: nil)
-    private static let repo = TaskSpaceRepositoryFile(filename: file!.path)
-    private static let perspective = Perspective(from: Space(repo), with: .Inbox)
+    private static let space = loadPreviewSpace()
+    private static let perspectives: [Perspective] = [
+        Perspective(from: space.space, with: .Inbox),
+        Perspective(from: space.space, with: .Due(Date(from: "2019-11-11")))
+    ]
     
     static var previews: some View {
-        PerspectiveView(perspective: perspective).environmentObject(perspective)
+        Group {
+            PerspectiveView(perspective: perspectives[0]).environmentObject(perspectives[0])
+            PerspectiveView(perspective: perspectives[1]).environmentObject(perspectives[1])
+        }
     }
 }

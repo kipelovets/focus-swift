@@ -38,14 +38,14 @@ struct FilterSelector: View {
                 }) {
                     Text(filter.description).font(.headline)
                         .frame(minWidth: 100, maxWidth: .infinity, minHeight: 10, alignment: .leading)
-                        .background(Defaults.colors.focusSelected(self.space.perspective!.filter.same(as: filter)))
+                        .background(Defaults.colors.focusSelected(self.space.perspective.filter.same(as: filter)))
                 }
                 .buttonStyle(PlainButtonStyle())
             }
             .padding(5)
         }
-        .background(Defaults.colors.focusSelected(self.space.perspective!.filter.same(as: filter)))
-        .modifier(FocusSelection(self.space.perspective!.filter.same(as: filter)))
+        .background(Defaults.colors.focusSelected(self.space.perspective.filter.same(as: filter)))
+        .modifier(FocusSelection(self.space.perspective.filter.same(as: filter)))
     }
 }
 
@@ -65,14 +65,14 @@ struct SpaceView: View {
                             CalendarView(space: space)
                             Spacer()
                         }.padding(5)
-                            .background(Defaults.colors.focusSelected(self.space.perspective!.filter.same(as: .Due(Date()))))
+                            .background(Defaults.colors.focusSelected(self.space.perspective.filter.same(as: .Due(Date()))))
                     }
-                    .modifier(FocusSelection(self.space.perspective!.filter.same(as: .Due(Date()))))
+                    .modifier(FocusSelection(self.space.perspective.filter.same(as: .Due(Date()))))
                     Spacer()
                 }
             }
             .background(Defaults.colors.lightBackground)
-            PerspectiveView(perspective: space.perspective!)
+            PerspectiveView(perspective: space.perspective)
         }
         .background(Defaults.colors.background)
     }

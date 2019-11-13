@@ -22,7 +22,7 @@ enum PerspectiveType: Equatable {
                 return false
             }
 
-            return format(date: date) == format(date: task.dueAt!)
+            return date.same(as: task.dueAt!)
         }
     }
 
@@ -56,7 +56,7 @@ enum PerspectiveType: Equatable {
             case .Inbox:
                 return "Inbox"
             case .Due(let date):
-                return "Due " + format(date: date)
+                return "Due " + date.formatted
             case .Project(let project):
                 return "Project " + project.title
             case .Tag(let tag):

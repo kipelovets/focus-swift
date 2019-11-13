@@ -73,17 +73,18 @@ enum InputGesture {
 }
 
 class InputHandler {
-    private let perspective: Perspective
+    private let space: Space
     private let recorder: CommandRecorder
     
     private var currentTask: TaskDto? = nil
     
-    init(perspective: Perspective, recorder: CommandRecorder) {
-        self.perspective = perspective
+    init(space: Space, recorder: CommandRecorder) {
+        self.space = space
         self.recorder = recorder
     }
     
     func send(_ gesture: InputGesture) {
+        let perspective = space.perspective
         let before = perspective.current?.model?.dto
         
         let currentDidChange = { () in
@@ -91,7 +92,7 @@ class InputHandler {
                 self.currentTask = before
                 return
             }
-            let previousCurrent = self.perspective.tree.find(by: self.currentTask!.id)
+            let previousCurrent = perspective.tree.find(by: self.currentTask!.id)
             let newTitle = previousCurrent?.title
             if newTitle != self.currentTask?.title {
                 self.recorder.record(Command(type: .UpdateTitle, before: self.currentTask, after: previousCurrent?.model?.dto))
@@ -114,6 +115,7 @@ class InputHandler {
                 currentTask = before
             } else {
                 currentDidChange()
+                space.save()
                 return
             }
         case .AddTask:
@@ -150,6 +152,8 @@ class InputHandler {
         if let commandType = CommandType(with: gesture) {
             recorder.record(Command(type: commandType, before: before, after: perspective.current?.model?.dto))
         }
+
+        space.save()
     }
 }
 

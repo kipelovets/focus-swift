@@ -1,15 +1,26 @@
 import SwiftUI
 
+struct ChildrenMarkerView: View {
+    let childrenCount: Int
+
+    var body: some View {
+        Text("children: \(childrenCount)")
+                .font(.system(size: 10))
+                .foregroundColor(Defaults.colors.text)
+                .background(Defaults.colors.lightBackground)
+    }
+}
+
 struct TaskRowView: View {
     public static let HEIGHT: CGFloat = 30
     public static let CHILD_OFFSET: CGFloat = 20
 
-    @EnvironmentObject var perspective: Perspective
+    @EnvironmentObject var space: Space
     @ObservedObject var task: TaskTreeNode
 
     var body: some View {
         HStack {
-            Defaults.colors.selectable(perspective.current == task).frame(width: 8, height: TaskRowView.HEIGHT)
+            Defaults.colors.selectable(space.perspective.current == task).frame(width: 8, height: TaskRowView.HEIGHT)
             Spacer().frame(width: 16, height: TaskRowView.CHILD_OFFSET)
             HStack {
 
@@ -31,7 +42,7 @@ struct TaskRowView: View {
                 }
                 .buttonStyle(PlainButtonStyle())
 
-                if perspective.editMode && perspective.current == task {
+                if space.perspective.editMode && space.perspective.current == task {
                     CustomTextField(text: $task.title, isFirstResponder: true)
                         .frame(width: 200, height: 20)
                 } else {
@@ -47,12 +58,21 @@ struct TaskRowView: View {
                     .buttonStyle(PlainButtonStyle())
                 }
                 
-                Text(format(date:self.task.dueAt))
-                    .foregroundColor(Defaults.colors.text)
+                if self.task.dueAt != nil {
+                    Text(self.task.dueAt!.formatted)
+                        .foregroundColor(Defaults.colors.text)
+                }
 
             }.padding(5)
+            .overlay(
+                Group {
+                    if !self.perspective.filter.allowsHierarchy {
+                        ChildrenMarkerView(childrenCount: self.task.children.count)
+                    }
+                }.offset(x: 30), alignment: .bottomLeading
+            )
         }
-        .border(Defaults.colors.selected, width: perspective.current == task ? 2 : 0)
+        .border(Defaults.colors.selected, width: self.space.perspective.current == task ? 2 : 0)
         .background(Defaults.colors.background)
         .onDrag { () -> NSItemProvider in
             inputHandler.send(.Select(self.task.id))
@@ -68,15 +88,21 @@ struct TaskRowView: View {
 }
 
 struct TaskRow_Previews: PreviewProvider {
-    private static let file = Bundle.main.url(forResource: "taskData.json", withExtension: nil)
-    private static let repo = TaskSpaceRepositoryFile(filename: file!.path)
-    private static var perspective = Space(repo).perspective!
+    private static var space = loadPreviewSpace()
+    private static var perspective = space.perspective
+    private static var perspectiveDue = Perspective(from: space.space, with: .Due(Date(from: "2019-11-11")))
 
     static var previews: some View {
         Group {
-            TaskRowView(task: perspective.tree.root.children[0])
-            TaskRowView(task: perspective.tree.root.children[1])
-            TaskRowView(task: perspective.tree.root.children[2])
-        }.environmentObject(perspective)
+            Group {
+                TaskRowView(task: perspective.tree.root.children[0])
+                TaskRowView(task: perspective.tree.root.children[1])
+                TaskRowView(task: perspective.tree.root.children[2])
+            }.environmentObject(perspective)
+            
+            Group {
+                TaskRowView(task: perspectiveDue.tree.find(by: 5)!)
+            }.environmentObject(perspectiveDue)
+        }
     }
 }

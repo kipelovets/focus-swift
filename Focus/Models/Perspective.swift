@@ -7,12 +7,12 @@ class Perspective: ObservableObject {
     @Published var current: TaskTreeNode? = nil
     @Published var dropTarget: TaskTreeNode? = nil
 
-    private let space: Space
+    private let space: SpaceModel
 
-    init(from space: Space, with filter: PerspectiveType) {
+    init(from space: SpaceModel, with filter: PerspectiveType) {
         self.space = space
         self.filter = filter
-        self.tree = TaskTree(from: self.space.space, with: filter)
+        self.tree = TaskTree(from: self.space, with: filter)
         self.current = self.tree.root.children.first
     }
 
@@ -48,7 +48,6 @@ class Perspective: ObservableObject {
             if editMode {
                 return
             }
-            save()
         }
     }
 
@@ -81,7 +80,6 @@ class Perspective: ObservableObject {
         self.current = current.succeeding ?? current.preceding
         current.parent?.remove(child: current)
         editMode = false
-        save()
         self.current = nil
     }
     
@@ -89,7 +87,7 @@ class Perspective: ObservableObject {
         if editMode {
             editMode = false
         }
-        let newTask = Task(id: self.space.space.nextId, title: "")
+        let newTask = Task(id: self.space.nextId, title: "")
         let child = TaskTreeNode(from: newTask, childOf: current ?? self.tree.root)
         if let current = self.current {
             if current.children.count > 0 {
@@ -102,7 +100,6 @@ class Perspective: ObservableObject {
         }
         self.current = child
         editMode = true
-        save()
     }
     
     func edit(node: TaskTreeNode) {
@@ -116,7 +113,6 @@ class Perspective: ObservableObject {
         }
         
         current.indent()
-        save()
         updateView()
     }
     
@@ -130,7 +126,6 @@ class Perspective: ObservableObject {
         }
         
         current.outdent()
-        save()
         updateView()
     }
 
@@ -143,7 +138,6 @@ class Perspective: ObservableObject {
 
         if target.isRoot {
             target.add(child: current, at: 0)
-            save()
             return
         }
         
@@ -160,7 +154,6 @@ class Perspective: ObservableObject {
 
         if dropDepth > target.depth {
             target.add(child: current, at: 0)
-            save()
             return
         }
         var sibling: TaskTreeNode? = target
@@ -175,13 +168,8 @@ class Perspective: ObservableObject {
         }
         sibling!.insert(sibling: current)
         
-        save()
     }
 
-    func save() {
-        space.save()
-    }
-    
     func updateView() {
         objectWillChange.send()
     }
