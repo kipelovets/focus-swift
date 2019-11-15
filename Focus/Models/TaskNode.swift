@@ -1,7 +1,7 @@
 import Foundation
 
-class TaskTreeNode: Hashable, Identifiable, ObservableObject {
-    static func == (lhs: TaskTreeNode, rhs: TaskTreeNode) -> Bool {
+class TaskNode: Hashable, Identifiable, ObservableObject {
+    static func == (lhs: TaskNode, rhs: TaskNode) -> Bool {
         lhs.id == rhs.id
     }
 
@@ -34,7 +34,7 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
     @Published var project: Project? = nil {
         didSet {
             if (self.isRoot && self.project != nil) ||
-                (!self.isRoot && !self.parent!.isRoot && self.project != nil)
+                (self.parent != nil && !self.parent!.isRoot && self.project != nil)
             {
                 self.project = nil
                 return
@@ -47,13 +47,13 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
             model?.tagPositions = tagPositions
         }
     }
-    @Published var children: [TaskTreeNode] = [] {
+    @Published var children: [TaskNode] = [] {
         didSet {
             model?.children = children.map { $0.model! }
         }
     }
 
-    private(set) var parent: TaskTreeNode? {
+    private(set) var parent: TaskNode? {
         didSet {
             if parent?.isRoot == true {
                 model?.parent = nil
@@ -73,7 +73,7 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
     }
 
     var isRoot: Bool {
-        parent == nil
+        id == -1
     }
 
     var depth: Int {
@@ -90,7 +90,7 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
         return indexInParent == parent!.children.count - 1
     }
 
-    init(from model: Task, childOf parent: TaskTreeNode?) {
+    init(from model: Task, childOf parent: TaskNode?) {
         self.id = model.id
         self.model = model
         self.title = model.title
@@ -108,21 +108,24 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
         if parent == nil {
             model.parent = modelParent
         }
+        model.children = modelChildren
 
-        self.children = modelChildren.map({ TaskTreeNode(from: $0, childOf: self) })
+//        self.children = modelChildren.map({ TaskNode(from: $0, childOf: self) })
     }
 
-    convenience init(rootFor tasks: [TaskTreeNode]) {
+    convenience init(rootFor tasks: [TaskNode], allowingHierarchy: Bool) {
         self.init(from: Task(id: -1, title: "_root"), childOf: nil)
         self.children = tasks
-        self.children.forEach({ child in child.parent = self})
+        if allowingHierarchy {
+            self.children.forEach({ child in child.parent = self})
+        }
     }
 
-    var flattenChildren: [TaskTreeNode] {
+    var flattenChildren: [TaskNode] {
         var nodes = self.children
         var parents = nodes
         while parents.count != 0 {
-            var newParents: [TaskTreeNode] = []
+            var newParents: [TaskNode] = []
             for parent in parents {
                 newParents += parent.children
             }
@@ -133,7 +136,7 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
         return nodes
     }
 
-    var preceding: TaskTreeNode? {
+    var preceding: TaskNode? {
         get {
             guard parent != nil else {
                 return nil
@@ -144,7 +147,7 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
                 return parent
             }
 
-            var node: TaskTreeNode? = parent!.children[myIndex - 1]
+            var node: TaskNode? = parent!.children[myIndex - 1]
             while node!.children.count > 0 {
                 node = node?.children.last
             }
@@ -153,7 +156,7 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
         }
     }
 
-    var succeeding: TaskTreeNode? {
+    var succeeding: TaskNode? {
         get {
             if self.children.count > 0 {
                 return self.children.first
@@ -176,14 +179,14 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
         }
     }
 
-    func remove(child node: TaskTreeNode) {
+    func remove(child node: TaskNode) {
         guard let index = self.children.firstIndex(of: node) else {
             return
         }
         self.children.remove(at: index)
     }
 
-    func add(child node: TaskTreeNode, at position: Int) {
+    func add(child node: TaskNode, at position: Int) {
         var fixedPosition = position
         if node.parent == self {
             if let i = children.firstIndex(of: node), position > i + 1 {
@@ -201,32 +204,41 @@ class TaskTreeNode: Hashable, Identifiable, ObservableObject {
         node.parent = self
     }
 
-    func add(child node: TaskTreeNode, after: TaskTreeNode) {
+    func add(child node: TaskNode, after: TaskNode) {
         guard let index = self.children.firstIndex(of: after) else {
             return
         }
         self.add(child: node, at: index + 1)
     }
 
-    func add(lastChild node: TaskTreeNode) {
+    func add(lastChild node: TaskNode) {
         self.add(child: node, at: self.children.endIndex)
     }
 
-    func insert(sibling node: TaskTreeNode) {
+    func insert(sibling node: TaskNode) {
         self.parent?.add(child: node, after: self)
     }
 
-    var precedingSibling: TaskTreeNode? {
-        get {
-            guard self.parent != nil else {
-                return nil
-            }
-            let index = self.parent!.children.firstIndex(of: self)!
-            guard index > 0 else {
-                return nil
-            }
-            return self.parent?.children[index - 1]
+    var precedingSibling: TaskNode? {
+        guard parent != nil else {
+            return nil
         }
+        let index = parent!.children.firstIndex(of: self)!
+        guard index > 0 else {
+            return nil
+        }
+        return parent!.children[index - 1]
+    }
+    
+    var nextSibling: TaskNode? {
+        guard parent != nil else {
+            return nil
+        }
+        let index = parent!.children.firstIndex(of: self)!
+        guard index + 1 < parent!.children.count else {
+            return nil
+        }
+        return parent!.children[index + 1]
     }
 
     func indent() {

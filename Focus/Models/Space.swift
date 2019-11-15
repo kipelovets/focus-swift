@@ -26,8 +26,9 @@ class Space: ObservableObject {
     }
     
     func focus(on filter: PerspectiveType) {
-        self.perspective = Perspective(from: self.space, with: filter)
-        self.subscribeToPerspectiveChange()
+        save()
+        perspective = Perspective(from: space, with: filter)
+        subscribeToPerspectiveChange()
     }
     
     private var subscription: AnyCancellable?

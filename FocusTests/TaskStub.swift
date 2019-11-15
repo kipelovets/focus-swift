@@ -1,7 +1,7 @@
 import Foundation
 @testable import Focus
 
-extension TaskTree {
+extension TaskNodeTree {
     var nodeStubs: [N] {
         get {
             buildNodeStubs(from: root.children.map { $0.model! })
@@ -9,7 +9,7 @@ extension TaskTree {
     }
 }
 
-extension TaskTreeNode {
+extension TaskNode {
     var treeNodeStubs: [N] {
         get {
             var root = self

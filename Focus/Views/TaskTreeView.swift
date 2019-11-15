@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TaskTreeView: View {
-    @ObservedObject var task: TaskTreeNode
+    @ObservedObject var task: TaskNode
     @EnvironmentObject var perspective: Perspective
     
     var body: some View {

@@ -23,9 +23,9 @@ class TaskTreeTests: XCTestCase {
         return (taskStubs, space)
     }
     
-    func prepareTree() -> ([N], TaskTree) {
+    func prepareTree() -> ([N], TaskNodeTree) {
         let (taskStubs, space) = prepareSpace()
-        let inbox = TaskTree(from: space, with: .All)
+        let inbox = TaskNodeTree(from: space, with: .All)
         
         return (taskStubs, inbox)
     }
@@ -72,10 +72,10 @@ class TaskTreeTests: XCTestCase {
     
     func testCommit() {
         let (_, space) = prepareSpace()
-        let inbox = TaskTree(from: space, with: .Inbox)
+        let inbox = TaskNodeTree(from: space, with: .Inbox)
         
         inbox.find(by: 2)?.remove(child: inbox.find(by: 3)!)
-        inbox.find(by: 8)?.add(child: TaskTreeNode(from: Task(9), childOf: nil), at: 0)
+        inbox.find(by: 8)?.add(child: TaskNode(from: Task(9), childOf: nil), at: 0)
         inbox.commit(to: space)
         
         var expectedStubs: [N] = [
@@ -89,7 +89,7 @@ class TaskTreeTests: XCTestCase {
                 N(9, [])
             ])
         ]
-        XCTAssertEqual(expectedStubs, TaskTree(from: space, with: .Inbox).nodeStubs)
+        XCTAssertEqual(expectedStubs, TaskNodeTree(from: space, with: .Inbox).nodeStubs)
         
         inbox.root.remove(child: inbox.find(by: 7)!)
         inbox.commit(to: space)
@@ -103,6 +103,6 @@ class TaskTreeTests: XCTestCase {
                 N(9, [])
             ])
         ]
-        XCTAssertEqual(expectedStubs, TaskTree(from: space, with: .Inbox).nodeStubs)
+        XCTAssertEqual(expectedStubs, TaskNodeTree(from: space, with: .Inbox).nodeStubs)
     }
 }

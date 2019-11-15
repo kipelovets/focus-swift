@@ -36,7 +36,7 @@ class TaskSpaceTests: XCTestCase {
         let tasks: [Task] = buildTasks(from: taskStubs)
         XCTAssertEqual(8, tasks.count)
         let space = SpaceModel(tasks: tasks, projects: [], tags: [])
-        let inbox = TaskTree(from: space, with: .Inbox)
+        let inbox = TaskNodeTree(from: space, with: .Inbox)
         
         XCTAssertEqual(3, inbox.root.children.count)
         XCTAssertEqual([1,7,8], inbox.root.children.map { $0.id })

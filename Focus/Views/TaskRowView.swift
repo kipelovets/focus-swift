@@ -12,7 +12,7 @@ struct HierarchyMarkerView: View {
 }
 
 struct TaskButtonView: View {
-    let task: TaskTreeNode
+    let task: TaskNode
     
     var body: some View {
         Button(action: {
@@ -36,11 +36,11 @@ struct TaskButtonView: View {
 }
 
 struct TaskRowView: View {
-    public static let HEIGHT: CGFloat = 30
+    public static let HEIGHT: CGFloat = 34
     public static let CHILD_OFFSET: CGFloat = 20
 
     @EnvironmentObject var space: Space
-    @ObservedObject var task: TaskTreeNode
+    @ObservedObject var task: TaskNode
 
     var body: some View {
         HStack {
@@ -82,7 +82,7 @@ struct TaskRowView: View {
             .overlay(
                 Group {
                     if !self.space.perspective.filter.allowsHierarchy && !self.task.parent!.isRoot {
-                        HierarchyMarkerView(text: self.task.parent!.title)
+                        HierarchyMarkerView(text: "parent: " + self.task.parent!.title)
                     }
                 }.offset(x: 34), alignment: .topLeading
             )

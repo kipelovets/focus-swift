@@ -1,4 +1,4 @@
-func dumpTree(node: TaskTreeNode, _ offset: Int = 0) {
+func dumpTree(node: TaskNode, _ offset: Int = 0) {
     let prefix = String(repeating: "\t", count: offset)
     let parent: String
     if node.parent != nil {

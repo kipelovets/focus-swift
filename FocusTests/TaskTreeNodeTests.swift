@@ -2,7 +2,7 @@ import XCTest
 @testable import Focus
 
 class TaskTreeNodeTests: XCTestCase {
-    func prepareTree() -> ([N], TaskTree) {
+    func prepareTree() -> ([N], TaskNodeTree) {
         let taskStubs: [N] = [
             N(1, [
                 N(2, [
@@ -19,7 +19,7 @@ class TaskTreeNodeTests: XCTestCase {
         
         let tasks: [Task] = buildTasks(from: taskStubs)
         let space = SpaceModel(tasks: tasks, projects: [], tags: [])
-        let inbox = TaskTree(from: space, with: .All)
+        let inbox = TaskNodeTree(from: space, with: .All)
         
         return (taskStubs, inbox)
     }

@@ -2,17 +2,17 @@ import Foundation
 import Combine
 
 class Perspective: ObservableObject {
-    let tree: TaskTree
+    let tree: TaskNodeTree
     let filter: PerspectiveType
-    @Published var current: TaskTreeNode? = nil
-    @Published var dropTarget: TaskTreeNode? = nil
+    @Published var current: TaskNode? = nil
+    @Published var dropTarget: TaskNode? = nil
 
     private let space: SpaceModel
 
     init(from space: SpaceModel, with filter: PerspectiveType) {
         self.space = space
         self.filter = filter
-        self.tree = TaskTree(from: self.space, with: filter)
+        self.tree = TaskNodeTree(from: self.space, with: filter)
         self.current = self.tree.root.children.first
     }
 
@@ -30,7 +30,7 @@ class Perspective: ObservableObject {
                 minDepth = targetDepth
             }
             
-            var node: TaskTreeNode? = target
+            var node: TaskNode? = target
             while node != nil && node?.isRoot != true {
                 if node?.isLastChild != true {
                     break
@@ -88,7 +88,7 @@ class Perspective: ObservableObject {
             editMode = false
         }
         let newTask = Task(id: self.space.nextId, title: "")
-        let child = TaskTreeNode(from: newTask, childOf: current ?? self.tree.root)
+        let child = TaskNode(from: newTask, childOf: current ?? self.tree.root)
         if let current = self.current {
             if current.children.count > 0 {
                 current.add(child: child, at: 0)
@@ -102,7 +102,7 @@ class Perspective: ObservableObject {
         editMode = true
     }
     
-    func edit(node: TaskTreeNode) {
+    func edit(node: TaskNode) {
         current = node
         editMode = true
     }
@@ -144,7 +144,7 @@ class Perspective: ObservableObject {
         if target == current && dropDepth >= target.depth {
             return
         }
-        var p: TaskTreeNode? = target.parent
+        var p: TaskNode? = target.parent
         while p?.isRoot != true {
             if p == current {
                 return
@@ -156,7 +156,7 @@ class Perspective: ObservableObject {
             target.add(child: current, at: 0)
             return
         }
-        var sibling: TaskTreeNode? = target
+        var sibling: TaskNode? = target
         let steps = target.depth - dropDepth
         if steps > 0 {
             for _ in 0..<steps {

@@ -100,6 +100,10 @@ class InputHandler {
             self.currentTask = before
         }
         
+        defer {
+            space.save()
+        }
+        
         switch (gesture) {
         case .Down:
             perspective.next()
@@ -115,7 +119,6 @@ class InputHandler {
                 currentTask = before
             } else {
                 currentDidChange()
-                space.save()
                 return
             }
         case .AddTask:
@@ -152,8 +155,6 @@ class InputHandler {
         if let commandType = CommandType(with: gesture) {
             recorder.record(Command(type: commandType, before: before, after: perspective.current?.model?.dto))
         }
-
-        space.save()
     }
 }
 
@@ -267,7 +268,7 @@ class CommandRecorder {
                 perspective.tree.root :
                 perspective.tree.find(by: addedTask.parentTaskId!)
             
-            let node = TaskTreeNode(from: Task(from: addedTask), childOf: parent)
+            let node = TaskNode(from: Task(from: addedTask), childOf: parent)
             
             let position: Int
             switch perspective.filter {

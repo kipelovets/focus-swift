@@ -14,35 +14,35 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-		<key>TaskTreeNodeTests.testMoveDown.xcscheme</key>
+		<key>TaskTreeNodeTests.testPreceding.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false />
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
-		<key>TaskTreeNodeTests.testPreceding.xcscheme</key>
+		<key>TaskFilterTests.testAccepts.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false />
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
-		<key>TaskFilterTests.testAccepts.xcscheme</key>
+		<key>TaskTreeNodeTests.testInsert.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false />
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
-		<key>TaskTreeNodeTests.testInsert.xcscheme</key>
+		<key>TaskTreeNodeTests.testAddAtPosition.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false />
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
-		<key>TaskTreeNodeTests.testAddAtPosition.xcscheme</key>
+		<key>PerspectiveTests.testParentPreservingWithNoHierarchy.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false />

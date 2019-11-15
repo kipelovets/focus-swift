@@ -7,9 +7,11 @@ protocol TaskSpaceRepository {
 
 class TaskSpaceRepositoryFile: TaskSpaceRepository {
     private let filename: String
+    private let readonly: Bool
     
-    init(filename: String) {
+    init(filename: String, readonly: Bool = false) {
         self.filename = filename
+        self.readonly = readonly
     }
     
     public func Load() -> TaskSpaceDto {
@@ -29,6 +31,9 @@ class TaskSpaceRepositoryFile: TaskSpaceRepository {
     }
     
     public func Save(space: TaskSpaceDto) {
+        guard readonly == false else {
+            return
+        }
         save(filename, value: space)
     }
 }

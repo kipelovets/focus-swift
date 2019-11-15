@@ -1,8 +1,8 @@
 import Foundation
 
-class TaskTree {
+class TaskNodeTree {
     let filter: PerspectiveType
-    let root: TaskTreeNode
+    let root: TaskNode
     
     private var originalTasks: [Task]
 
@@ -12,16 +12,16 @@ class TaskTree {
             tasks = tasks.filter({ $0.parent == nil })
         }
 
-        let nodes = tasks.map({ TaskTreeNode(from: $0, childOf: nil) })
+        let nodes = tasks.map({ TaskNode(from: $0, childOf: nil) })
         if perspectiveType.allowsHierarchy {
-            var parents: [TaskTreeNode] = nodes
+            var parents: [TaskNode] = nodes
             while parents.count > 0 {
-                var newParents: [TaskTreeNode] = []
+                var newParents: [TaskNode] = []
                 for parent in parents {
                     guard parent.model!.children.count != 0 else {
                         continue
                     }
-                    parent.children = parent.model!.children.map({ TaskTreeNode(from: $0, childOf: parent) })
+                    parent.children = parent.model!.children.map({ TaskNode(from: $0, childOf: parent) })
                     newParents = newParents + parent.children
                 }
                 parents = newParents
@@ -29,11 +29,11 @@ class TaskTree {
         } else {
             for node in nodes {
                 if node.model?.parent != nil {
-                    TaskTreeNode(from: node.model!.parent!, childOf: nil).add(child: node, at: 0)
+                    TaskNode(from: node.model!.parent!, childOf: nil).add(child: node, at: 0)
                 }
                 if node.model!.children.count > 0 {
                     for child in node.model!.children {
-                        node.add(lastChild: TaskTreeNode(from: child, childOf: node))
+                        node.add(lastChild: TaskNode(from: child, childOf: node))
                     }
                 }
             }
@@ -41,14 +41,14 @@ class TaskTree {
 
         // TODO: forbid drag&drop & indentation if perspective type doesn't allow hierarchy
 
-        self.root = TaskTreeNode(rootFor: nodes)
+        self.root = TaskNode(rootFor: nodes, allowingHierarchy: perspectiveType.allowsHierarchy)
         self.filter = perspectiveType
         self.originalTasks = root.flattenChildren.map { $0.model! }
     }
 
-    func nth(_ n: Int) -> TaskTreeNode? {
+    func nth(_ n: Int) -> TaskNode? {
         var counter = -1
-        var node: TaskTreeNode? = root
+        var node: TaskNode? = root
         while counter < n, node != nil {
             node = node?.succeeding
             counter += 1
@@ -66,13 +66,12 @@ class TaskTree {
             }
         }
         
-        switch filter {
-        case .Inbox, .Project(_):
+        if filter.allowsHierarchy {
             root.reindexChildren()
-        default:
+        } else {
             var pos = 0
             var node = root.succeeding
-            while node != nil {
+            try! safeWhile({
                 switch filter {
                 case .Due(_):
                     node?.model?.duePosition = pos
@@ -82,8 +81,11 @@ class TaskTree {
                     break
                 }
                 pos += 1
-                node = node?.succeeding
-            }
+                let s = node?.nextSibling
+                node = s
+                
+                return node != nil
+            }, count: root.flattenChildren.count + 1)
         }
         
         for task in originalTasks {
@@ -94,10 +96,10 @@ class TaskTree {
         originalTasks = root.flattenChildren.map { $0.model! }
     }
     
-    func find(by id: Int) -> TaskTreeNode? {
+    func find(by id: Int) -> TaskNode? {
         var tasks = root.children
         while tasks.count > 0 {
-            var newTasks: [TaskTreeNode] = []
+            var newTasks: [TaskNode] = []
             for task in tasks {
                 if task.id == id {
                     return task
