@@ -1,23 +1,23 @@
 import Combine
 import Foundation
+import SwiftUI
 
 class Space: ObservableObject {
     private let repo: TaskSpaceRepository
     let space: SpaceModel
     @Published private(set) var perspective: Perspective
-
+    
     init(_ repo: TaskSpaceRepository, with filter: PerspectiveType) {
         self.repo = repo
         let space = SpaceModel(from: repo.Load())
         self.space = space
         self.perspective = Perspective(from: space, with: filter)
+        
+        self.subscribeToPerspectiveChange()
     }
     
-    init(_ repo: TaskSpaceRepository) {
-        self.repo = repo
-        let space = SpaceModel(from: repo.Load())
-        self.space = space
-        self.perspective = Perspective(from: space, with: .All)
+    convenience init(_ repo: TaskSpaceRepository) {
+        self.init(repo, with: .All)
     }
     
     func save() {
@@ -27,6 +27,13 @@ class Space: ObservableObject {
     
     func focus(on filter: PerspectiveType) {
         self.perspective = Perspective(from: self.space, with: filter)
-        objectWillChange.send()
+        self.subscribeToPerspectiveChange()
+    }
+    
+    private var subscription: AnyCancellable?
+    private func subscribeToPerspectiveChange() {
+        self.subscription = self.perspective.objectWillChange.sink(receiveValue: { _ in
+            self.objectWillChange.send()
+        })
     }
 }

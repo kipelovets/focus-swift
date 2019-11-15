@@ -24,9 +24,9 @@ extension Date {
     }
 }
 
-func loadPreviewSpace() -> Space {
+func loadPreviewSpace(_ filter: PerspectiveType = .All) -> Space {
     let file = Bundle.main.url(forResource: "taskData.json", withExtension: nil)
     let repo = TaskSpaceRepositoryFile(filename: file!.path)
     
-    return Space(repo)
+    return Space(repo, with: filter)
 }

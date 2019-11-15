@@ -45,6 +45,7 @@
 		44D7A719235248D70093CDF2 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A718235248D70093CDF2 /* Palette.swift */; };
 		44D7A71B23525EF70093CDF2 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A71A23525EF70093CDF2 /* Task.swift */; };
 		44E153E6234D27180025C340 /* InputHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E153E5234D27180025C340 /* InputHandler.swift */; };
+		44F4834B237DF767003FBBD8 /* PerspectiveTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F4834A237DF767003FBBD8 /* PerspectiveTest.swift */; };
 		6F50C11B0BFFF49DB2C6BFA5 /* PerspectiveType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F50C7AE173B6C2DA65D4A0B /* PerspectiveType.swift */; };
 		6F50C2CBBA031DAEC7079C86 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A71A23525EF70093CDF2 /* Task.swift */; };
 		6F50C2D53F84EBA9AF5E2EE0 /* TaskTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F50CA436DFEF39B06349C82 /* TaskTreeNode.swift */; };
@@ -111,6 +112,7 @@
 		44D7A718235248D70093CDF2 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		44D7A71A23525EF70093CDF2 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		44E153E5234D27180025C340 /* InputHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputHandler.swift; sourceTree = "<group>"; };
+		44F4834A237DF767003FBBD8 /* PerspectiveTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerspectiveTest.swift; sourceTree = "<group>"; };
 		6F50C7AE173B6C2DA65D4A0B /* PerspectiveType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerspectiveType.swift; sourceTree = "<group>"; };
 		6F50C93A55786C3A4D4DC466 /* TaskTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTests.swift; sourceTree = "<group>"; };
 		6F50CA436DFEF39B06349C82 /* TaskTreeNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTreeNode.swift; sourceTree = "<group>"; };
@@ -165,9 +167,9 @@
 		4400A195233FC708000C8862 /* Focus */ = {
 			isa = PBXGroup;
 			children = (
-				443EA7EE2349F5A300903F6C /* Views */,
-				4436F215234103F5007F1B7C /* Resources */,
 				4436F210234101FE007F1B7C /* Models */,
+				4436F215234103F5007F1B7C /* Resources */,
+				443EA7EE2349F5A300903F6C /* Views */,
 				4400A196233FC708000C8862 /* AppDelegate.swift */,
 				44E153E5234D27180025C340 /* InputHandler.swift */,
 				44D7A70E23510C700093CDF2 /* InputHandlingWindow.swift */,
@@ -202,6 +204,7 @@
 				444C02792358E49400451D8E /* TaskFilterTests.swift */,
 				444C027B2358EE4400451D8E /* TaskTreeNodeTests.swift */,
 				44CE383E235A75BA00ADF6DC /* TaskDtoTests.swift */,
+				44F4834A237DF767003FBBD8 /* PerspectiveTest.swift */,
 			);
 			path = FocusTests;
 			sourceTree = "<group>";
@@ -426,6 +429,7 @@
 				4460D36F2379D43300A23918 /* Space.swift in Sources */,
 				4400A1AD233FC70B000C8862 /* FocusTests.swift in Sources */,
 				4460D36B2379D41700A23918 /* TaskDto.swift in Sources */,
+				44F4834B237DF767003FBBD8 /* PerspectiveTest.swift in Sources */,
 				4460D3712379D45100A23918 /* Tools.swift in Sources */,
 				4460D3702379D43600A23918 /* SpaceModel.swift in Sources */,
 				444C027E2359145500451D8E /* TaskStub.swift in Sources */,
