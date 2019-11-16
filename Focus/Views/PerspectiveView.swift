@@ -48,8 +48,8 @@ struct ContentView_Previews: PreviewProvider {
     
     static var previews: some View {
         Group {
-            PerspectiveView(perspective: perspectives[0]).environmentObject(space)
-            PerspectiveView(perspective: perspectives[1]).environmentObject(space)
-        }
+            PerspectiveView(perspective: perspectives[0])
+            PerspectiveView(perspective: perspectives[1])
+        }.environmentObject(space)
     }
 }

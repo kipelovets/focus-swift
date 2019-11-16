@@ -6,7 +6,7 @@ struct HierarchyMarkerView: View {
     var body: some View {
         Text(text)
                 .font(.system(size: 9))
-                .foregroundColor(Defaults.colors.text)
+            .foregroundColor(Color(white: 0.4))
             .background(Defaults.colors.background)
     }
 }
