@@ -46,7 +46,7 @@ struct CalendarDayView: View {
             guard let date = dayOfMonth(self.dayNumber) else {
                 return
             }
-            self.space.focus(on: .Due(date))
+            inputHandler.send(.Focus(.Due(date)))
         }) {
             Text(taskCount)
                 .frame(width: 30, height: 30)

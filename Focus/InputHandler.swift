@@ -16,6 +16,7 @@ enum InputGesture {
     case Undo
     case Redo
     case SetDue(Date?)
+    case Focus(PerspectiveType)
     
     init?(withEvent event: NSEvent) {
         switch event.keyCode {
@@ -150,6 +151,10 @@ class InputHandler {
             recorder.redo()
         case .SetDue(let date):
             perspective.current?.dueAt = date
+        case .Focus(let type):
+            space.focus(on: type)
+            recorder.clear()
+            return
         }
         
         if let commandType = CommandType(with: gesture) {
@@ -170,7 +175,7 @@ enum CommandType: String, Codable {
     
     init?(with gesture:InputGesture) {
         switch gesture {
-        case .Down, .Up, .ToggleEditing, .Edit, .Undo, .Redo, .Select:
+        case .Down, .Up, .ToggleEditing, .Edit, .Undo, .Redo, .Select, .Focus:
             return nil
         case .ToggleDone:
             self = .ToggleDone
@@ -306,5 +311,10 @@ class CommandRecorder {
         }
         
         perspective.updateView()
+    }
+    
+    func clear() {
+        undone = []
+        executed = []
     }
 }
