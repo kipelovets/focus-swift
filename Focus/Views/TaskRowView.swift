@@ -7,7 +7,7 @@ struct HierarchyMarkerView: View {
         Text(text)
                 .font(.system(size: 9))
                 .foregroundColor(Defaults.colors.text)
-                .background(Defaults.colors.lightBackground)
+            .background(Defaults.colors.background)
     }
 }
 
@@ -75,16 +75,16 @@ struct TaskRowView: View {
             .overlay(
                 Group {
                     if !self.space.perspective.filter.allowsHierarchy && self.task.children.count > 0{
-                        HierarchyMarkerView(text: "children: \(self.task.children.count)")
+                        HierarchyMarkerView(text: "↳  \(self.task.children.count)")
                     }
-                }.offset(x: 34), alignment: .bottomLeading
+                }.offset(x: 35), alignment: .bottomLeading
             )
             .overlay(
                 Group {
-                    if !self.space.perspective.filter.allowsHierarchy && !self.task.parent!.isRoot {
-                        HierarchyMarkerView(text: "parent: " + self.task.parent!.title)
+                    if !self.space.perspective.filter.allowsHierarchy && self.task.parent != nil && !self.task.parent!.isRoot {
+                        HierarchyMarkerView(text: "↱ " +  self.task.parent!.title)
                     }
-                }.offset(x: 34), alignment: .topLeading
+                }.offset(x: 35), alignment: .topLeading
             )
         }
         .border(Defaults.colors.selected, width: self.space.perspective.current == task ? 2 : 0)

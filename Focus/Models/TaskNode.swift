@@ -77,7 +77,7 @@ class TaskNode: Hashable, Identifiable, ObservableObject {
     }
 
     var depth: Int {
-        if isRoot {
+        guard parent != nil else {
             return -1
         }
         return 1 + parent!.depth
