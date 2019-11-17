@@ -21,6 +21,8 @@ enum InputGesture {
     case FocusRight
     case FocusUp
     case FocusDown
+    case MoveUp
+    case MoveDown
     
     init?(withEvent event: NSEvent) {
         guard let shortcut = Defaults.shortcuts.first(where: { $0.binding.matches(event: event) }) else {

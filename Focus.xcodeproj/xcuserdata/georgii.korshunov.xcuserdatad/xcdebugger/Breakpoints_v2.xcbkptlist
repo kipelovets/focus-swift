@@ -199,54 +199,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "50686599-E3B4-4109-A9F0-26FAB1D853F9"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Focus/Models/TaskNode.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
-            landmarkName = "init(from:childOf:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "50686599-E3B4-4109-A9F0-26FAB1D853F9 - 5e0aea533b0a864d"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Focus.TaskNode.init(from: Focus.Task, childOf: Swift.Optional&lt;Focus.TaskNode&gt;) -&gt; Focus.TaskNode"
-                  moduleName = "Focus"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/georgii.korshunov/Dev/!personal/Focus/Focus/Models/TaskNode.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "94"
-                  endingLineNumber = "94"
-                  offsetFromSymbolStart = "1959">
-               </Location>
-               <Location
-                  uuid = "50686599-E3B4-4109-A9F0-26FAB1D853F9 - df33aae54b5464c"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FocusTests.TaskNode.init(from: FocusTests.Task, childOf: Swift.Optional&lt;FocusTests.TaskNode&gt;) -&gt; FocusTests.TaskNode"
-                  moduleName = "FocusTests"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/georgii.korshunov/Dev/!personal/Focus/Focus/Models/TaskNode.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "94"
-                  endingLineNumber = "94"
-                  offsetFromSymbolStart = "1959">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "8489A2F4-AEDF-4B62-B480-96B3D856DCF9"
             shouldBeEnabled = "No"
             ignoreCount = "0"

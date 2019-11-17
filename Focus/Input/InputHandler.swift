@@ -111,6 +111,10 @@ class InputHandler {
         case .FocusRight:
             moveDueFocus(1)
             return
+        case .MoveDown:
+            space.perspective.current?.moveUp()
+        case .MoveUp:
+            space.perspective.current?.moveDown()
         }
         
         if let commandType = CommandType(with: gesture) {
@@ -147,6 +151,8 @@ enum CommandType: String, Codable {
             self = .Drop
         case .SetDue:
             self = .UpdateDue
+        case .MoveUp, .MoveDown:
+            return nil
         }
     }
     

@@ -35,6 +35,8 @@ fileprivate let defaultShortcuts: [Shortcut] = [
     Shortcut(binding: KeyBinding(with: "Delete"), gesture: .DeleteTask),
     Shortcut(binding: KeyBinding(with: "Command+Shift+]"), gesture: .Indent),
     Shortcut(binding: KeyBinding(with: "Command+Shift+["), gesture: .Outdent),
+    Shortcut(binding: KeyBinding(with: "Command+Shift+Up"), gesture: .MoveUp),
+    Shortcut(binding: KeyBinding(with: "Command+Shift+Down"), gesture: .MoveDown),
     Shortcut(binding: KeyBinding(with: "Command+z"), gesture: .Undo),
     Shortcut(binding: KeyBinding(with: "Command+Shift+z"), gesture: .Redo),
     Shortcut(binding: KeyBinding(with: "Command+1"), gesture: .Focus(.All)),
