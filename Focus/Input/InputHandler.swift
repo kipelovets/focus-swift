@@ -29,6 +29,22 @@ class InputHandler {
             self.currentTask = before
         }
         
+        let moveDueFocus = { (value: Int) in
+            switch self.space.perspective.filter {
+            case .Due(let date):
+                let newDayOnCalendar = date.dayOnCalendar + value
+                guard newDayOnCalendar >= 0 && newDayOnCalendar < 35 else {
+                    return
+                }
+                guard let newDate = Date(fromDayOnCalendar: newDayOnCalendar) else {
+                    return
+                }
+                return self.space.focus(on: .Due(newDate))
+            default:
+                return
+            }
+        }
+        
         defer {
             space.save()
         }
@@ -84,12 +100,16 @@ class InputHandler {
             recorder.clear()
             return
         case .FocusUp:
+            moveDueFocus(-7)
             return
         case .FocusDown:
+            moveDueFocus(7)
             return
         case .FocusLeft:
+            moveDueFocus(-1)
             return
         case .FocusRight:
+            moveDueFocus(1)
             return
         }
         

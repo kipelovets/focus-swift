@@ -1,23 +1,5 @@
 import SwiftUI
 
-fileprivate func dayOfMonth(_ number: Int) -> Date? {
-    let cal = Calendar.current
-    let firstDay = cal.date(from: cal.dateComponents([.year, .month], from: Calendar.current.startOfDay(for: Date())))!
-    let firstDayWeekDay = cal.component(.weekday, from: firstDay)
-
-    let fixedNumber = number - firstDayWeekDay + 2
-    guard fixedNumber >= 0 else {
-        return nil
-    }
-
-    let myDay = cal.date(byAdding: .day, value: fixedNumber, to: firstDay)!
-    guard cal.component(.month, from: myDay) == cal.component(.month, from: firstDay) else {
-        return nil
-    }
-
-    return myDay
-}
-
 fileprivate func day(_ date: Date?) -> String? {
     date == nil ? nil : String(Calendar.current.component(.day, from: date!))
 }
@@ -36,14 +18,14 @@ struct CalendarDayView: View {
     
     init(dayNumber: Int, space: Space, dropState: CalendarDropState) {
         self.dayNumber = dayNumber
-        let taskCount = space.space.findDue(date: dayOfMonth(dayNumber)).count
+        let taskCount = space.space.findDue(date: Date(fromDayOnCalendar: dayNumber)).count
         self.taskCount = taskCount == 0 ? "" : String(taskCount)
         self.dropState = dropState
     }
     
     var body: some View {
         Button(action: {
-            guard let date = dayOfMonth(self.dayNumber) else {
+            guard let date = Date(fromDayOnCalendar: self.dayNumber) else {
                 return
             }
             inputHandler.send(.Focus(.Due(date)))
@@ -56,10 +38,10 @@ struct CalendarDayView: View {
         
         .border(Defaults.colors.selectable)
         .overlay(
-            Text(day(dayOfMonth(dayNumber)) ?? "")
+            Text(day(Date(fromDayOnCalendar: dayNumber)) ?? "")
                 .font(.system(size: 7))
                 .offset(x: -1, y: 1)
-                .foregroundColor((dayOfMonth(dayNumber) ?? Date()).same(as: Date()) ? Color.blue : Color.white)
+                .foregroundColor((Date(fromDayOnCalendar: dayNumber) ?? Date()).same(as: Date()) ? Color.blue : Color.white)
             , alignment: .topTrailing)
         .onDrop(of: TaskDragData.idTypes, delegate: CalendarDropDelegate(dayNumber))
     }
@@ -69,7 +51,7 @@ struct CalendarDayView: View {
             return Defaults.colors.dropIndicator
         }
         
-        if let dom = dayOfMonth(self.dayNumber) {
+        if let dom = Date(fromDayOnCalendar: self.dayNumber) {
             switch space.perspective.filter {
             case .Due(let date):
                 if date.same(as: dom) {
@@ -103,7 +85,7 @@ class CalendarDropDelegate: DropDelegate {
     }
     
     func performDrop(info: DropInfo) -> Bool {
-        inputHandler.send(.SetDue(dayOfMonth(self.dayNumber)))
+        inputHandler.send(.SetDue(Date(fromDayOnCalendar: self.dayNumber)))
         
         return true
     }
