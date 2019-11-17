@@ -50,9 +50,7 @@ struct CalendarDayView: View {
         }) {
             Text(taskCount)
                 .frame(width: 30, height: 30)
-                .background(self.dropState.dayNumber == self.dayNumber ?
-                Defaults.colors.dropIndicator :
-                dayOfMonth(self.dayNumber) != nil && space.perspective.filter == .Due(dayOfMonth(self.dayNumber)!) ? Defaults.colors.background : Defaults.colors.lightBackground)
+                .background(self.bgColor)
         }
         .buttonStyle(PlainButtonStyle())
         
@@ -64,7 +62,26 @@ struct CalendarDayView: View {
                 .foregroundColor((dayOfMonth(dayNumber) ?? Date()).same(as: Date()) ? Color.blue : Color.white)
             , alignment: .topTrailing)
         .onDrop(of: TaskDragData.idTypes, delegate: CalendarDropDelegate(dayNumber))
+    }
+    
+    private var bgColor: Color {
+        if self.dropState.dayNumber == self.dayNumber {
+            return Defaults.colors.dropIndicator
+        }
         
+        if let dom = dayOfMonth(self.dayNumber) {
+            switch space.perspective.filter {
+            case .Due(let date):
+                if date.same(as: dom) {
+                    return Defaults.colors.background
+                }
+            default:
+                break
+            }
+        }
+        
+        return Defaults.colors.lightBackground
+
     }
 }
 

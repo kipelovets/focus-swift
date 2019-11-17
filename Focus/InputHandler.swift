@@ -32,23 +32,41 @@ enum InputGesture {
             self = .AddTask
         case 51:
             self = .DeleteTask
-        case 30:
+        case 30: // ]
             if event.modifierFlags.contains(.command) && event.modifierFlags.contains(.shift) {
                 self = .Indent
             } else {
                 return nil
             }
-        case 33:
+        case 33: // [
             if event.modifierFlags.contains(.command) && event.modifierFlags.contains(.shift) {
                 self = .Outdent
             } else {
                 return nil
             }
-        case 6:
+        case 6: // z
             if event.modifierFlags.contains(.command) && event.modifierFlags.contains(.shift) {
                 self = .Redo
             } else if event.modifierFlags.contains(.command) {
                 self = .Undo
+            } else {
+                return nil
+            }
+        case 18: // 1
+            if event.modifierFlags.contains(.command) {
+                self = .Focus(.All)
+            } else {
+                return nil
+            }
+        case 19: // 2
+            if event.modifierFlags.contains(.command) {
+                self = .Focus(.Inbox)
+            } else {
+                return nil
+            }
+        case 20: // 3
+            if event.modifierFlags.contains(.command) {
+                self = .Focus(.Due(Date()))
             } else {
                 return nil
             }
