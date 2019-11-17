@@ -3,16 +3,10 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "closure #2 in TaskNodeTree.commit(to:):TaskNodeTree.swift">
+         contextName = "TaskNode.succeeding.getter:TaskNode.swift">
          <PersistentStrings>
             <PersistentString
-               value = "node!.children">
-            </PersistentString>
-            <PersistentString
-               value = "node!.parent!.children">
-            </PersistentString>
-            <PersistentString
-               value = "self.root.children">
+               value = "t.parent!.children">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -31,14 +25,6 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "taskListState.unsafeMutableAddressor:AppDelegate.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "documentsPath">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "TaskNode.nextSibling.getter:TaskNode.swift">
          <PersistentStrings>
             <PersistentString
@@ -47,10 +33,38 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "TaskNode.succeeding.getter:TaskNode.swift">
+         contextName = "closure #2 in TaskNodeTree.commit(to:):TaskNodeTree.swift">
          <PersistentStrings>
             <PersistentString
-               value = "t.parent!.children">
+               value = "node!.children">
+            </PersistentString>
+            <PersistentString
+               value = "node!.parent!.children">
+            </PersistentString>
+            <PersistentString
+               value = "self.root.children">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "taskListState.unsafeMutableAddressor:AppDelegate.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "documentsPath">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "KeyBinding.matches(event:):Shortcut.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "event.modifierFlags.intersection(recognizedFlags)">
+            </PersistentString>
+            <PersistentString
+               value = "event.keyCode">
+            </PersistentString>
+            <PersistentString
+               value = "self.modifiers">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

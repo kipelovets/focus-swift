@@ -1,96 +1,6 @@
 import Foundation
 import SwiftUI
 
-enum InputGesture {
-    case Down
-    case Up
-    case ToggleDone
-    case ToggleEditing
-    case AddTask
-    case DeleteTask
-    case Indent
-    case Outdent
-    case Edit(Int)
-    case Select(Int)
-    case Drop
-    case Undo
-    case Redo
-    case SetDue(Date?)
-    case Focus(PerspectiveType)
-    
-    init?(withEvent event: NSEvent) {
-        switch event.keyCode {
-        case 125, 38: // Down, j
-            self = .Down
-        case 126, 40: // Up, k
-            self = .Up
-        case 49:
-            self = .ToggleDone
-        case 48:
-            self = .ToggleEditing
-        case 36:
-            self = .AddTask
-        case 51:
-            self = .DeleteTask
-        case 30: // ]
-            if event.modifierFlags.contains(.command) && event.modifierFlags.contains(.shift) {
-                self = .Indent
-            } else {
-                return nil
-            }
-        case 33: // [
-            if event.modifierFlags.contains(.command) && event.modifierFlags.contains(.shift) {
-                self = .Outdent
-            } else {
-                return nil
-            }
-        case 6: // z
-            if event.modifierFlags.contains(.command) && event.modifierFlags.contains(.shift) {
-                self = .Redo
-            } else if event.modifierFlags.contains(.command) {
-                self = .Undo
-            } else {
-                return nil
-            }
-        case 18: // 1
-            if event.modifierFlags.contains(.command) {
-                self = .Focus(.All)
-            } else {
-                return nil
-            }
-        case 19: // 2
-            if event.modifierFlags.contains(.command) {
-                self = .Focus(.Inbox)
-            } else {
-                return nil
-            }
-        case 20: // 3
-            if event.modifierFlags.contains(.command) {
-                self = .Focus(.Due(Date()))
-            } else {
-                return nil
-            }
-        default:
-            return nil
-        }
-    }
-    
-    init?(withCommand commandSelector: Selector) {
-        switch commandSelector {
-        case #selector(NSStandardKeyBindingResponding.moveDown(_:)):
-            self = .Down
-        case #selector(NSStandardKeyBindingResponding.moveUp(_:)):
-            self = .Up
-        case #selector(NSStandardKeyBindingResponding.insertNewline(_:)):
-            self = .AddTask
-        case #selector(NSStandardKeyBindingResponding.insertTab(_:)):
-            self = .ToggleEditing
-        default:
-            return nil
-        }
-    }
-}
-
 class InputHandler {
     private let space: Space
     private let recorder: CommandRecorder
@@ -173,6 +83,14 @@ class InputHandler {
             space.focus(on: type)
             recorder.clear()
             return
+        case .FocusUp:
+            return
+        case .FocusDown:
+            return
+        case .FocusLeft:
+            return
+        case .FocusRight:
+            return
         }
         
         if let commandType = CommandType(with: gesture) {
@@ -193,7 +111,7 @@ enum CommandType: String, Codable {
     
     init?(with gesture:InputGesture) {
         switch gesture {
-        case .Down, .Up, .ToggleEditing, .Edit, .Undo, .Redo, .Select, .Focus:
+        case .Down, .Up, .ToggleEditing, .Edit, .Undo, .Redo, .Select, .Focus, .FocusUp, .FocusDown, .FocusLeft, .FocusRight:
             return nil
         case .ToggleDone:
             self = .ToggleDone
