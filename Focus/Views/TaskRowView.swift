@@ -12,7 +12,7 @@ struct HierarchyMarkerView: View {
 }
 
 struct TaskButtonView: View {
-    let task: TaskNode
+    @ObservedObject var task: TaskNode
     
     var body: some View {
         Button(action: {

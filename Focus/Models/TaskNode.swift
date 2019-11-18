@@ -265,7 +265,7 @@ class TaskNode: Hashable, Identifiable, ObservableObject {
     }
 
     func moveUp() {
-        guard !isRoot else {
+        guard parent != nil else {
             return
         }
         let indexInParent = self.indexInParent
@@ -273,14 +273,14 @@ class TaskNode: Hashable, Identifiable, ObservableObject {
             parent!.add(child: self, at: indexInParent - 1)
             return
         }
-        if parent!.isRoot {
+        guard parent!.parent != nil else {
             return
         }
-        parent!.parent!.add(child: self, at: indexInParent)
+        parent!.parent!.add(child: self, at: parent!.indexInParent)
     }
 
     func moveDown() {
-        guard !isRoot else {
+        guard parent != nil else {
             return
         }
         let indexInParent = self.indexInParent
@@ -288,10 +288,10 @@ class TaskNode: Hashable, Identifiable, ObservableObject {
             parent!.add(child: self, at: indexInParent + 1)
             return
         }
-        if parent!.isRoot {
+        guard parent!.parent != nil else {
             return
         }
-        parent!.parent!.add(child: self, after: parent!)
+        parent!.parent!.add(child: self, at: parent!.indexInParent + 2)
     }
 
     func reindexChildren() {

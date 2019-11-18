@@ -112,9 +112,11 @@ class InputHandler {
             moveDueFocus(1)
             return
         case .MoveDown:
-            space.perspective.current?.moveUp()
-        case .MoveUp:
             space.perspective.current?.moveDown()
+            space.perspective.objectWillChange.send()
+        case .MoveUp:
+            space.perspective.current?.moveUp()
+            space.perspective.objectWillChange.send()
         }
         
         if let commandType = CommandType(with: gesture) {

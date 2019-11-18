@@ -422,6 +422,26 @@ class TaskTreeNodeTests: XCTestCase {
         ]
         inbox.find(by: 7)!.moveUp()
         XCTAssertEqual(expectedStubs, inbox.nodeStubs)
+        
+        let taskStubs: [N] = [
+            N(1),
+            N(2),
+            N(3, [
+                N(5)
+            ]),
+            N(4)
+        ]
+        
+        inbox = TaskNodeTree(from: SpaceModel(tasks: buildTasks(from: taskStubs), projects: [], tags: []), with: .All)
+        expectedStubs = [
+            N(1),
+            N(2),
+            N(5),
+            N(3),
+            N(4)
+        ]
+        inbox.find(by: 5)!.moveUp()
+        XCTAssertEqual(expectedStubs, inbox.nodeStubs)
     }
     
     func testMoveDown() {
@@ -472,8 +492,8 @@ class TaskTreeNodeTests: XCTestCase {
                     N(3, [
                         N(4, [])
                     ]),
-                    N(5, []),
-                    N(6, [])
+                    N(6),
+                    N(5),
                 ])
             ]),
             N(7, []),
@@ -518,16 +538,16 @@ class TaskTreeNodeTests: XCTestCase {
         
         (_, inbox) = prepareTree()
         expectedStubs = [
-            N(1, []),
+            N(1),
+            N(7),
             N(2, [
                 N(3, [
-                    N(4, []),
-                    N(5, [])
+                    N(4),
+                    N(5)
                 ]),
-                N(6, [])
+                N(6)
             ]),
-            N(7, []),
-            N(8, [])
+            N(8)
         ]
         inbox.find(by: 2)!.moveDown()
         XCTAssertEqual(expectedStubs, inbox.nodeStubs)

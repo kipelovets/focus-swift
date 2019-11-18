@@ -37,7 +37,7 @@ class N: Equatable, CustomDebugStringConvertible {
     
     let id: Int
     let children: [N]
-    init(_ id: Int, _ children: [N]) {
+    init(_ id: Int, _ children: [N] = []) {
         self.id = id
         self.children = children
     }
