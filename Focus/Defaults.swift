@@ -42,6 +42,7 @@ fileprivate let defaultShortcuts: [Shortcut] = [
     Shortcut(binding: KeyBinding(with: "Command+1"), gesture: .Focus(.All)),
     Shortcut(binding: KeyBinding(with: "Command+2"), gesture: .Focus(.Inbox)),
     Shortcut(binding: KeyBinding(with: "Command+3"), gesture: .Focus(.Due(Date()))),
+    Shortcut(binding: KeyBinding(with: "Command+4"), gesture: .Focus(.Project(Project(id: -1, title: "")))),
     Shortcut(binding: KeyBinding(with: "Command+Up"), gesture: .FocusUp),
     Shortcut(binding: KeyBinding(with: "Command+Down"), gesture: .FocusDown),
     Shortcut(binding: KeyBinding(with: "Command+Left"), gesture: .FocusLeft),

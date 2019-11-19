@@ -1,6 +1,13 @@
 import Foundation
 import SwiftUI
 
+fileprivate enum Direction: Int {
+    case Up
+    case Down
+    case Left
+    case Right
+}
+
 class InputHandler {
     private let space: Space
     private let recorder: CommandRecorder
@@ -95,15 +102,43 @@ class InputHandler {
             recorder.redo()
         case .SetDue(let date):
             perspective.current?.dueAt = date
-        case .Focus(let type):
+        case .Focus(var type):
+            switch type {
+            case .Project(let p):
+                guard p.id == -1 else {
+                    break
+                }
+                guard space.space.projects.count > 0 else {
+                    break
+                }
+                type = .Project(space.space.projects.first!)
+            default:
+                print("")
+            }
             space.focus(on: type)
             recorder.clear()
             return
         case .FocusUp:
-            moveDueFocus(-7)
+            switch space.perspective.filter {
+            case .Project(let p):
+                let currentIndex = space.space.projects.firstIndex(of: p)!
+                if currentIndex > 0 {
+                    space.focus(on: .Project(space.space.projects[currentIndex - 1]))
+                }
+            default:
+                moveDueFocus(-7)
+            }
             return
         case .FocusDown:
-            moveDueFocus(7)
+            switch space.perspective.filter {
+            case .Project(let p):
+                let currentIndex = space.space.projects.firstIndex(of: p)!
+                if currentIndex < space.space.projects.count - 1 {
+                    space.focus(on: .Project(space.space.projects[currentIndex + 1]))
+                }
+            default:
+                moveDueFocus(7)
+            }
             return
         case .FocusLeft:
             moveDueFocus(-1)
