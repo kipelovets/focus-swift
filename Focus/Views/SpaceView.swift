@@ -62,12 +62,15 @@ struct SpaceView: View {
 
                     HStack {
                         HStack {
-                            CalendarView(space: space)
+                            CalendarView()
                             Spacer()
                         }.padding(5)
                             .background(Defaults.colors.focusSelected(self.space.perspective.filter.same(as: .Due(Date()))))
                     }
                     .modifier(FocusSelection(self.space.perspective.filter.same(as: .Due(Date()))))
+                    
+                    ProjectSelectorView()
+                    
                     Spacer()
                 }
             }

@@ -1,5 +1,7 @@
 import Foundation
 
+private typealias ProjectEntity = Project
+
 enum PerspectiveType: Equatable {
     case All
     case Inbox
@@ -80,5 +82,10 @@ enum PerspectiveType: Equatable {
         default:
             return false
         }
+    }
+    
+    var isProject: Bool {
+        let p = ProjectEntity(id: -1, title: "")
+        return same(as: .Project(p))
     }
 }

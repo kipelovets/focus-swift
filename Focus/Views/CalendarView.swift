@@ -92,7 +92,7 @@ class CalendarDropDelegate: DropDelegate {
 }
 
 struct CalendarView: View {
-    @ObservedObject var space: Space
+    @EnvironmentObject var space: Space
     
     var body: some View {
         VStack {
@@ -123,6 +123,6 @@ struct CalendarView_Previews: PreviewProvider {
     private static let space = Space(repo, with: .Due(Date()))
     
     static var previews: some View {
-        CalendarView(space: space).environmentObject(space)
+        CalendarView().environmentObject(space)
     }
 }

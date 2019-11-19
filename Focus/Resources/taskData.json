@@ -70,6 +70,15 @@
             "duePosition": 0
         }
     ],
-    "projects": [],
+    "projects": [
+        {
+            "id": 1,
+            "title": "Project1"
+        },
+        {
+            "id": 2,
+            "title": "Project2"
+        }
+    ],
     "tags": []
 }
