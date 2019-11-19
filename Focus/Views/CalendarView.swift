@@ -51,19 +51,11 @@ struct CalendarDayView: View {
             return Defaults.colors.dropIndicator
         }
         
-        if let dom = Date(fromDayOnCalendar: self.dayNumber) {
-            switch space.perspective.filter {
-            case .Due(let date):
-                if date.same(as: dom) {
-                    return Defaults.colors.background
-                }
-            default:
-                break
-            }
+        guard let dom = Date(fromDayOnCalendar: self.dayNumber) else {
+            return Defaults.colors.focusSelected(false)
         }
         
-        return Defaults.colors.lightBackground
-
+        return Defaults.colors.focusSelected(space.perspective.filter == .Due(dom))
     }
 }
 

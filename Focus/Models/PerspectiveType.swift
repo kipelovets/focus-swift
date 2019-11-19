@@ -8,6 +8,23 @@ enum PerspectiveType: Equatable {
     case Project(Project)
     case Tag(Tag)
     case Due(Date)
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        guard lhs.same(as: rhs) else {
+            return false
+        }
+        
+        switch (lhs, rhs) {
+        case (.Due(let ldate), .Due(let rdate)):
+            return ldate.same(as: rdate)
+        case (.Project(let lp), .Project(let rp)):
+            return lp.id == rp.id
+        case (.Tag(let lt), .Tag(let rt)):
+            return lt.id == rt.id
+        default:
+            return true
+        }
+    }
 
     func accepts(task: Task) -> Bool {
         switch (self) {
@@ -68,16 +85,14 @@ enum PerspectiveType: Equatable {
     }
 
     func same(as other: PerspectiveType) -> Bool {
-        if self == other {
-            return true
-        }
-
         switch (self, other) {
         case (.Due(_), .Due(_)):
             return true
         case (.Tag(_), .Tag(_)):
             return true
         case (.Project(_), .Project(_)):
+            return true
+        case (.All, .All), (.Inbox, .Inbox):
             return true
         default:
             return false

@@ -9,7 +9,10 @@ struct ProjectSelectorView: View {
                 
                 HStack(alignment: .top, spacing: 0) {
                     Button(action: {
-                        // inputHandler.send(.Focus(self.filter))
+                        guard let firstProject = self.space.space.projects.first else {
+                            return
+                        }
+                        inputHandler.send(.Focus(.Project(firstProject)))
                     }) {
                         Text("Projects").font(.headline)
                             .frame(minWidth: 100, maxWidth: .infinity, minHeight: 10, alignment: .leading)
@@ -19,9 +22,19 @@ struct ProjectSelectorView: View {
                 }
                 .padding(5)
                 
+                
                 ForEach(space.space.projects) { project in
-                    Text(project.title)
-                }.offset(x: 10, y: 0)
+                    Button(action: {
+                        inputHandler.send(.Focus(.Project(project)))
+                    }) {
+                        HStack {
+                            Text(project.title)
+                            Spacer()
+                        }
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .background(Defaults.colors.focusSelected(self.space.perspective.filter.isProject && self.space.perspective.filter != .Project(project)))
+                }.padding(.leading, 10)
             }
             .background(Defaults.colors.focusSelected(self.space.perspective.filter.isProject))
             .modifier(FocusSelection(self.space.perspective.filter.isProject))
