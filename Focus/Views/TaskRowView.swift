@@ -66,10 +66,21 @@ struct TaskRowView: View {
                     .buttonStyle(PlainButtonStyle())
                 }
                 
-                if self.task.dueAt != nil {
-                    Text(self.task.dueAt!.formatted)
-                        .foregroundColor(Defaults.colors.text)
-                }
+                Group {
+                    if self.task.project != nil {
+                        Text(self.task.project!.title)
+                            .foregroundColor(Defaults.colors.text)
+                    }
+                    Spacer()
+                }.frame(width: 70, height: 20)
+                
+                Group {
+                    if self.task.dueAt != nil {
+                        Text(self.task.dueAt!.formatted)
+                            .foregroundColor(Defaults.colors.text)
+                    }
+                    Spacer()
+                }.frame(width: 70, height: 20)
 
             }.padding(7)
             .overlay(

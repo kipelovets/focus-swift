@@ -6,7 +6,7 @@
             "notes": "",
             "createdAt": "2019-01-01T00:00:00+0000",
             "done": true,
-            "projectId": null,
+            "projectId": 1,
             "tagPositions": [],
             "position": 0,
             "duePosition": 0
