@@ -103,4 +103,8 @@ enum PerspectiveType: Equatable {
         let p = ProjectEntity(id: -1, title: "")
         return same(as: .Project(p))
     }
+    
+    var isDue: Bool {
+        return same(as: .Due(Date()))
+    }
 }

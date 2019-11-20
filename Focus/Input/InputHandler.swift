@@ -20,7 +20,7 @@ class InputHandler {
     }
     
     func send(_ gesture: InputGesture) {
-        let perspective = space.perspective
+        var perspective = space.perspective
         let before = perspective.current?.model?.dto
         
         let currentDidChange = { () in
@@ -31,7 +31,7 @@ class InputHandler {
             let previousCurrent = perspective.tree.find(by: self.currentTask!.id)
             let newTitle = previousCurrent?.title
             if newTitle != self.currentTask?.title {
-                self.recorder.record(Command(type: .UpdateTitle, before: self.currentTask, after: previousCurrent?.model?.dto))
+                self.recorder.record(Command(type: .Update, before: self.currentTask, after: previousCurrent?.model?.dto))
             }
             self.currentTask = before
         }
@@ -102,6 +102,16 @@ class InputHandler {
             recorder.redo()
         case .SetDue(let date):
             perspective.current?.dueAt = date
+            if perspective.filter.isDue {
+                space.focus(on: space.perspective.filter)
+                perspective = space.perspective
+            }
+        case .SetProject(let project):
+            perspective.current?.project = project
+            if perspective.filter.isProject {
+                space.focus(on: space.perspective.filter)
+                perspective = space.perspective
+            }
         case .Focus(var type):
             switch type {
             case .Project(let p):
@@ -162,8 +172,7 @@ class InputHandler {
 
 enum CommandType: String, Codable {
     case ToggleDone
-    case UpdateTitle
-    case UpdateDue
+    case Update
     case AddTask
     case DeleteTask
     case Indent
@@ -187,9 +196,11 @@ enum CommandType: String, Codable {
         case .Drop:
             self = .Drop
         case .SetDue:
-            self = .UpdateDue
+            self = .Update
         case .MoveUp, .MoveDown:
             return nil
+        case .SetProject(_):
+            self = .Update
         }
     }
     
@@ -197,7 +208,7 @@ enum CommandType: String, Codable {
         switch self {
         case .ToggleDone:
             return self
-        case .UpdateTitle:
+        case .Update:
             return self
         case .AddTask:
             return .DeleteTask
@@ -209,8 +220,6 @@ enum CommandType: String, Codable {
             return .Indent
         case .Drop:
             return .Drop
-        case .UpdateDue:
-            return .UpdateDue
         }
     }
 }
@@ -264,8 +273,14 @@ class CommandRecorder {
         switch (command.type) {
         case .ToggleDone:
             perspective.tree.find(by: command.before!.id)?.done.toggle()
-        case .UpdateTitle:
-            perspective.tree.find(by: command.before!.id)?.title = command.after!.title
+        case .Update:
+            guard let node = perspective.tree.find(by: command.before!.id) else {
+                break
+            }
+            node.title = command.after!.title
+            node.dueAt = command.after!.dueAt
+            // TODO: node.project = command.after!.projectId
+            
         case .AddTask:
             let addedTask = command.after!
             let parent = addedTask.parentTaskId == nil ?
@@ -305,8 +320,6 @@ class CommandRecorder {
             let before = perspective.tree.find(by: dto.id)!
             parent.add(child: before, at: dto.position)
             // TODO: use tag/project/due position for non-inbox perspective
-        case .UpdateDue:
-            perspective.tree.find(by: command.before!.id)?.dueAt = command.after!.dueAt
         }
         
         perspective.updateView()

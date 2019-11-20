@@ -1,5 +1,63 @@
 import SwiftUI
 
+class ProjectSelectorDropState: ObservableObject {
+    @Published var project: Project? = nil
+}
+
+fileprivate var dropState = ProjectSelectorDropState()
+
+class ProjectSelectorDropDelegate: DropDelegate {
+    let project: Project
+    
+    init(_ project: Project) {
+        self.project = project
+    }
+    
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        dropState.project = project
+        
+        return DropProposal(operation: .move)
+    }
+    
+    func dropExited(info: DropInfo) {
+        dropState.project = nil
+    }
+    
+    func performDrop(info: DropInfo) -> Bool {
+        inputHandler.send(.SetProject(project))
+        
+        return true
+    }
+}
+
+struct ProjectRowView: View {
+    @ObservedObject var project: Project
+    @ObservedObject var dropState: ProjectSelectorDropState
+    @EnvironmentObject var space: Space
+    
+    var body: some View {
+        Button(action: {
+            inputHandler.send(.Focus(.Project(self.project)))
+        }) {
+            HStack {
+                Text(project.title)
+                Spacer()
+            }
+        }
+        .buttonStyle(PlainButtonStyle())
+        .background(self.bgColor(for: project))
+        .onDrop(of: TaskDragData.idTypes, delegate: ProjectSelectorDropDelegate(project))
+    }
+    
+    private func bgColor(for project: Project) -> Color {
+        if dropState.project == project {
+            return Defaults.colors.dropIndicator
+        }
+        
+        return Defaults.colors.focusSelected(self.space.perspective.filter.isProject && self.space.perspective.filter != .Project(project))
+    }
+}
+
 struct ProjectSelectorView: View {
     @EnvironmentObject var space: Space
     
@@ -22,18 +80,9 @@ struct ProjectSelectorView: View {
                 }
                 .padding(5)
                 
-                
+
                 ForEach(space.space.projects) { project in
-                    Button(action: {
-                        inputHandler.send(.Focus(.Project(project)))
-                    }) {
-                        HStack {
-                            Text(project.title)
-                            Spacer()
-                        }
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    .background(Defaults.colors.focusSelected(self.space.perspective.filter.isProject && self.space.perspective.filter != .Project(project)))
+                    ProjectRowView(project: project, dropState: dropState)
                 }.padding(.leading, 10)
             }
             .background(Defaults.colors.focusSelected(self.space.perspective.filter.isProject))

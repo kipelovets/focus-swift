@@ -16,6 +16,7 @@ enum InputGesture {
     case Undo
     case Redo
     case SetDue(Date?)
+    case SetProject(Project?)
     case Focus(PerspectiveType)
     case FocusLeft
     case FocusRight

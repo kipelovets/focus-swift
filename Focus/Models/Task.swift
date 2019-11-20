@@ -75,7 +75,7 @@ final class Task: Hashable, Identifiable, ObservableObject {
     }
 }
 
-final class Project: Equatable, Identifiable {
+final class Project: Equatable, Identifiable, ObservableObject {
     var id: Int
     var title: String
 
