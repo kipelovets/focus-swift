@@ -7,7 +7,7 @@ enum InputError: Error {
 
 struct Shortcut {
     let binding: KeyBinding
-    let gesture: InputGesture
+    let gesture: Command
 }
 
 struct KeyBinding {

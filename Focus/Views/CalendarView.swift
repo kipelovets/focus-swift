@@ -28,7 +28,7 @@ struct CalendarDayView: View {
             guard let date = Date(fromDayOnCalendar: self.dayNumber) else {
                 return
             }
-            inputHandler.send(.Focus(.Due(.CurrentMonthDay(date.dayOfMonth))))
+            commandBus.handle(.Focus(.Due(.CurrentMonthDay(date.dayOfMonth))))
         }) {
             Text(taskCount)
                 .frame(width: 30, height: 30)
@@ -91,7 +91,7 @@ class CalendarDropDelegate: DropDelegate {
     }
     
     func performDrop(info: DropInfo) -> Bool {
-        inputHandler.send(.SetDue(Date(fromDayOnCalendar: self.dayNumber)))
+        commandBus.handle(.SetDue(Date(fromDayOnCalendar: self.dayNumber)))
         
         return true
     }
@@ -103,7 +103,7 @@ struct CalendarView: View {
     var body: some View {
         VStack {
             Button(action: {
-                inputHandler.send(.Focus(.Due(.Past)))
+                commandBus.handle(.Focus(.Due(.Past)))
             }) {
                 Text("Past").padding(5).font(.headline)
                 .foregroundColor(Defaults.colors.text(space.perspective.filter == .Due(.Past)))
@@ -118,7 +118,7 @@ struct CalendarView: View {
                 }
             }
             Button(action: {
-                inputHandler.send(.Focus(.Due(.Future)))
+                commandBus.handle(.Focus(.Due(.Future)))
             }) {
                 Text("Future").padding(5).font(.headline)
                 .foregroundColor(Defaults.colors.text(space.perspective.filter == .Due(.Future)))

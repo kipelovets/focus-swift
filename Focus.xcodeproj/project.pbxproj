@@ -14,7 +14,7 @@
 		4400A1A1233FC70A000C8862 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4400A19F233FC70A000C8862 /* Main.storyboard */; };
 		4400A1AD233FC70B000C8862 /* FocusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400A1AC233FC70B000C8862 /* FocusTests.swift */; };
 		4400A1B8233FC70B000C8862 /* FocusUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400A1B7233FC70B000C8862 /* FocusUITests.swift */; };
-		441282082381CDE700273A8F /* InputGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441282072381CDE700273A8F /* InputGesture.swift */; };
+		441282082381CDE700273A8F /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441282072381CDE700273A8F /* Command.swift */; };
 		4417168223776D1000FFA7F2 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4417168123776D1000FFA7F2 /* Tools.swift */; };
 		442BCA8123563FE300763D8B /* Perspective.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442BCA8023563FE300763D8B /* Perspective.swift */; };
 		4436F21223410218007F1B7C /* TaskDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436F21123410218007F1B7C /* TaskDto.swift */; };
@@ -26,7 +26,12 @@
 		444C027C2358EE4400451D8E /* TaskTreeNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444C027B2358EE4400451D8E /* TaskTreeNodeTests.swift */; };
 		444C027E2359145500451D8E /* TaskStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44583D212357A9B500E66EA9 /* TaskStub.swift */; };
 		44583CB8238883B400E07F1A /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44583CB7238883B300E07F1A /* Palette.swift */; };
-		44583CBC2389E77800E07F1A /* Undo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44583CBB2389E77800E07F1A /* Undo.swift */; };
+		44583CBC2389E77800E07F1A /* UndoBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44583CBB2389E77800E07F1A /* UndoBuffer.swift */; };
+		44583CBD2389ED8C00E07F1A /* UndoBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44583CBB2389E77800E07F1A /* UndoBuffer.swift */; };
+		44583CBE2389EE8E00E07F1A /* UndoBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44583CBB2389E77800E07F1A /* UndoBuffer.swift */; };
+		44583CC32389F1AC00E07F1A /* CommandBus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44583CC22389F1AC00E07F1A /* CommandBus.swift */; };
+		44583CC42389F1AC00E07F1A /* CommandBus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44583CC22389F1AC00E07F1A /* CommandBus.swift */; };
+		44583CC52389F1AC00E07F1A /* CommandBus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44583CC22389F1AC00E07F1A /* CommandBus.swift */; };
 		44583D202357A3C100E66EA9 /* TaskTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44583D1F2357A3C100E66EA9 /* TaskTreeTests.swift */; };
 		4460D36A2379B22E00A23918 /* SpaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4460D3692379B22E00A23918 /* SpaceModel.swift */; };
 		4460D36B2379D41700A23918 /* TaskDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436F21123410218007F1B7C /* TaskDto.swift */; };
@@ -52,11 +57,9 @@
 		44CF76582381DE590044062A /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CF76562381DE590044062A /* Date.swift */; };
 		44CF76592381DE590044062A /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CF76562381DE590044062A /* Date.swift */; };
 		44CF765C2381E22A0044062A /* DateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CF765A2381E22A0044062A /* DateTests.swift */; };
-		44CF765E2381E26E0044062A /* InputGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441282072381CDE700273A8F /* InputGesture.swift */; };
-		44CF765F2381E2720044062A /* InputHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E153E5234D27180025C340 /* InputHandler.swift */; };
+		44CF765E2381E26E0044062A /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441282072381CDE700273A8F /* Command.swift */; };
 		44CF76602381E2B80044062A /* Shortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CF764E2381D3DF0044062A /* Shortcut.swift */; };
-		44CF76612381E2BE0044062A /* InputHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E153E5234D27180025C340 /* InputHandler.swift */; };
-		44CF76622381E2C00044062A /* InputGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441282072381CDE700273A8F /* InputGesture.swift */; };
+		44CF76622381E2C00044062A /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441282072381CDE700273A8F /* Command.swift */; };
 		44CF76632381E3050044062A /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A71A23525EF70093CDF2 /* Task.swift */; };
 		44CF76642381E3920044062A /* TaskDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436F21123410218007F1B7C /* TaskDto.swift */; };
 		44CF76652381E3A20044062A /* PerspectiveType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F50C7AE173B6C2DA65D4A0B /* PerspectiveType.swift */; };
@@ -71,7 +74,6 @@
 		44D7A711235121B00093CDF2 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A710235121B00093CDF2 /* CustomTextField.swift */; };
 		44D7A7172351CD620093CDF2 /* DragAndDrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A7162351CD620093CDF2 /* DragAndDrop.swift */; };
 		44D7A71B23525EF70093CDF2 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A71A23525EF70093CDF2 /* Task.swift */; };
-		44E153E6234D27180025C340 /* InputHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E153E5234D27180025C340 /* InputHandler.swift */; };
 		44F4834B237DF767003FBBD8 /* PerspectiveTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F4834A237DF767003FBBD8 /* PerspectiveTest.swift */; };
 		6F50C11B0BFFF49DB2C6BFA5 /* PerspectiveType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F50C7AE173B6C2DA65D4A0B /* PerspectiveType.swift */; };
 		6F50C2CBBA031DAEC7079C86 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A71A23525EF70093CDF2 /* Task.swift */; };
@@ -114,7 +116,7 @@
 		4400A1B3233FC70B000C8862 /* FocusUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4400A1B7233FC70B000C8862 /* FocusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusUITests.swift; sourceTree = "<group>"; };
 		4400A1B9233FC70B000C8862 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		441282072381CDE700273A8F /* InputGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputGesture.swift; sourceTree = "<group>"; };
+		441282072381CDE700273A8F /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		4417168123776D1000FFA7F2 /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		442BCA8023563FE300763D8B /* Perspective.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Perspective.swift; sourceTree = "<group>"; };
 		4436F21123410218007F1B7C /* TaskDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDto.swift; sourceTree = "<group>"; };
@@ -125,7 +127,8 @@
 		444C02792358E49400451D8E /* TaskFilterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskFilterTests.swift; sourceTree = "<group>"; };
 		444C027B2358EE4400451D8E /* TaskTreeNodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTreeNodeTests.swift; sourceTree = "<group>"; };
 		44583CB7238883B300E07F1A /* Palette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
-		44583CBB2389E77800E07F1A /* Undo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Undo.swift; sourceTree = "<group>"; };
+		44583CBB2389E77800E07F1A /* UndoBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoBuffer.swift; sourceTree = "<group>"; };
+		44583CC22389F1AC00E07F1A /* CommandBus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandBus.swift; sourceTree = "<group>"; };
 		44583D1F2357A3C100E66EA9 /* TaskTreeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTreeTests.swift; sourceTree = "<group>"; };
 		44583D212357A9B500E66EA9 /* TaskStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStub.swift; sourceTree = "<group>"; };
 		4460D3692379B22E00A23918 /* SpaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceModel.swift; sourceTree = "<group>"; };
@@ -145,7 +148,6 @@
 		44D7A710235121B00093CDF2 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		44D7A7162351CD620093CDF2 /* DragAndDrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragAndDrop.swift; sourceTree = "<group>"; };
 		44D7A71A23525EF70093CDF2 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
-		44E153E5234D27180025C340 /* InputHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputHandler.swift; sourceTree = "<group>"; };
 		44F4834A237DF767003FBBD8 /* PerspectiveTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerspectiveTest.swift; sourceTree = "<group>"; };
 		6F50C7AE173B6C2DA65D4A0B /* PerspectiveType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerspectiveType.swift; sourceTree = "<group>"; };
 		6F50C93A55786C3A4D4DC466 /* TaskTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTests.swift; sourceTree = "<group>"; };
@@ -258,10 +260,10 @@
 		441282042381C71600273A8F /* Input */ = {
 			isa = PBXGroup;
 			children = (
+				44583CC22389F1AC00E07F1A /* CommandBus.swift */,
 				44CF764E2381D3DF0044062A /* Shortcut.swift */,
-				44E153E5234D27180025C340 /* InputHandler.swift */,
-				441282072381CDE700273A8F /* InputGesture.swift */,
-				44583CBB2389E77800E07F1A /* Undo.swift */,
+				441282072381CDE700273A8F /* Command.swift */,
+				44583CBB2389E77800E07F1A /* UndoBuffer.swift */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -451,11 +453,11 @@
 				44456B572353273E00934231 /* TaskTreeView.swift in Sources */,
 				44B553DD2364E675003355B7 /* Space.swift in Sources */,
 				44A5347023832E280018AF01 /* ProjectSelectorView.swift in Sources */,
-				44E153E6234D27180025C340 /* InputHandler.swift in Sources */,
 				4400A199233FC708000C8862 /* PerspectiveView.swift in Sources */,
 				44D7A711235121B00093CDF2 /* CustomTextField.swift in Sources */,
+				44583CC32389F1AC00E07F1A /* CommandBus.swift in Sources */,
 				44CF76572381DE590044062A /* Date.swift in Sources */,
-				441282082381CDE700273A8F /* InputGesture.swift in Sources */,
+				441282082381CDE700273A8F /* Command.swift in Sources */,
 				44CF76532381D61E0044062A /* Defaults.swift in Sources */,
 				4436F21223410218007F1B7C /* TaskDto.swift in Sources */,
 				4460D36A2379B22E00A23918 /* SpaceModel.swift in Sources */,
@@ -464,7 +466,7 @@
 				44B553DF23650267003355B7 /* CalendarView.swift in Sources */,
 				442BCA8123563FE300763D8B /* Perspective.swift in Sources */,
 				4400A197233FC708000C8862 /* AppDelegate.swift in Sources */,
-				44583CBC2389E77800E07F1A /* Undo.swift in Sources */,
+				44583CBC2389E77800E07F1A /* UndoBuffer.swift in Sources */,
 				6F50C5518B13EA2906C2B65F /* TaskNodeTree.swift in Sources */,
 				6F50C11B0BFFF49DB2C6BFA5 /* PerspectiveType.swift in Sources */,
 				6F50CE88467E956D442638F6 /* TaskNode.swift in Sources */,
@@ -479,9 +481,10 @@
 				44CF76502381D3DF0044062A /* Shortcut.swift in Sources */,
 				4460D36D2379D42900A23918 /* TaskSpaceRepositoryFile.swift in Sources */,
 				444C027C2358EE4400451D8E /* TaskTreeNodeTests.swift in Sources */,
-				44CF765E2381E26E0044062A /* InputGesture.swift in Sources */,
+				44CF765E2381E26E0044062A /* Command.swift in Sources */,
 				444C027A2358E49400451D8E /* TaskFilterTests.swift in Sources */,
 				4460D36C2379D41F00A23918 /* Perspective.swift in Sources */,
+				44583CC42389F1AC00E07F1A /* CommandBus.swift in Sources */,
 				44583D202357A3C100E66EA9 /* TaskTreeTests.swift in Sources */,
 				4460D36F2379D43300A23918 /* Space.swift in Sources */,
 				4400A1AD233FC70B000C8862 /* FocusTests.swift in Sources */,
@@ -491,11 +494,11 @@
 				4460D3702379D43600A23918 /* SpaceModel.swift in Sources */,
 				444C027E2359145500451D8E /* TaskStub.swift in Sources */,
 				44CF765C2381E22A0044062A /* DateTests.swift in Sources */,
+				44583CBD2389ED8C00E07F1A /* UndoBuffer.swift in Sources */,
 				4460D36E2379D42F00A23918 /* TaskNodeTree.swift in Sources */,
 				6F50CEFB292A0D12A723DC5E /* TaskTests.swift in Sources */,
 				44CE383F235A75BA00ADF6DC /* TaskDtoTests.swift in Sources */,
 				44CF76582381DE590044062A /* Date.swift in Sources */,
-				44CF765F2381E2720044062A /* InputHandler.swift in Sources */,
 				6F50CB6165062A4BEB6BD3AE /* PerspectiveType.swift in Sources */,
 				44CF76542381D61E0044062A /* Defaults.swift in Sources */,
 				6F50C2D53F84EBA9AF5E2EE0 /* TaskNode.swift in Sources */,
@@ -511,11 +514,12 @@
 				44CF76662381E3AE0044062A /* Space.swift in Sources */,
 				44CF766B2381E3F20044062A /* TaskNode.swift in Sources */,
 				44CF76552381D61E0044062A /* Defaults.swift in Sources */,
+				44583CC52389F1AC00E07F1A /* CommandBus.swift in Sources */,
 				44CF76672381E3B70044062A /* TaskSpaceRepositoryFile.swift in Sources */,
 				44CF76642381E3920044062A /* TaskDto.swift in Sources */,
-				44CF76622381E2C00044062A /* InputGesture.swift in Sources */,
-				44CF76612381E2BE0044062A /* InputHandler.swift in Sources */,
+				44CF76622381E2C00044062A /* Command.swift in Sources */,
 				44CF766C2381E3FE0044062A /* Tools.swift in Sources */,
+				44583CBE2389EE8E00E07F1A /* UndoBuffer.swift in Sources */,
 				44CF766A2381E3E60044062A /* TaskNodeTree.swift in Sources */,
 				4400A1B8233FC70B000C8862 /* FocusUITests.swift in Sources */,
 				44CF76652381E3A20044062A /* PerspectiveType.swift in Sources */,

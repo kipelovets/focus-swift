@@ -24,7 +24,7 @@ class ProjectSelectorDropDelegate: DropDelegate {
     }
     
     func performDrop(info: DropInfo) -> Bool {
-        inputHandler.send(.SetProject(project))
+        commandBus.handle(.SetProject(project))
         
         return true
     }
@@ -40,7 +40,7 @@ struct ProjectRowView: View {
             Text(project.title)
                 .contextMenu {
                     Button(action: {
-                        inputHandler.send(.DeleteProject(self.project))
+                        commandBus.handle(.DeleteProject(self.project))
                     }) {
                         Text("Delete")
                     }
@@ -51,7 +51,7 @@ struct ProjectRowView: View {
             print("dbl click")
         })
             .onTapGesture {
-                inputHandler.send(.Focus(.Project(self.project)))
+                commandBus.handle(.Focus(.Project(self.project)))
         }
         .background(self.bgColor(for: project))
         .foregroundColor(self.textColor)
@@ -88,7 +88,7 @@ struct ProjectSelectorView: View {
                         guard let firstProject = self.space.model.projects.first else {
                             return
                         }
-                        inputHandler.send(.Focus(.Project(firstProject)))
+                        commandBus.handle(.Focus(.Project(firstProject)))
                     }) {
                         Text("Projects").font(.headline)
                             .frame(minWidth: 100, maxWidth: .infinity, minHeight: 10, alignment: .leading)

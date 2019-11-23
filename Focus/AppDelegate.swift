@@ -4,8 +4,7 @@ import SwiftUI
 fileprivate let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
 fileprivate let repo = TaskSpaceRepositoryFile(filename: documentsPath + "/Main.focus")
 fileprivate let space = Space(repo)
-fileprivate let commandRecorder = CommandRecorder(perspective: space.perspective)
-var inputHandler = InputHandler(space: space, recorder: commandRecorder)
+var commandBus = createCommandBus(space: space)
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {    
@@ -19,7 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window = InputHandlingWindow(
             contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false, inputHandler: inputHandler)
+            backing: .buffered, defer: false, inputHandler: commandBus)
         window.center()
         window.setFrameAutosaveName("Main Window")
         window.contentView = NSHostingView(rootView: contentView)

@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-enum InputGesture {
+enum Command {
     case Down
     case Up
     case ToggleDone
@@ -48,6 +48,4 @@ enum InputGesture {
             return nil
         }
     }
-    
-    
 }

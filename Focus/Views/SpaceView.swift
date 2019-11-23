@@ -34,7 +34,7 @@ struct FilterSelector: View {
         HStack {
             HStack(alignment: .top, spacing: 0) {
                 Button(action: {
-                    inputHandler.send(.Focus(self.filter))
+                    commandBus.handle(.Focus(self.filter))
                 }) {
                     Text(filter.description).font(.headline)
                         .frame(minWidth: 100, maxWidth: .infinity, minHeight: 10, alignment: .leading)

@@ -40,6 +40,7 @@ fileprivate let defaultShortcuts: [Shortcut] = [
     Shortcut(binding: KeyBinding(with: "Tab"), gesture: .ToggleEditing),
     Shortcut(binding: KeyBinding(with: "Enter"), gesture: .AddTask),
     Shortcut(binding: KeyBinding(with: "Delete"), gesture: .DeleteTask),
+    Shortcut(binding: KeyBinding(with: "Backspace"), gesture: .DeleteTask),
     Shortcut(binding: KeyBinding(with: "Command+Shift+]"), gesture: .Indent),
     Shortcut(binding: KeyBinding(with: "Command+Shift+["), gesture: .Outdent),
     Shortcut(binding: KeyBinding(with: "Command+Shift+Up"), gesture: .MoveUp),

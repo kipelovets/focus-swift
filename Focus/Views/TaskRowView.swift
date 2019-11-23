@@ -55,7 +55,7 @@ struct TaskRowView: View {
                         .frame(width: 200, height: 20)
                 } else {
                     Button(action: {
-                        inputHandler.send(.Edit(self.task.id))
+                        commandBus.handle(.Edit(self.task.id))
                     }) {
                         HStack {
                             Text(task.title)
@@ -101,7 +101,7 @@ struct TaskRowView: View {
         .border(Defaults.colors.selected, width: self.space.perspective.current == task ? 2 : 0)
         .background(Defaults.colors.background)
         .onDrag { () -> NSItemProvider in
-            inputHandler.send(.Select(self.task.id))
+            commandBus.handle(.Select(self.task.id))
 
             return NSItemProvider(object: TaskDragData(task: self.task.model!.dto))
         }

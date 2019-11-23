@@ -85,7 +85,7 @@ class TaskDragDelegate: DropDelegate {
     }
     
     func performDrop(info: DropInfo) -> Bool {
-        inputHandler.send(.Drop)
+        commandBus.handle(.Drop)
 
         return true
     }
