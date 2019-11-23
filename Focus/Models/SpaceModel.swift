@@ -55,5 +55,9 @@ final class SpaceModel {
         
         return self.tasks.filter({ filter.accepts(task: $0) })
     }
+    
+    func findBy(project: Project) -> [Task] {
+        return self.tasks.filter({ $0.project == project })
+    }
 }
 

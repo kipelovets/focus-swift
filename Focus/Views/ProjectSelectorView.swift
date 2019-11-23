@@ -36,15 +36,23 @@ struct ProjectRowView: View {
     @EnvironmentObject var space: Space
     
     var body: some View {
-        Button(action: {
-            inputHandler.send(.Focus(.Project(self.project)))
-        }) {
-            HStack {
-                Text(project.title)
-                Spacer()
+        HStack {
+            Text(project.title)
+                .contextMenu {
+                    Button(action: {
+                        inputHandler.send(.DeleteProject(self.project))
+                    }) {
+                        Text("Delete")
+                    }
             }
+            Spacer()
         }
-        .buttonStyle(PlainButtonStyle())
+        .onTapGesture(count: 2, perform: {
+            print("dbl click")
+        })
+            .onTapGesture {
+                inputHandler.send(.Focus(.Project(self.project)))
+        }
         .background(self.bgColor(for: project))
         .foregroundColor(self.textColor)
         .onDrop(of: TaskDragData.idTypes, delegate: ProjectSelectorDropDelegate(project))
@@ -77,7 +85,7 @@ struct ProjectSelectorView: View {
                 
                 HStack(alignment: .top, spacing: 0) {
                     Button(action: {
-                        guard let firstProject = self.space.space.projects.first else {
+                        guard let firstProject = self.space.model.projects.first else {
                             return
                         }
                         inputHandler.send(.Focus(.Project(firstProject)))
@@ -91,7 +99,7 @@ struct ProjectSelectorView: View {
                 .padding(5)
                 
 
-                ForEach(space.space.projects) { project in
+                ForEach(space.model.projects) { project in
                     ProjectRowView(project: project, dropState: dropState)
                 }.padding(.leading, 10)
             }
@@ -103,7 +111,7 @@ struct ProjectSelectorView: View {
 
 struct ProjectSelectorView_Previews: PreviewProvider {
     private static let space = loadPreviewSpace()
-    private static let spaceProject = loadPreviewSpace( .Project(space.space.projects[0]))
+    private static let spaceProject = loadPreviewSpace( .Project(space.model.projects[0]))
     
     static var previews: some View {
         Group {

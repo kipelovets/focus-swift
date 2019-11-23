@@ -124,10 +124,10 @@ class InputHandler {
                 guard p.id == -1 else {
                     break
                 }
-                guard space.space.projects.count > 0 else {
+                guard space.model.projects.count > 0 else {
                     break
                 }
-                type = .Project(space.space.projects.first!)
+                type = .Project(space.model.projects.first!)
             default:
                 print("")
             }
@@ -137,9 +137,9 @@ class InputHandler {
         case .FocusUp:
             switch space.perspective.filter {
             case .Project(let p):
-                let currentIndex = space.space.projects.firstIndex(of: p)!
+                let currentIndex = space.model.projects.firstIndex(of: p)!
                 if currentIndex > 0 {
-                    space.focus(on: .Project(space.space.projects[currentIndex - 1]))
+                    space.focus(on: .Project(space.model.projects[currentIndex - 1]))
                 }
             default:
                 moveDueFocus(-7)
@@ -148,9 +148,9 @@ class InputHandler {
         case .FocusDown:
             switch space.perspective.filter {
             case .Project(let p):
-                let currentIndex = space.space.projects.firstIndex(of: p)!
-                if currentIndex < space.space.projects.count - 1 {
-                    space.focus(on: .Project(space.space.projects[currentIndex + 1]))
+                let currentIndex = space.model.projects.firstIndex(of: p)!
+                if currentIndex < space.model.projects.count - 1 {
+                    space.focus(on: .Project(space.model.projects[currentIndex + 1]))
                 }
             default:
                 moveDueFocus(7)
@@ -168,170 +168,15 @@ class InputHandler {
         case .MoveUp:
             space.perspective.current?.moveUp()
             space.perspective.objectWillChange.send()
+        case .DeleteProject(let project):
+            let tasks = space.model.findBy(project: project)
+            tasks.forEach({ $0.project = nil })
+            space.model.projects.remove(at: space.model.projects.firstIndex(of: project)!)
+            space.focus(on: space.perspective.filter)
         }
         
         if let commandType = CommandType(with: gesture) {
             recorder.record(Command(type: commandType, before: before, after: perspective.current?.model?.dto))
         }
-    }
-}
-
-enum CommandType: String, Codable {
-    case ToggleDone
-    case Update
-    case AddTask
-    case DeleteTask
-    case Indent
-    case Outdent
-    case Drop
-    
-    init?(with gesture:InputGesture) {
-        switch gesture {
-        case .Down, .Up, .ToggleEditing, .Edit, .Undo, .Redo, .Select, .Focus, .FocusUp, .FocusDown, .FocusLeft, .FocusRight:
-            return nil
-        case .ToggleDone:
-            self = .ToggleDone
-        case .AddTask:
-            self = .AddTask
-        case .DeleteTask:
-            self = .DeleteTask
-        case .Indent:
-            self = .Indent
-        case .Outdent:
-            self = .Outdent
-        case .Drop:
-            self = .Drop
-        case .SetDue:
-            self = .Update
-        case .MoveUp, .MoveDown:
-            return nil
-        case .SetProject(_):
-            self = .Update
-        }
-    }
-    
-    var inverted: CommandType {
-        switch self {
-        case .ToggleDone:
-            return self
-        case .Update:
-            return self
-        case .AddTask:
-            return .DeleteTask
-        case .DeleteTask:
-            return .AddTask
-        case .Indent:
-            return .Outdent
-        case .Outdent:
-            return .Indent
-        case .Drop:
-            return .Drop
-        }
-    }
-}
-
-struct Command: Codable {
-    let type: CommandType
-    let before: TaskDto?
-    let after: TaskDto?
-    
-    var inverted: Command {
-        Command(type: type.inverted, before: after, after: before)
-    }
-}
-
-class CommandRecorder {
-    var executed: [Command]
-    var undone: [Command]
-    let perspective: Perspective
-    
-    init(perspective: Perspective) {
-        executed = []
-        undone = []
-        self.perspective = perspective
-    }
-    
-    func record(_ command: Command) {
-        undone = []
-        executed.append(command)
-    }
-    
-    func undo() {
-        guard let lastCommand = executed.popLast() else {
-            return
-        }
-        
-        execute(command: lastCommand.inverted)
-        undone.append(lastCommand)
-    }
-    
-    func redo() {
-        guard let lastCommand = undone.popLast() else {
-            return
-        }
-        
-        execute(command: lastCommand)
-        executed.append(lastCommand)
-    }
-    
-    private func execute(command: Command) {
-        switch (command.type) {
-        case .ToggleDone:
-            perspective.tree.find(by: command.before!.id)?.done.toggle()
-        case .Update:
-            guard let node = perspective.tree.find(by: command.before!.id) else {
-                break
-            }
-            node.title = command.after!.title
-            node.dueAt = command.after!.dueAt
-            // TODO: node.project = command.after!.projectId
-            
-        case .AddTask:
-            let addedTask = command.after!
-            let parent = addedTask.parentTaskId == nil ?
-                perspective.tree.root :
-                perspective.tree.find(by: addedTask.parentTaskId!)
-            
-            let node = TaskNode(from: Task(from: addedTask), childOf: parent)
-            
-            let position: Int
-            switch perspective.filter {
-            case .Inbox, .Project(_):
-                position = addedTask.position - parent!.model!.position
-            case .Due(_):
-                position = addedTask.duePosition - parent!.model!.duePosition
-            case .Tag(let tag):
-                position = (addedTask.position(in: tag.id) ?? 0) - (parent!.model!.dto.position(in: tag.id) ?? 0)
-            default:
-                position = 0
-            }
-            parent?.add(child: node, at: position)
-            
-        case .DeleteTask:
-            let deletedTask = command.before!
-            let task = perspective.tree.find(by: deletedTask.id)!
-            task.parent?.remove(child: task)
-        case .Indent:
-            let dto = command.before!
-            perspective.current = perspective.tree.find(by: dto.id)
-            perspective.indent()
-        case .Outdent:
-            let dto = command.before!
-            perspective.current = perspective.tree.find(by: dto.id)
-            perspective.outdent()
-        case .Drop:
-            let dto = command.after!
-            let parent = dto.parentTaskId == nil ? perspective.tree.root : perspective.tree.find(by: dto.parentTaskId!)!
-            let before = perspective.tree.find(by: dto.id)!
-            parent.add(child: before, at: dto.position)
-            // TODO: use tag/project/due position for non-inbox perspective
-        }
-        
-        perspective.updateView()
-    }
-    
-    func clear() {
-        undone = []
-        executed = []
     }
 }

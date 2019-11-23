@@ -18,7 +18,7 @@ struct CalendarDayView: View {
     
     init(dayNumber: Int, space: Space, dropState: CalendarDropState) {
         self.dayNumber = dayNumber
-        let taskCount = space.space.findDue(date: Date(fromDayOnCalendar: dayNumber)).count
+        let taskCount = space.model.findDue(date: Date(fromDayOnCalendar: dayNumber)).count
         self.taskCount = taskCount == 0 ? "" : String(taskCount)
         self.dropState = dropState
     }

@@ -4,13 +4,13 @@ import SwiftUI
 
 class Space: ObservableObject {
     private let repo: TaskSpaceRepository
-    let space: SpaceModel
+    let model: SpaceModel
     @Published private(set) var perspective: Perspective
     
     init(_ repo: TaskSpaceRepository, with filter: PerspectiveType) {
         self.repo = repo
         let space = SpaceModel(from: repo.Load())
-        self.space = space
+        self.model = space
         self.perspective = Perspective(from: space, with: filter)
         
         self.subscribeToPerspectiveChange()
@@ -21,13 +21,13 @@ class Space: ObservableObject {
     }
     
     func save() {
-        self.perspective.tree.commit(to: self.space)
-        self.repo.Save(space: self.space.dto)
+        self.perspective.tree.commit(to: self.model)
+        self.repo.Save(space: self.model.dto)
     }
     
     func focus(on filter: PerspectiveType) {
-        save()
-        perspective = Perspective(from: space, with: filter)
+        subscription?.cancel()
+        perspective = Perspective(from: model, with: filter)
         subscribeToPerspectiveChange()
     }
     
