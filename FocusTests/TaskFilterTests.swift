@@ -24,15 +24,16 @@ class TaskFilterTests: XCTestCase {
             Task(2, project, [], nil, now),
             Task(3, project, [TaskTagPosition(with: tags[0], position: 0)]),
             Task(4, nil, [TaskTagPosition(with: tags[0], position: 0), TaskTagPosition(with: tags[1], position: 0)]),
-            Task(5, project, [TaskTagPosition(with: tags[1], position: 0)], parentTask)
+            Task(5, project, [TaskTagPosition(with: tags[1], position: 0)], parentTask),
+            Task(6, nil, [], nil, Calendar.current.date(byAdding: DateComponents(day: 1), to: Date()))
         ]
         
         let filters: [(PerspectiveType, [Int])] = [
-            (PerspectiveType.Inbox, [1, 4]),
+            (PerspectiveType.Inbox, [1, 4, 6]),
             (PerspectiveType.Project(project), [2, 3, 5]),
             (PerspectiveType.Tag(tags[0]), [3, 4]),
             (PerspectiveType.Tag(tags[1]), [4, 5]),
-            (PerspectiveType.Due(Date()), [2]),
+            (PerspectiveType.Due(Date().dueFilter), [2]),
         ]
         
         for (filter, expectedIds) in filters {
@@ -46,7 +47,7 @@ class TaskFilterTests: XCTestCase {
             (.Inbox, true),
             (.Project(Project(id: 1, title: "")), true),
             (.Tag(Tag(id: 1, title: "")), false),
-            (.Due(Date()), false)
+            (.Due(Date().dueFilter), false)
         ]
         
         for (filter, expected) in filters {

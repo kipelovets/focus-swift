@@ -16,23 +16,41 @@ let nsColors: [(String, NSColor)] = [("black", .black), ("darkGray", .darkGray),
 
 let colors: [MyColor] = nsColors.map({ MyColor($0, $1) })
 
-struct Palette: View {
-    
-    
+struct ColorPalette: View {
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             ForEach(colors) { color in
                 HStack {
                     Color(color.color).frame(width: 10, height: 10)
                     Text("\(color.name)")
                 }
             }
+        }.padding(10)
+    }
+}
+
+struct FontPalette: View {
+    let text = "The tao that can be spoken is not the eternal Tao"
+    
+    var body: some View {
+        VStack {
+        Text(text).font(.largeTitle)
+        Text(text).font(.title)
+        Text(text).font(.headline)
+        Text(text).font(.subheadline)
+        Text(text).font(.body)
+        Text(text).font(.callout)
+        Text(text).font(.caption)
+        Text(text).font(.footnote)
         }
     }
 }
 
 struct Palette_Previews: PreviewProvider {
     static var previews: some View {
-        Palette()
+        Group {
+            ColorPalette()
+            FontPalette()
+        }
     }
 }

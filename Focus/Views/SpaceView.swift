@@ -39,6 +39,7 @@ struct FilterSelector: View {
                     Text(filter.description).font(.headline)
                         .frame(minWidth: 100, maxWidth: .infinity, minHeight: 10, alignment: .leading)
                         .background(Defaults.colors.focusSelected(self.space.perspective.filter.same(as: filter)))
+                        .foregroundColor(Defaults.colors.text(self.space.perspective.filter.same(as: filter)))
                 }
                 .buttonStyle(PlainButtonStyle())
             }
@@ -65,9 +66,9 @@ struct SpaceView: View {
                             CalendarView()
                             Spacer()
                         }.padding(5)
-                            .background(Defaults.colors.focusSelected(self.space.perspective.filter.same(as: .Due(Date()))))
+                            .background(Defaults.colors.focusSelected(self.space.perspective.filter.same(as: .Due(Date().dueFilter))))
                     }
-                    .modifier(FocusSelection(self.space.perspective.filter.same(as: .Due(Date()))))
+                    .modifier(FocusSelection(self.space.perspective.filter.same(as: .Due(Date().dueFilter))))
                     
                     ProjectSelectorView()
                     
@@ -85,7 +86,7 @@ struct SpaceView_Previews: PreviewProvider {
     private static let file = Bundle.main.url(forResource: "taskData.json", withExtension: nil)
     private static let repo = TaskSpaceRepositoryFile(filename: file!.path)
     private static let space = Space(repo)
-    private static let spaceDue = Space(repo, with: .Due(Date()))
+    private static let spaceDue = Space(repo, with: .Due(.CurrentMonthDay(Date().dayOfMonth)))
     
     static var previews: some View {
         Group {

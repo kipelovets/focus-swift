@@ -1,7 +1,10 @@
 import SwiftUI
 
 struct DefaultsColors {
-    let text = Color(NSColor.gray)
+    let textDimmed = Color(NSColor.gray)
+    let textDefault = Color(NSColor.white)
+    let textSelected = Color(NSColor.yellow)
+    
     let background = Color(white: 0.11)
     let lightBackground = Color(white: 0.2)
     let selected = Color(NSColor.gray)
@@ -12,15 +15,19 @@ struct DefaultsColors {
     let dropBackground = Color(.blue)
 
     func selectable(_ selected: Bool) -> Color {
-        selected ? self.selected : self.selectable
+        selected ? self.selected : selectable
     }
 
     func checkbox(_ checked: Bool) -> Color {
-        checked ? self.selectable : self.checkboxActive
+        checked ? selectable : checkboxActive
     }
 
     func focusSelected(_ selected: Bool) -> Color {
-        selected ? self.background : self.lightBackground
+        selected ? background : lightBackground
+    }
+    
+    func text(_ selected: Bool) -> Color {
+        selected ? textSelected : textDefault
     }
 }
 
@@ -41,7 +48,7 @@ fileprivate let defaultShortcuts: [Shortcut] = [
     Shortcut(binding: KeyBinding(with: "Command+Shift+z"), gesture: .Redo),
     Shortcut(binding: KeyBinding(with: "Command+1"), gesture: .Focus(.All)),
     Shortcut(binding: KeyBinding(with: "Command+2"), gesture: .Focus(.Inbox)),
-    Shortcut(binding: KeyBinding(with: "Command+3"), gesture: .Focus(.Due(Date()))),
+    Shortcut(binding: KeyBinding(with: "Command+3"), gesture: .Focus(.Due(Date().dueFilter))),
     Shortcut(binding: KeyBinding(with: "Command+4"), gesture: .Focus(.Project(Project(id: -1, title: "")))),
     Shortcut(binding: KeyBinding(with: "Command+Up"), gesture: .FocusUp),
     Shortcut(binding: KeyBinding(with: "Command+Down"), gesture: .FocusDown),

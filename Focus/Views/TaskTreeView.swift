@@ -23,7 +23,7 @@ struct TaskTreeView: View {
 
 struct TaskTree_Previews: PreviewProvider {
     private static var spaceAll = loadPreviewSpace()
-    private static var spaceDue = loadPreviewSpace(.Due(Date(from: "2019-11-11")))
+    private static var spaceDue = loadPreviewSpace(.Due(.CurrentMonthDay(11)))
     
     static var previews: some View {
         Group {

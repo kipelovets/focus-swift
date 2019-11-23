@@ -38,15 +38,21 @@ class InputHandler {
         
         let moveDueFocus = { (value: Int) in
             switch self.space.perspective.filter {
-            case .Due(let date):
-                let newDayOnCalendar = date.dayOnCalendar + value
-                guard newDayOnCalendar >= 0 && newDayOnCalendar < 35 else {
+            case .Due(let dueType):
+                switch dueType {
+                case .Past, .Future:
                     return
+                case .CurrentMonthDay(let day):
+                    let date = Date(fromDayOfMonth: day)
+                    let newDayOnCalendar = date.dayOnCalendar + value
+                    guard newDayOnCalendar >= 0 && newDayOnCalendar < 35 else {
+                        return
+                    }
+                    guard let newDate = Date(fromDayOnCalendar: newDayOnCalendar) else {
+                        return
+                    }
+                    return self.space.focus(on: .Due(.CurrentMonthDay(newDate.dayOfMonth)))
                 }
-                guard let newDate = Date(fromDayOnCalendar: newDayOnCalendar) else {
-                    return
-                }
-                return self.space.focus(on: .Due(newDate))
             default:
                 return
             }
@@ -248,7 +254,6 @@ class CommandRecorder {
     func record(_ command: Command) {
         undone = []
         executed.append(command)
-        print("Command: \(command)")
     }
     
     func undo() {

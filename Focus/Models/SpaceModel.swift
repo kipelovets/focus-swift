@@ -50,7 +50,10 @@ final class SpaceModel {
             return []
         }
         
-        return self.tasks.filter({ PerspectiveType.Due(date!).accepts(task: $0) })
+        let dom: Int = date!.dayOfMonth
+        let filter = PerspectiveType.Due(.CurrentMonthDay(dom))
+        
+        return self.tasks.filter({ filter.accepts(task: $0) })
     }
 }
 

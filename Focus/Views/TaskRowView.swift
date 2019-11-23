@@ -69,7 +69,7 @@ struct TaskRowView: View {
                 Group {
                     if self.task.project != nil {
                         Text(self.task.project!.title)
-                            .foregroundColor(Defaults.colors.text)
+                            .foregroundColor(Defaults.colors.textDimmed)
                     }
                     Spacer()
                 }.frame(width: 70, height: 20)
@@ -77,7 +77,7 @@ struct TaskRowView: View {
                 Group {
                     if self.task.dueAt != nil {
                         Text(self.task.dueAt!.formatted)
-                            .foregroundColor(Defaults.colors.text)
+                            .foregroundColor(Defaults.colors.textDimmed)
                     }
                     Spacer()
                 }.frame(width: 70, height: 20)
@@ -115,7 +115,7 @@ struct TaskRowView: View {
 
 struct TaskRow_Previews: PreviewProvider {
     private static var space = loadPreviewSpace()
-    private static var spaceDue = loadPreviewSpace(.Due(Date(from: "2019-11-11")))
+    private static var spaceDue = loadPreviewSpace(.Due(.CurrentMonthDay(Date().dayOfMonth)))
 
     static var previews: some View {
         Group {

@@ -21,6 +21,15 @@ extension Date {
         return createDateFormatter().string(from: self)
     }
     
+    var month: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = DateFormatter.Style.none
+        dateFormatter.dateStyle = DateFormatter.Style.short
+        dateFormatter.dateFormat = "MMMM"
+        
+        return dateFormatter.string(from: self)
+    }
+    
     func same(as other: Date) -> Bool {
         return self.formatted == other.formatted
     }
@@ -29,31 +38,56 @@ extension Date {
     
     init?(fromDayOnCalendar dayOnCalendar: Int) {
         let cal = Calendar.current
-        let firstDayWeekDay = cal.component(.weekday, from: Date.firstDayOfMonth)
+        let firstDayWeekDay = cal.component(.weekday, from: Date().firstDayOfMonth)
 
         let fixedNumber = dayOnCalendar - firstDayWeekDay + 2
         guard fixedNumber >= 0 else {
             return nil
         }
 
-        let myDay = cal.date(byAdding: .day, value: fixedNumber, to: Date.firstDayOfMonth)!
-        guard cal.component(.month, from: myDay) == cal.component(.month, from: Date.firstDayOfMonth) else {
+        let myDay = cal.date(byAdding: .day, value: fixedNumber, to: Date().firstDayOfMonth)!
+        guard cal.component(.month, from: myDay) == cal.component(.month, from: Date().firstDayOfMonth) else {
             return nil
         }
 
         self.init(timeIntervalSince1970: myDay.timeIntervalSince1970)
     }
     
+    init(fromDayOfMonth day: Int) {
+        let firstDayOfMonth = Date().firstDayOfMonth
+        let date = Calendar.current.date(bySetting: .day, value: day, of: firstDayOfMonth)!
+        
+        self.init(timeIntervalSince1970: date.timeIntervalSince1970)
+    }
+    
     var dayOnCalendar: Int {
         let cal = Calendar.current
-        let firstDayWeekDay = cal.component(.weekday, from: Date.firstDayOfMonth)
+        let firstDayWeekDay = cal.component(.weekday, from: firstDayOfMonth)
 
         return cal.component(.day, from: self) + firstDayWeekDay - 3
     }
     
-    static var firstDayOfMonth: Date {
-        let cal = Calendar.current
+    var firstDayOfMonth: Date {
+        return Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: self))!
+    }
+    
+    var lastDayOfMonth: Date {
+        return Calendar.current.date(byAdding: DateComponents(month: 1, day: -1), to: firstDayOfMonth)!
+    }
+    
+    var dayOfMonth: Int {
+        return Calendar.current.component(.day, from: self)
+    }
+    
+    var dueFilter: DueType {
+        if self < Date().firstDayOfMonth {
+            return .Past
+        }
         
-        return cal.date(from: cal.dateComponents([.year, .month], from: Calendar.current.startOfDay(for: Date())))!
+        if self > Date().lastDayOfMonth {
+            return .Future
+        }
+        
+        return .CurrentMonthDay(dayOfMonth)
     }
 }

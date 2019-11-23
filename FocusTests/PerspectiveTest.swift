@@ -20,7 +20,7 @@ class PerspectiveTests: XCTestCase {
     }
     
     func testParentPreservingWithNoHierarchy() {
-        space!.focus(on: .Due(Date(from:"2019-11-11")))
+        space!.focus(on: .Due(Date(from:"2019-11-11").dueFilter))
         XCTAssertEqual(1, space!.perspective.tree.root.children.count)
         let node = space!.perspective.tree.root.succeeding!
         XCTAssertNotNil(node)
@@ -32,7 +32,7 @@ class PerspectiveTests: XCTestCase {
     }
     
     func testNoHierarchyFilter() {
-        space!.focus(on: .Due(Date(from:"2019-11-11")))
+        space!.focus(on: .Due(Date(from:"2019-11-11").dueFilter))
         let node = space!.perspective.tree.find(by: 5)!
         XCTAssertNotNil(node)
         XCTAssertNotNil(node.parent)

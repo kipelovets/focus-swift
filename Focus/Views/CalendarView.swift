@@ -28,7 +28,7 @@ struct CalendarDayView: View {
             guard let date = Date(fromDayOnCalendar: self.dayNumber) else {
                 return
             }
-            inputHandler.send(.Focus(.Due(date)))
+            inputHandler.send(.Focus(.Due(.CurrentMonthDay(date.dayOfMonth))))
         }) {
             Text(taskCount)
                 .frame(width: 30, height: 30)
@@ -41,9 +41,23 @@ struct CalendarDayView: View {
             Text(day(Date(fromDayOnCalendar: dayNumber)) ?? "")
                 .font(.system(size: 7))
                 .offset(x: -1, y: 1)
-                .foregroundColor((Date(fromDayOnCalendar: dayNumber) ?? Date()).same(as: Date()) ? Color.blue : Color.white)
+                .foregroundColor(self.dayTextColor)
             , alignment: .topTrailing)
         .onDrop(of: TaskDragData.idTypes, delegate: CalendarDropDelegate(dayNumber))
+    }
+    
+    private var dayTextColor: Color {
+        let date = Date(fromDayOnCalendar: dayNumber) ?? Date()
+        if date.same(as: Date()) {
+            return Color.blue
+        }
+        
+        switch space.perspective.filter {
+        case .Due(let dueType):
+            return Defaults.colors.text(dueType.matches(date: date))
+        default:
+            return Defaults.colors.textDefault
+        }
     }
     
     private var bgColor: Color {
@@ -55,7 +69,7 @@ struct CalendarDayView: View {
             return Defaults.colors.focusSelected(false)
         }
         
-        return Defaults.colors.focusSelected(space.perspective.filter == .Due(dom))
+        return Defaults.colors.focusSelected(space.perspective.filter == .Due(.CurrentMonthDay(dom.dayOfMonth)))
     }
 }
 
@@ -88,6 +102,14 @@ struct CalendarView: View {
     
     var body: some View {
         VStack {
+            Button(action: {
+                inputHandler.send(.Focus(.Due(.Past)))
+            }) {
+                Text("Past").padding(5).font(.headline)
+                .foregroundColor(Defaults.colors.text(space.perspective.filter == .Due(.Past)))
+            }.buttonStyle(PlainButtonStyle())
+            
+            Text(Date().month).font(.caption)
             ForEach(0..<5) { i in
                 HStack(alignment: .top, spacing: 0) {
                     ForEach(0..<7) { j in
@@ -95,6 +117,12 @@ struct CalendarView: View {
                     }
                 }
             }
+            Button(action: {
+                inputHandler.send(.Focus(.Due(.Future)))
+            }) {
+                Text("Future").padding(5).font(.headline)
+                .foregroundColor(Defaults.colors.text(space.perspective.filter == .Due(.Future)))
+            }.buttonStyle(PlainButtonStyle())
         }
     }
 }
@@ -112,7 +140,8 @@ struct CalendarDayView_Previews: PreviewProvider {
 struct CalendarView_Previews: PreviewProvider {
     private static let file = Bundle.main.url(forResource: "taskData.json", withExtension: nil)
     private static let repo = TaskSpaceRepositoryFile(filename: file!.path)
-    private static let space = Space(repo, with: .Due(Date()))
+    private static let space = Space(repo, with: .Due(.CurrentMonthDay(Date().dayOfMonth)
+        ))
     
     static var previews: some View {
         CalendarView().environmentObject(space)

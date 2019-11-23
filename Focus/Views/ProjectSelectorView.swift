@@ -46,6 +46,7 @@ struct ProjectRowView: View {
         }
         .buttonStyle(PlainButtonStyle())
         .background(self.bgColor(for: project))
+        .foregroundColor(self.textColor)
         .onDrop(of: TaskDragData.idTypes, delegate: ProjectSelectorDropDelegate(project))
     }
     
@@ -54,7 +55,16 @@ struct ProjectRowView: View {
             return Defaults.colors.dropIndicator
         }
         
-        return Defaults.colors.focusSelected(self.space.perspective.filter.isProject && self.space.perspective.filter != .Project(project))
+        return Defaults.colors.focusSelected(self.space.perspective.filter.isProject)
+    }
+    
+    private var textColor: Color {
+        switch self.space.perspective.filter {
+        case .Project(let project):
+            return Defaults.colors.text(project.id == self.project.id)
+        default:
+            return Defaults.colors.textDefault
+        }
     }
 }
 

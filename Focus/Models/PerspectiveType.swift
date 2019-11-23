@@ -2,29 +2,43 @@ import Foundation
 
 private typealias ProjectEntity = Project
 
+enum DueType: Equatable {
+    case Past
+    case CurrentMonthDay(Int)
+    case Future
+    
+    func matches(date: Date) -> Bool {
+        switch self {
+        case .Past:
+            return date < Date().firstDayOfMonth
+        case .Future:
+            return date > Date().lastDayOfMonth
+        case .CurrentMonthDay(let day):
+            let isCurrentMonth = Calendar.current.component(.month, from: Date()) == Calendar.current.component(.month, from: date)
+            let sameDay = day == date.dayOfMonth
+            
+            return isCurrentMonth && sameDay
+        }
+    }
+    
+    var formatted: String {
+        switch self {
+        case .Past:
+            return "Past"
+        case .Future:
+            return "Future"
+        case .CurrentMonthDay(let day):
+            return Date(fromDayOfMonth: day).formatted
+        }
+    }
+}
+
 enum PerspectiveType: Equatable {
     case All
     case Inbox
     case Project(Project)
     case Tag(Tag)
-    case Due(Date)
-    
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        guard lhs.same(as: rhs) else {
-            return false
-        }
-        
-        switch (lhs, rhs) {
-        case (.Due(let ldate), .Due(let rdate)):
-            return ldate.same(as: rdate)
-        case (.Project(let lp), .Project(let rp)):
-            return lp.id == rp.id
-        case (.Tag(let lt), .Tag(let rt)):
-            return lt.id == rt.id
-        default:
-            return true
-        }
-    }
+    case Due(DueType)
 
     func accepts(task: Task) -> Bool {
         switch (self) {
@@ -36,12 +50,12 @@ enum PerspectiveType: Equatable {
             return task.tagPositions.contains(where: { $0.tag == tag })
         case .Project(let project):
             return task.project == project
-        case .Due(let date):
+        case .Due(let dueType):
             guard task.dueAt != nil else {
                 return false
             }
 
-            return date.same(as: task.dueAt!)
+            return dueType.matches(date: task.dueAt!)
         }
     }
 
@@ -74,8 +88,8 @@ enum PerspectiveType: Equatable {
                 return "All"
             case .Inbox:
                 return "Inbox"
-            case .Due(let date):
-                return "Due " + date.formatted
+            case .Due(let dueType):
+                return "Due " + dueType.formatted
             case .Project(let project):
                 return "Project " + project.title
             case .Tag(let tag):
@@ -105,6 +119,6 @@ enum PerspectiveType: Equatable {
     }
     
     var isDue: Bool {
-        return same(as: .Due(Date()))
+        return same(as: .Due(.Future))
     }
 }

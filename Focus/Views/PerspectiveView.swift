@@ -43,7 +43,7 @@ struct ContentView_Previews: PreviewProvider {
     private static let space = loadPreviewSpace()
     private static let perspectives: [Perspective] = [
         Perspective(from: space.space, with: .Inbox),
-        Perspective(from: space.space, with: .Due(Date(from: "2019-11-11")))
+        Perspective(from: space.space, with: .Due(.CurrentMonthDay(11)))
     ]
     
     static var previews: some View {
