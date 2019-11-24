@@ -33,22 +33,28 @@ class ProjectSelectorDropDelegate: DropDelegate {
 struct ProjectRowView: View {
     @ObservedObject var project: Project
     @ObservedObject var dropState: ProjectSelectorDropState
+    @EnvironmentObject var state: ProjectSelectorState
     @EnvironmentObject var space: Space
     
     var body: some View {
         HStack {
-            Text(project.title)
-                .contextMenu {
-                    Button(action: {
-                        commandBus.handle(.DeleteProject(self.project))
-                    }) {
-                        Text("Delete")
-                    }
+            if state.editing {
+                TextField("Project", text: $project.title)
+            } else {
+                Text(project.title)
+                    .contextMenu {
+                        Button(action: {
+                            commandBus.handle(.DeleteProject(self.project))
+                        }) {
+                            Text("Delete")
+                        }
+                }
             }
             Spacer()
         }
         .onTapGesture(count: 2, perform: {
-            print("dbl click")
+            print("double click")
+            self.state.editing.toggle()
         })
             .onTapGesture {
                 commandBus.handle(.Focus(.Project(self.project)))
@@ -76,8 +82,13 @@ struct ProjectRowView: View {
     }
 }
 
+class ProjectSelectorState: ObservableObject {
+    var editing: Bool = false
+}
+
 struct ProjectSelectorView: View {
     @EnvironmentObject var space: Space
+    @EnvironmentObject var state: ProjectSelectorState
     
     var body: some View {
         HStack {
@@ -112,11 +123,12 @@ struct ProjectSelectorView: View {
 struct ProjectSelectorView_Previews: PreviewProvider {
     private static let space = loadPreviewSpace()
     private static let spaceProject = loadPreviewSpace( .Project(space.model.projects[0]))
+    private static let state = ProjectSelectorState()
     
     static var previews: some View {
         Group {
             ProjectSelectorView().environmentObject(space)
             ProjectSelectorView().environmentObject(spaceProject)
-        }
+        }.environmentObject(state)
     }
 }

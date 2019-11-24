@@ -76,17 +76,8 @@ class HandlerMiddleware: Middleware {
                 space.focus(on: space.perspective.filter)
             }
         case .Focus(var type):
-            switch type {
-            case .Project(let p):
-                guard p.id == -1 else {
-                    break
-                }
-                guard space.model.projects.count > 0 else {
-                    break
-                }
+            if case let .Project(project) = type, project.id == -1 && space.model.projects.count > 0{
                 type = .Project(space.model.projects.first!)
-            default:
-                print("")
             }
             space.focus(on: type)
             return
@@ -135,24 +126,23 @@ class HandlerMiddleware: Middleware {
     }
     
     func moveDueFocus(by value: Int) {
-        switch self.space.perspective.filter {
-        case .Due(let dueType):
-            switch dueType {
-            case .Past, .Future:
-                return
-            case .CurrentMonthDay(let day):
-                let date = Date(fromDayOfMonth: day)
-                let newDayOnCalendar = date.dayOnCalendar + value
-                guard newDayOnCalendar >= 0 && newDayOnCalendar < 35 else {
-                    return
-                }
-                guard let newDate = Date(fromDayOnCalendar: newDayOnCalendar) else {
-                    return
-                }
-                return self.space.focus(on: .Due(.CurrentMonthDay(newDate.dayOfMonth)))
-            }
-        default:
+        guard case let .Due(dueType) = self.space.perspective.filter else {
             return
+        }
+        
+        switch dueType {
+        case .Past, .Future:
+            return
+        case .CurrentMonthDay(let day):
+            let date = Date(fromDayOfMonth: day)
+            let newDayOnCalendar = date.dayOnCalendar + value
+            guard newDayOnCalendar >= 0 && newDayOnCalendar < 35 else {
+                return
+            }
+            guard let newDate = Date(fromDayOnCalendar: newDayOnCalendar) else {
+                return
+            }
+            return self.space.focus(on: .Due(.CurrentMonthDay(newDate.dayOfMonth)))
         }
     }
 }
