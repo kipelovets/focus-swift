@@ -38,8 +38,8 @@ struct ProjectRowView: View {
     
     var body: some View {
         HStack {
-            if state.editing {
-                TextField("Project", text: $project.title)
+            if state.editing && self.isSelectedProject {
+                CustomTextField(text: $project.title, isFirstResponder: true)
             } else {
                 Text(project.title)
                     .contextMenu {
@@ -49,11 +49,10 @@ struct ProjectRowView: View {
                             Text("Delete")
                         }
                 }
+                Spacer()
             }
-            Spacer()
         }
         .onTapGesture(count: 2, perform: {
-            print("double click")
             self.state.editing.toggle()
         })
             .onTapGesture {
@@ -80,10 +79,18 @@ struct ProjectRowView: View {
             return Defaults.colors.textDefault
         }
     }
+
+    private var isSelectedProject: Bool {
+        if case let PerspectiveType.Project(p) = space.perspective.filter, p.id == self.project.id {
+            return true
+        }
+
+        return false
+    }
 }
 
 class ProjectSelectorState: ObservableObject {
-    var editing: Bool = false
+    @Published var editing: Bool = false
 }
 
 struct ProjectSelectorView: View {
@@ -102,10 +109,18 @@ struct ProjectSelectorView: View {
                         commandBus.handle(.Focus(.Project(firstProject)))
                     }) {
                         Text("Projects").font(.headline)
-                            .frame(minWidth: 100, maxWidth: .infinity, minHeight: 10, alignment: .leading)
                             .background(Defaults.colors.focusSelected(self.space.perspective.filter.same(as: .Project(Project(id: -1, title: "_")))))
+                        Spacer()
                     }
                     .buttonStyle(PlainButtonStyle())
+
+                    Button(action: {
+                        commandBus.handle(.AddProject)
+                    }) {
+                        Text("➕")
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .offset(x: -5)
                 }
                 .padding(5)
                 

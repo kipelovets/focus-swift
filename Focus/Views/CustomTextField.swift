@@ -39,7 +39,6 @@ struct CustomTextField: NSViewRepresentable {
                 
                 return true
             }
-//            print("CustomTextField.control: \(commandSelector)")
             return false
         }
         

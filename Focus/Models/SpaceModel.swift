@@ -42,7 +42,7 @@ final class SpaceModel {
     }
     
     var nextId: Int {
-        1 + (tasks.map { $0.id }.max() ?? 0)
+        1 + [tasks.map { $0.id }.max() ?? 0, projects.map { $0.id }.max() ?? 0].max()!
     }
     
     func findDue(date: Date?) -> [Task] {

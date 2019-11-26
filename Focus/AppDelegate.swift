@@ -4,7 +4,8 @@ import SwiftUI
 fileprivate let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
 fileprivate let repo = TaskSpaceRepositoryFile(filename: documentsPath + "/Main.focus")
 fileprivate let space = Space(repo)
-var commandBus = createCommandBus(space: space)
+fileprivate let projectSelectorState = ProjectSelectorState()
+var commandBus = createCommandBus(space: space, projectSelectorState: projectSelectorState)
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {    
@@ -14,7 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Create the SwiftUI view that provides the window contents.
         let contentView = SpaceView(space: space)
             .environmentObject(space)
-            .environmentObject(ProjectSelectorState())
+            .environmentObject(projectSelectorState)
         
         // Create the window and set the content view. 
         window = InputHandlingWindow(

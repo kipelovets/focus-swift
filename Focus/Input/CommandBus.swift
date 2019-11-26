@@ -8,9 +8,9 @@ fileprivate enum Direction: Int {
     case Right
 }
 
-func createCommandBus(space: Space) -> CommandBus {
-    return CommandBus(middleware: [
-        HandlerMiddleware(space: space),
+func createCommandBus(space: Space, projectSelectorState: ProjectSelectorState) -> CommandBus {
+    CommandBus(middleware: [
+        HandlerMiddleware(space: space, projectSelectorState: projectSelectorState),
         UndoBufferMiddleware(with: UndoBuffer(space: space)),
         SavingMiddleware(space: space)
     ])
@@ -34,9 +34,11 @@ protocol Middleware {
 
 class HandlerMiddleware: Middleware {
     private let space: Space
+    private let projectSelectorState: ProjectSelectorState
     
-    init(space: Space) {
+    init(space: Space, projectSelectorState: ProjectSelectorState) {
         self.space = space
+        self.projectSelectorState = projectSelectorState
     }
     
     func handle(command: Command) {
@@ -52,6 +54,10 @@ class HandlerMiddleware: Middleware {
         case .ToggleEditing:
             perspective.editMode.toggle()
         case .AddTask:
+            if projectSelectorState.editing {
+                projectSelectorState.editing.toggle()
+                return
+            }
             perspective.insert()
         case .DeleteTask:
             perspective.remove()
@@ -76,6 +82,7 @@ class HandlerMiddleware: Middleware {
                 space.focus(on: space.perspective.filter)
             }
         case .Focus(var type):
+            self.projectSelectorState.editing = false
             if case let .Project(project) = type, project.id == -1 && space.model.projects.count > 0{
                 type = .Project(space.model.projects.first!)
             }
@@ -120,6 +127,11 @@ class HandlerMiddleware: Middleware {
             tasks.forEach({ $0.project = nil })
             space.model.projects.remove(at: space.model.projects.firstIndex(of: project)!)
             space.focus(on: space.perspective.filter)
+        case .AddProject:
+            let project = Project(id: space.model.nextId, title: "New project")
+            space.model.projects.append(project)
+            space.focus(on: .Project(project))
+            projectSelectorState.editing = true
         default:
             break
         }
@@ -179,7 +191,7 @@ class SavingMiddleware: Middleware {
         switch command {
         case .Down, .Up, .Edit(_), .Select(_), .Focus(_), .FocusLeft, .FocusRight, .FocusUp, .FocusDown:
             break
-        case .ToggleDone, .ToggleEditing, .AddTask, .DeleteTask, .Indent, .Outdent, .Drop, .Undo, .Redo, .SetDue(_), .SetProject(_), .MoveUp, .MoveDown, .DeleteProject(_):
+        case .ToggleDone, .ToggleEditing, .AddTask, .DeleteTask, .Indent, .Outdent, .Drop, .Undo, .Redo, .SetDue(_), .SetProject(_), .MoveUp, .MoveDown, .DeleteProject(_), .AddProject:
             space.save()
         }
     }
