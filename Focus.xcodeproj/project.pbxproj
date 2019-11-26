@@ -25,6 +25,14 @@
 		444C027A2358E49400451D8E /* TaskFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444C02792358E49400451D8E /* TaskFilterTests.swift */; };
 		444C027C2358EE4400451D8E /* TaskTreeNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444C027B2358EE4400451D8E /* TaskTreeNodeTests.swift */; };
 		444C027E2359145500451D8E /* TaskStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44583D212357A9B500E66EA9 /* TaskStub.swift */; };
+		4450B4F0238DDAD100832418 /* ProjectSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A5346F23832E280018AF01 /* ProjectSelectorView.swift */; };
+		4450B4F1238DDAD300832418 /* ProjectSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A5346F23832E280018AF01 /* ProjectSelectorView.swift */; };
+		4450B4F3238DDC6300832418 /* Stubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4450B4F2238DDC6300832418 /* Stubs.swift */; };
+		4450B4F4238DDDE700832418 /* Stubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4450B4F2238DDC6300832418 /* Stubs.swift */; };
+		4450B4F5238DDE2900832418 /* DragAndDrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A7162351CD620093CDF2 /* DragAndDrop.swift */; };
+		4450B4F6238DDE2900832418 /* DragAndDrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A7162351CD620093CDF2 /* DragAndDrop.swift */; };
+		4450B4F7238DDEA900832418 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A710235121B00093CDF2 /* CustomTextField.swift */; };
+		4450B4F8238DDEA900832418 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D7A710235121B00093CDF2 /* CustomTextField.swift */; };
 		44583CB8238883B400E07F1A /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44583CB7238883B300E07F1A /* Palette.swift */; };
 		44583CBC2389E77800E07F1A /* UndoBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44583CBB2389E77800E07F1A /* UndoBuffer.swift */; };
 		44583CBD2389ED8C00E07F1A /* UndoBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44583CBB2389E77800E07F1A /* UndoBuffer.swift */; };
@@ -42,6 +50,16 @@
 		4460D3702379D43600A23918 /* SpaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4460D3692379B22E00A23918 /* SpaceModel.swift */; };
 		4460D3712379D45100A23918 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4417168123776D1000FFA7F2 /* Tools.swift */; };
 		446CDCD9234FD922005EDEDE /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 446CDCD8234FD922005EDEDE /* checked.png */; };
+		4474A590238DE27C00E3B55C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B553DE23650267003355B7 /* CalendarView.swift */; };
+		4474A591238DE27C00E3B55C /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B553DE23650267003355B7 /* CalendarView.swift */; };
+		4474A592238DE28D00E3B55C /* TaskTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44456B562353273E00934231 /* TaskTreeView.swift */; };
+		4474A593238DE28E00E3B55C /* TaskTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44456B562353273E00934231 /* TaskTreeView.swift */; };
+		4474A594238DE2AB00E3B55C /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436F21823410A15007F1B7C /* TaskRowView.swift */; };
+		4474A595238DE2AC00E3B55C /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4436F21823410A15007F1B7C /* TaskRowView.swift */; };
+		4498DE97238DE22500465A03 /* SpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B553DA2364E5BD003355B7 /* SpaceView.swift */; };
+		4498DE98238DE22600465A03 /* SpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B553DA2364E5BD003355B7 /* SpaceView.swift */; };
+		4498DE99238DE23400465A03 /* PerspectiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400A198233FC708000C8862 /* PerspectiveView.swift */; };
+		4498DE9A238DE23500465A03 /* PerspectiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4400A198233FC708000C8862 /* PerspectiveView.swift */; };
 		44A5347023832E280018AF01 /* ProjectSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A5346F23832E280018AF01 /* ProjectSelectorView.swift */; };
 		44B553DB2364E5BD003355B7 /* SpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B553DA2364E5BD003355B7 /* SpaceView.swift */; };
 		44B553DD2364E675003355B7 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B553DC2364E675003355B7 /* Space.swift */; };
@@ -126,6 +144,7 @@
 		44456B562353273E00934231 /* TaskTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTreeView.swift; sourceTree = "<group>"; };
 		444C02792358E49400451D8E /* TaskFilterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskFilterTests.swift; sourceTree = "<group>"; };
 		444C027B2358EE4400451D8E /* TaskTreeNodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTreeNodeTests.swift; sourceTree = "<group>"; };
+		4450B4F2238DDC6300832418 /* Stubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stubs.swift; sourceTree = "<group>"; };
 		44583CB7238883B300E07F1A /* Palette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		44583CBB2389E77800E07F1A /* UndoBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoBuffer.swift; sourceTree = "<group>"; };
 		44583CC22389F1AC00E07F1A /* CommandBus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandBus.swift; sourceTree = "<group>"; };
@@ -244,6 +263,7 @@
 				44CE383E235A75BA00ADF6DC /* TaskDtoTests.swift */,
 				44F4834A237DF767003FBBD8 /* PerspectiveTest.swift */,
 				44CF765A2381E22A0044062A /* DateTests.swift */,
+				4450B4F2238DDC6300832418 /* Stubs.swift */,
 			);
 			path = FocusTests;
 			sourceTree = "<group>";
@@ -478,21 +498,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4450B4F3238DDC6300832418 /* Stubs.swift in Sources */,
 				44CF76502381D3DF0044062A /* Shortcut.swift in Sources */,
+				4474A590238DE27C00E3B55C /* CalendarView.swift in Sources */,
 				4460D36D2379D42900A23918 /* TaskSpaceRepositoryFile.swift in Sources */,
 				444C027C2358EE4400451D8E /* TaskTreeNodeTests.swift in Sources */,
 				44CF765E2381E26E0044062A /* Command.swift in Sources */,
+				4450B4F7238DDEA900832418 /* CustomTextField.swift in Sources */,
+				4474A592238DE28D00E3B55C /* TaskTreeView.swift in Sources */,
 				444C027A2358E49400451D8E /* TaskFilterTests.swift in Sources */,
 				4460D36C2379D41F00A23918 /* Perspective.swift in Sources */,
 				44583CC42389F1AC00E07F1A /* CommandBus.swift in Sources */,
 				44583D202357A3C100E66EA9 /* TaskTreeTests.swift in Sources */,
 				4460D36F2379D43300A23918 /* Space.swift in Sources */,
+				4498DE97238DE22500465A03 /* SpaceView.swift in Sources */,
+				4474A594238DE2AB00E3B55C /* TaskRowView.swift in Sources */,
 				4400A1AD233FC70B000C8862 /* FocusTests.swift in Sources */,
 				4460D36B2379D41700A23918 /* TaskDto.swift in Sources */,
+				4498DE99238DE23400465A03 /* PerspectiveView.swift in Sources */,
 				44F4834B237DF767003FBBD8 /* PerspectiveTest.swift in Sources */,
 				4460D3712379D45100A23918 /* Tools.swift in Sources */,
+				4450B4F5238DDE2900832418 /* DragAndDrop.swift in Sources */,
 				4460D3702379D43600A23918 /* SpaceModel.swift in Sources */,
 				444C027E2359145500451D8E /* TaskStub.swift in Sources */,
+				4450B4F0238DDAD100832418 /* ProjectSelectorView.swift in Sources */,
 				44CF765C2381E22A0044062A /* DateTests.swift in Sources */,
 				44583CBD2389ED8C00E07F1A /* UndoBuffer.swift in Sources */,
 				4460D36E2379D42F00A23918 /* TaskNodeTree.swift in Sources */,
@@ -512,21 +541,30 @@
 			files = (
 				44CF76632381E3050044062A /* Task.swift in Sources */,
 				44CF76662381E3AE0044062A /* Space.swift in Sources */,
+				4474A591238DE27C00E3B55C /* CalendarView.swift in Sources */,
 				44CF766B2381E3F20044062A /* TaskNode.swift in Sources */,
 				44CF76552381D61E0044062A /* Defaults.swift in Sources */,
 				44583CC52389F1AC00E07F1A /* CommandBus.swift in Sources */,
 				44CF76672381E3B70044062A /* TaskSpaceRepositoryFile.swift in Sources */,
+				4498DE9A238DE23500465A03 /* PerspectiveView.swift in Sources */,
 				44CF76642381E3920044062A /* TaskDto.swift in Sources */,
 				44CF76622381E2C00044062A /* Command.swift in Sources */,
+				4474A595238DE2AC00E3B55C /* TaskRowView.swift in Sources */,
 				44CF766C2381E3FE0044062A /* Tools.swift in Sources */,
+				4450B4F1238DDAD300832418 /* ProjectSelectorView.swift in Sources */,
+				4450B4F6238DDE2900832418 /* DragAndDrop.swift in Sources */,
 				44583CBE2389EE8E00E07F1A /* UndoBuffer.swift in Sources */,
 				44CF766A2381E3E60044062A /* TaskNodeTree.swift in Sources */,
+				4498DE98238DE22600465A03 /* SpaceView.swift in Sources */,
 				4400A1B8233FC70B000C8862 /* FocusUITests.swift in Sources */,
+				4450B4F8238DDEA900832418 /* CustomTextField.swift in Sources */,
 				44CF76652381E3A20044062A /* PerspectiveType.swift in Sources */,
 				44CF76682381E3C00044062A /* SpaceModel.swift in Sources */,
 				44CF76512381D3DF0044062A /* Shortcut.swift in Sources */,
 				44CF76592381DE590044062A /* Date.swift in Sources */,
 				44CF76692381E3C90044062A /* Perspective.swift in Sources */,
+				4474A593238DE28E00E3B55C /* TaskTreeView.swift in Sources */,
+				4450B4F4238DDDE700832418 /* Stubs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
