@@ -26,6 +26,7 @@ enum Command {
     case MoveDown
     case DeleteProject(Project)
     case AddProject
+    case MoveProjectAfter(Project, Project)
     
     init?(withEvent event: NSEvent) {
         guard let shortcut = Defaults.shortcuts.first(where: { $0.binding.matches(event: event) }) else {

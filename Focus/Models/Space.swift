@@ -22,6 +22,7 @@ class Space: ObservableObject {
     
     func save() {
         self.perspective.tree.commit(to: self.model)
+        print(model.projects.map({ $0.title }).joined(separator: ", "))
         self.repo.Save(space: self.model.dto)
     }
     
@@ -36,5 +37,9 @@ class Space: ObservableObject {
         self.subscription = self.perspective.objectWillChange.sink(receiveValue: { _ in
             self.objectWillChange.send()
         })
+    }
+        
+    func updateView() {
+        objectWillChange.send()
     }
 }

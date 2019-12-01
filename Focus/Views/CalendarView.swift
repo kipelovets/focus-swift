@@ -91,6 +91,10 @@ class CalendarDropDelegate: DropDelegate {
     }
     
     func performDrop(info: DropInfo) -> Bool {
+        let p = info.itemProviders(for: ProjectDragData.idTypes).first!
+        guard p.canLoadObject(ofClass: TaskDragData.self) else {
+            return false
+        }
         commandBus.handle(.SetDue(Date(fromDayOnCalendar: self.dayNumber)))
         
         return true

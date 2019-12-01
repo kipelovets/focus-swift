@@ -1,12 +1,13 @@
 import SwiftUI
 
 class ProjectSelectorDropState: ObservableObject {
-    @Published var project: Project? = nil
+    @Published var taskDropProject: Project? = nil
+    @Published var projectDropProject: Project? = nil
 }
 
 fileprivate var dropState = ProjectSelectorDropState()
 
-class ProjectSelectorDropDelegate: DropDelegate {
+class ProjectSelectorTaskDropDelegate: DropDelegate {
     let project: Project
     
     init(_ project: Project) {
@@ -14,19 +15,27 @@ class ProjectSelectorDropDelegate: DropDelegate {
     }
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
-        dropState.project = project
+        dropState.taskDropProject = project
         
         return DropProposal(operation: .move)
     }
     
     func dropExited(info: DropInfo) {
-        dropState.project = nil
+        dropState.taskDropProject = nil
     }
     
     func performDrop(info: DropInfo) -> Bool {
-        commandBus.handle(.SetProject(project))
+        if info.accepts(type: TaskDragData.self) {
+            commandBus.handle(.SetProject(project))
+            return true
+        }
         
-        return true
+        if info.accepts(type: ProjectDragData.self) {
+            commandBus.handle(.MoveProjectAfter(self.project))
+            return true
+        }
+        
+        return false
     }
 }
 
@@ -60,11 +69,14 @@ struct ProjectRowView: View {
         }
         .background(self.bgColor(for: project))
         .foregroundColor(self.textColor)
-        .onDrop(of: TaskDragData.idTypes, delegate: ProjectSelectorDropDelegate(project))
+        .onDrop(of: TaskDragData.idTypes, delegate: ProjectSelectorTaskDropDelegate(project))
+        .onDrag { () -> NSItemProvider in
+            return NSItemProvider(object: ProjectDragData(project: self.project.dto))
+        }
     }
     
     private func bgColor(for project: Project) -> Color {
-        if dropState.project == project {
+        if dropState.taskDropProject == project {
             return Defaults.colors.dropIndicator
         }
         

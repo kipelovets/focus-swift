@@ -132,6 +132,16 @@ class HandlerMiddleware: Middleware {
             space.model.projects.append(project)
             space.focus(on: .Project(project))
             projectSelectorState.editing = true
+        case .MoveProjectAfter(let project, let after):
+            print("_________________")
+            if project == after {
+                return
+            }
+            print(space.model.projects.map({ $0.title }).joined(separator: ", "))
+            space.model.projects.remove(at: space.model.projects.firstIndex(of: project)!)
+            space.model.projects.insert(project, at: space.model.projects.firstIndex(of: after)! + 1)
+            print(space.model.projects.map({ $0.title }).joined(separator: ", "))
+            space.updateView()
         default:
             break
         }
@@ -191,7 +201,7 @@ class SavingMiddleware: Middleware {
         switch command {
         case .Down, .Up, .Edit(_), .Select(_), .Focus(_), .FocusLeft, .FocusRight, .FocusUp, .FocusDown:
             break
-        case .ToggleDone, .ToggleEditing, .AddTask, .DeleteTask, .Indent, .Outdent, .Drop, .Undo, .Redo, .SetDue(_), .SetProject(_), .MoveUp, .MoveDown, .DeleteProject(_), .AddProject:
+        case .ToggleDone, .ToggleEditing, .AddTask, .DeleteTask, .Indent, .Outdent, .Drop, .Undo, .Redo, .SetDue(_), .SetProject(_), .MoveUp, .MoveDown, .DeleteProject(_), .AddProject, .MoveProjectAfter(_):
             space.save()
         }
     }
